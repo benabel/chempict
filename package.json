@@ -1,0 +1,29 @@
+{
+  "name": "chempict",
+  "version": "0.0.1",
+  "description": "Create chemical pictures for the web.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benjaminabel/chempict.git"
+  },
+  "keywords": [
+    "chemistry",
+    "molecule",
+    "svg",
+    "smiles",
+    "depict"
+  ],
+  "author": "Benjamin Abel",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/benjaminabel/chempict/issues"
+  },
+  "homepage": "https://github.com/benjaminabel/chempict#readme",
+  "devDependencies": {
+    "google-closure-library": "^20151015.0.0"
+  }
+}
