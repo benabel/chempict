@@ -244,7 +244,7 @@ layoutCoordinateGenerator.getNextAtomWithAliphaticUnplacedNeigbors = function(mo
 }
 
 layoutCoordinateGenerator.getAtoms = function(atom,molecule,bondCount,placed){
-    var atoms = new kemia.model.Molecule;
+  var atoms = new modelMolecule;
 	var bonds = molecule.getConnectedBondsList(atom);
 	for (var ga=0, bLen=bonds.length; ga<bLen; ga++ ) {
 	    var connectedAtom = bonds[ga].otherAtom(atom);
