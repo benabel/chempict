@@ -19,7 +19,6 @@ const ringFinder = require('../ring/finder');
 const modelAtom = require('../model/atom');
 goog.require('goog.debug.Logger');
 goog.require('goog.math.Vec2');
-const graphicsAffineTransform = require('../graphics/affine_transform');
 goog.require('goog.math.Box');
 
 /**
@@ -435,36 +434,6 @@ modelMolecule.prototype.getBoundingBox = function() {
 				return a.coord;
 			}));
 };
-
-/**
- * rotate molecule coordinates
- *
- * @param {number}
- *            degrees, angle of rotation
- * @param {!goog.math.Coordinate}
- *            opt_center, coordinates of center of rotation
- *
- */
-modelMolecule.prototype.rotate = function(degrees, opt_center) {
-	// this.logger.info('rotate ' + degrees);
-	if(!goog.isDef(opt_center)){
-		opt_center = this.getCenter();
-	}
-	var trans = graphicsAffineTransform.getRotateInstance(goog.math
-			.toRadians(degrees), opt_center.x, opt_center.y);
-	goog.array.forEach(this.atoms, function(a) {
-		a.coord = trans.transformCoords( [ a.coord ])[0];
-	});
-
-};
-
-modelMolecule.prototype.scale = function(scale_factor) {
-	var trans = graphicsAffineTransform.getScaleInstance(scale_factor,
-			scale_factor);
-	goog.array.forEach(this.atoms, function(a) {
-		a.coord = trans.transformCoords( [ a.coord ])[0];
-	});
-}
 
 /**
  * translate molecule coordinates
