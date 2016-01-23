@@ -39,7 +39,7 @@ layoutOverlapResolver.resolveOverlap = function(molecule, sssr) {
 layoutOverlapResolver.getOverlapScore = function(molecule, overlappingAtoms) {
 
   var overlapScore = 0;
-  var overlapCutoff = layoutCoordinateGenerator.BOND_LENGTH / 5;
+  var overlapCutoff = layoutCoordinateGenerator.bondLength / 5;
 
   var atCount = molecule.countAtoms();
   for (var f = 0; f < atCount; f++) {
@@ -90,7 +90,7 @@ layoutOverlapResolver.displace = function(molecule, overlappingAtoms) {
       if (isNaN(v2.y))
         v2.y = 0.01;
 
-      v2.scale(-1 * layoutCoordinateGenerator.BOND_LENGTH / 3);
+      v2.scale(-1 * layoutCoordinateGenerator.bondLength / 3);
 
       var choice = Math.random();
       if (choice > 0.5) {

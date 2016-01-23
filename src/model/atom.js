@@ -23,25 +23,25 @@ goog.require('goog.math.Coordinate');
 /**
  * Class representing an atom
  *
- * @param {string=} opt_symbol, Atom symbol, defaults to "C"
- * @param {number=} opt_x X-coordinate of atom, defaults to 0
- * @param {number=} opt_y, Y-coordinate of atom, defaults to 0
- * @param {number=} opt_charge, Charge of atom, defaults to 0.
- * @param {boolean=} opt_aromatic, whether atom is aromatic, defaults to false
- * @param {number=} opt_isotope, isotope, defaults to 0
+ * @param {string=} optSymbol, Atom symbol, defaults to "C"
+ * @param {number=} optX X-coordinate of atom, defaults to 0
+ * @param {number=} optY, Y-coordinate of atom, defaults to 0
+ * @param {number=} optCharge, Charge of atom, defaults to 0.
+ * @param {boolean=} optAromatic, whether atom is aromatic, defaults to false
+ * @param {number=} optIsotope, isotope, defaults to 0
  * @constructor
  */
-module.exports = modelAtom = function(opt_symbol, opt_x, opt_y, opt_charge, opt_aromatic, opt_isotope) {
+module.exports = modelAtom = function(optSymbol, optX, optY, optCharge, optAromatic, optIsotope) {
   /**
    * Atom symbol
    *
    * @type {string}
    */
-  this.symbol = goog.isDef(opt_symbol) ? opt_symbol : 'C';
+  this.symbol = goog.isDef(optSymbol) ? optSymbol : 'C';
 
-  var x = opt_x ? opt_x : 0;
+  var x = optX ? optX : 0;
 
-  var y = opt_y ? opt_y : 0;
+  var y = optY ? optY : 0;
 
   /**
    * 2d coordinates
@@ -60,21 +60,21 @@ module.exports = modelAtom = function(opt_symbol, opt_x, opt_y, opt_charge, opt_
    *
    * @type{number}
    */
-  this.charge = opt_charge ? opt_charge : 0;
+  this.charge = optCharge ? optCharge : 0;
 
   /**
    * isotope
    *
    * @type{number}
    */
-  this.isotope = opt_isotope ? opt_isotope : 0;
+  this.isotope = optIsotope ? optIsotope : 0;
 
   /**
    * aromatic
    *
    * @type{boolean}
    */
-  this.aromatic = goog.isDef(opt_aromatic) ? opt_aromatic : false;
+  this.aromatic = goog.isDef(optAromatic) ? optAromatic : false;
 
   this.hybridization = null;
 
@@ -107,9 +107,9 @@ modelAtom.prototype.hydrogenCount = function() {
   /** @type {number} */
   var cov = resourceCovalence[this.symbol];
 
-  var bond_array = this.bonds.getValues();
+  var bondArray = this.bonds.getValues();
 
-  var totalBondOrder = /** @type {number} */ (goog.array.reduce(bond_array, function(r, v) {
+  var totalBondOrder = /** @type {number} */ (goog.array.reduce(bondArray, function(r, v) {
     return r + v.order;
   }, 0));
   var hydrogenCount = 0;
@@ -139,43 +139,43 @@ modelAtom.prototype.getNeighbors = function() {
 modelAtom.nextBondAngle = function(atom) {
   var bonds = atom.bonds.getValues();
 
-  var new_angle;
+  var newAngle;
 
   if (bonds.length === 0) {
-    new_angle = 0;
+    newAngle = 0;
 
   } else if (bonds.length === 1) {
-    var other_atom = bonds[0].otherAtom(atom);
-    var existing_angle = goog.math.angle(atom.coord.x, atom.coord.y,
-      other_atom.coord.x, other_atom.coord.y);
+    var otherAtom = bonds[0].otherAtom(atom);
+    var existingAngle = goog.math.angle(atom.coord.x, atom.coord.y,
+      otherAtom.coord.x, otherAtom.coord.y);
 
-    var other_angles_diff = goog.array.map(other_atom.bonds.getValues(),
+    var otherAnglesDiff = goog.array.map(otherAtom.bonds.getValues(),
       function(b) {
-        var not_other = b.otherAtom(other_atom);
-        if (not_other !== atom) {
-          return goog.math.angleDifference(existing_angle,
-            goog.math.angle(other_atom.coord.x,
-              other_atom.coord.y, not_other.coord.x,
-              not_other.coord.y));
+        var notOther = b.otherAtom(otherAtom);
+        if (notOther !== atom) {
+          return goog.math.angleDifference(existingAngle,
+            goog.math.angle(otherAtom.coord.x,
+              otherAtom.coord.y, notOther.coord.x,
+              notOther.coord.y));
         }
       });
-    goog.array.sort(other_angles_diff);
+    goog.array.sort(otherAnglesDiff);
 
-    var min_angle = other_angles_diff[0];
+    var minAngle = otherAnglesDiff[0];
 
-    if (min_angle > 0) {
-      new_angle = existing_angle - 120;
+    if (minAngle > 0) {
+      newAngle = existingAngle - 120;
     } else {
-      new_angle = existing_angle + 120;
+      newAngle = existingAngle + 120;
     }
-  // this.logger.info('existing_angle ' + existing_angle + '
-  // other_angles_diff ' + other_angles_diff.toString() + ' new_angle ' +
-  // new_angle);
+  // this.logger.info('existingAngle ' + existingAngle + '
+  // otherAnglesDiff ' + otherAnglesDiff.toString() + ' newAngle ' +
+  // newAngle);
   } else if (bonds.length === 2) {
     var angles = goog.array.map(bonds, function(bond) {
-      var other_atom = bond.otherAtom(atom);
+      var otherAtom = bond.otherAtom(atom);
       return goog.math.angle(atom.coord.x, atom.coord.y,
-        other_atom.coord.x, other_atom.coord.y);
+        otherAtom.coord.x, otherAtom.coord.y);
     });
     var diff = goog.math.angleDifference(angles[0], angles[1]);
     if (Math.abs(diff) < 180) {
@@ -183,7 +183,7 @@ modelAtom.nextBondAngle = function(atom) {
     } else {
       diff = diff / 2;
     }
-    new_angle = angles[0] + diff;
+    newAngle = angles[0] + diff;
   } else if (bonds.length === 3) {
     // find two bonds with least number of bonds on other end to insert
     // between
@@ -192,19 +192,19 @@ modelAtom.nextBondAngle = function(atom) {
         .getValues().length,
         b2.otherAtom(atom).bonds.getValues().length);
     });
-    var insert_between = goog.array.slice(bonds, 0, 2);
+    var insertBetween = goog.array.slice(bonds, 0, 2);
 
-    var angles = goog.array.map(insert_between, function(b) {
-      var other_atom = b.otherAtom(atom);
+    var angles = goog.array.map(insertBetween, function(b) {
+      var otherAtom = b.otherAtom(atom);
       return goog.math.angle(atom.coord.x, atom.coord.y,
-        other_atom.coord.x, other_atom.coord.y);
+        otherAtom.coord.x, otherAtom.coord.y);
     });
-    new_angle = angles[0] + goog.math.angleDifference(angles[0], angles[1])
+    newAngle = angles[0] + goog.math.angleDifference(angles[0], angles[1])
       / 2;
-  // this.logger.info('angles ' + angles.toString() + " new_angle "
-  // + new_angle);
+  // this.logger.info('angles ' + angles.toString() + " newAngle "
+  // + newAngle);
   }
-  return new_angle;
+  return newAngle;
 };
 
 /**
@@ -240,12 +240,12 @@ modelAtom.Hybridizations = {
  * Set a flag to be true or false
  *
  * @param {Object}
- *            flag_type <modelFlags>
+ *            flagType <modelFlags>
  * @param {Object}
- *            flag_value true or false
+ *            flagValue true or false
  */
-modelAtom.prototype.setFlag = function(flag_type, flag_value) {
-  this.flags[flag_type] = flag_value;
+modelAtom.prototype.setFlag = function(flagType, flagValue) {
+  this.flags[flagType] = flagValue;
 };
 /**
  * @return {string}

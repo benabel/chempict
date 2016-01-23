@@ -169,8 +169,8 @@ layoutAtomPlacer.getConnectedBondsCount = function(atom, molecule, bondCount) {
  */
 layoutAtomPlacer.breadthFirstSearch = function(mol, sphere, paths, bondCount) {
   var newSphere = new Array();
-  var sphere_len = sphere.length;
-  for (var f = 0; f < sphere_len; f++) {
+  var sphereLen = sphere.length;
+  for (var f = 0; f < sphereLen; f++) {
     var atom = sphere[f];
     if (!atom.flags[modelFlags.ISINRING]) {
       var atomNr = mol.indexOfAtom(atom);
@@ -515,11 +515,11 @@ layoutAtomPlacer.partitionPartners = function(molec, atom, unplacedPartners, pla
   var cntLoop = 0;
   goog.array.forEach(atom.bonds.getValues(), function(bond) {
     cntLoop++;
-    var other_atom = bond.otherAtom(atom);
-    if (!other_atom.flags[modelFlags.ISPLACED]) {
-      unplacedPartners.addAtom(other_atom);
+    var otherAtom = bond.otherAtom(atom);
+    if (!otherAtom.flags[modelFlags.ISPLACED]) {
+      unplacedPartners.addAtom(otherAtom);
     } else {
-      placedPartners.addAtom(other_atom);
+      placedPartners.addAtom(otherAtom);
     }
   });
   return cntLoop;

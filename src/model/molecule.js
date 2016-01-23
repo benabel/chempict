@@ -25,10 +25,10 @@ goog.require('goog.math.Box');
  * Class representing a Molecule
  *
  * @param {string=}
- *            opt_name, Name of molecule, defaults to empty string.
+ *            optName, Name of molecule, defaults to empty string.
  * @constructor
  */
-module.exports = modelMolecule = function(opt_name) {
+module.exports = modelMolecule = function(optName) {
   /**
    * bonds belonging to this molecule
    *
@@ -49,7 +49,7 @@ module.exports = modelMolecule = function(opt_name) {
    *
    * @type {string}
    */
-  this.name = opt_name ? opt_name : '';
+  this.name = optName ? optName : '';
 
   /**
    * id of molecule
@@ -450,83 +450,83 @@ modelMolecule.prototype.translate = function(vector) {
 
 
 /**
- * merge with a molecule fragment target_bond replaces frag_bond and target_atom
- * replaces frag_atom
+ * merge with a molecule fragment targetBond replaces fragBond and targetAtom
+ * replaces fragAtom
  *
  * @param {modelMolecule}
  *            fragment
  * @param {kemia.model.Bond}
- *            frag_bond bond in fragment to be replaced by target bond
+ *            fragBond bond in fragment to be replaced by target bond
  * @param {kemia.model.Bond}
- *            target_bond bond in this molecule to replace frag_bond
+ *            targetBond bond in this molecule to replace fragBond
  * @param {modelAtom}
- *            frag_atom atom in frag_bond to be replaced by target_atom
+ *            fragAtom atom in fragBond to be replaced by targetAtom
  * @param {modelAtom}
- *            target_atom atom in this molecule to replace frag_atom
+ *            targetAtom atom in this molecule to replace fragAtom
  */
-modelMolecule.prototype.merge = function(fragment, frag_bond,
-  target_bond, frag_atom, target_atom) {
-  goog.asserts.assert(goog.array.contains(fragment.bonds, frag_bond));
-  goog.asserts.assert(goog.array.contains(this.bonds, target_bond));
-  goog.asserts.assert(goog.array.contains(frag_atom.bonds.getValues(),
-    frag_bond));
-  goog.asserts.assert(goog.array.contains(target_atom.bonds.getValues(),
-    target_bond));
+modelMolecule.prototype.merge = function(fragment, fragBond,
+  targetBond, fragAtom, targetAtom) {
+  goog.asserts.assert(goog.array.contains(fragment.bonds, fragBond));
+  goog.asserts.assert(goog.array.contains(this.bonds, targetBond));
+  goog.asserts.assert(goog.array.contains(fragAtom.bonds.getValues(),
+    fragBond));
+  goog.asserts.assert(goog.array.contains(targetAtom.bonds.getValues(),
+    targetBond));
 
   // scale and translate and rotate fragment into position
   var scale = this.getAverageBondLength() / fragment.getAverageBondLength();
   fragment.scale(scale);
-  var position_diff = goog.math.Vec2.fromCoordinate(goog.math.Coordinate
-    .difference(target_atom.coord, frag_atom.coord));
-  var other_target_atom = target_bond.otherAtom(target_atom);
-  var target_angle = goog.math
-    .angle(other_target_atom.coord.x, other_target_atom.coord.y,
-      target_atom.coord.x, target_atom.coord.y);
-  var other_frag_atom = frag_bond.otherAtom(frag_atom);
-  var fragment_angle = goog.math.angle(frag_atom.coord.x, frag_atom.coord.y,
-    other_frag_atom.coord.x, other_frag_atom.coord.y);
-  var angle_diff = goog.math.angleDifference(fragment_angle, target_angle);
+  var positionDiff = goog.math.Vec2.fromCoordinate(goog.math.Coordinate
+    .difference(targetAtom.coord, fragAtom.coord));
+  var otherTargetAtom = targetBond.otherAtom(targetAtom);
+  var targetAngle = goog.math
+    .angle(otherTargetAtom.coord.x, otherTargetAtom.coord.y,
+      targetAtom.coord.x, targetAtom.coord.y);
+  var otherFragAtom = fragBond.otherAtom(fragAtom);
+  var fragAngle = goog.math.angle(fragAtom.coord.x, fragAtom.coord.y,
+    otherFragAtom.coord.x, otherFragAtom.coord.y);
+  var angleDiff = goog.math.angleDifference(fragAngle, targetAngle);
 
-  fragment.rotate(180 + angle_diff, frag_atom.coord);
-  fragment.translate(position_diff);
+  fragment.rotate(180 + angleDiff, fragAtom.coord);
+  fragment.translate(positionDiff);
 
   // merge fragment into this molecule
-  // transfer bonds attached to frag_atom (except frag_bond, which will be discarded) to
-  // target_atom
-  var processed = [frag_bond];
-  goog.array.forEach(frag_atom.bonds.getValues(), function(bond) {
+  // transfer bonds attached to fragAtom (except fragBond, which will be discarded) to
+  // targetAtom
+  var processed = [fragBond];
+  goog.array.forEach(fragAtom.bonds.getValues(), function(bond) {
     if (!goog.array.contains(processed, bond)) {
-      frag_atom === bond.source ? bond.source = target_atom
-        : bond.target = target_atom;
+      fragAtom === bond.source ? bond.source = targetAtom
+        : bond.target = targetAtom;
       processed.push(bond);
       this.addBond(bond);
     }
   }, this);
-  var other_frag_atom = frag_bond.otherAtom(frag_atom);
-  var other_target_atom = target_bond.otherAtom(target_atom);
+  var otherFragAtom = fragBond.otherAtom(fragAtom);
+  var otherTargetAtom = targetBond.otherAtom(targetAtom);
 
-  // transfer bonds attached to other end of frag_bond to atom at
-  // other end of target_bond (except frag_bond)
+  // transfer bonds attached to other end of fragBond to atom at
+  // other end of targetBond (except fragBond)
   goog.array
     .forEach(
-      other_frag_atom.bonds.getValues(),
+      otherFragAtom.bonds.getValues(),
       function(bond) {
         if (!goog.array.contains(processed, bond)) {
-          other_frag_atom === bond.source ? bond.source = other_target_atom
-            : bond.target = other_target_atom;
+          otherFragAtom === bond.source ? bond.source = otherTargetAtom
+            : bond.target = otherTargetAtom;
           this.addBond(bond);
           processed.push(bond);
         }
       }, this);
 
 
-  var yes_copy = goog.array.filter(fragment.bonds, function(b) {
+  var yesCopy = goog.array.filter(fragment.bonds, function(b) {
     return !goog.array.contains(processed, b);
   });
 
   // clone and replace fragment atoms and bonds parent molecule with this
   // parent molecule
-  goog.array.forEach(yes_copy, function(bond) {
+  goog.array.forEach(yesCopy, function(bond) {
     this.addBond(bond);
   }, this);
   fragment.bonds.length = 0;
@@ -546,25 +546,25 @@ modelMolecule.prototype.merge = function(fragment, frag_bond,
 // * merge two molecules at a single atom
 // *
 // * @param{modelAtom} source_atom, the atom that will be kept
-// * @param{modelAtom} target_atom, the atom that will be replaced
+// * @param{modelAtom} targetAtom, the atom that will be replaced
 // *
 // * @return{modelMolecule} resulting merged molecule
 // */
-//modelMolecule.mergeMolecules = function(source_atom, target_atom) {
+//modelMolecule.mergeMolecules = function(source_atom, targetAtom) {
 //	// replace target atom with source atom
 //
 //	// clone and connect target atom bonds to source atom
 //	var source_molecule = source_atom.molecule;
-//	var target_molecule = target_atom.molecule;
+//	var target_molecule = targetAtom.molecule;
 //
-//	goog.array.forEach(target_atom.bonds.getValues(), function(bond) {
-//		var new_bond = bond.clone();
-//		target_atom === new_bond.source ? new_bond.source = source_atom
-//				: new_bond.target = source_atom;
-//		target_molecule.addBond(new_bond);
+//	goog.array.forEach(targetAtom.bonds.getValues(), function(bond) {
+//		var newBond = bond.clone();
+//		targetAtom === newBond.source ? newBond.source = source_atom
+//				: newBond.target = source_atom;
+//		target_molecule.addBond(newBond);
 //		target_molecule.removeBond(bond);
 //	});
-//	target_molecule.removeAtom(target_atom);
+//	target_molecule.removeAtom(targetAtom);
 //
 //	goog.array.forEach(source_molecule.atoms, function(atom) {
 //		target_molecule.addAtom(atom);
@@ -572,9 +572,9 @@ modelMolecule.prototype.merge = function(fragment, frag_bond,
 //
 //	// replace source atom and bonds parent molecule with target parent molecule
 //	goog.array.forEach(source_molecule.bonds, function(bond) {
-//		var new_bond = bond.clone();
-//		new_bond.molecule = undefined;
-//		target_molecule.addBond(new_bond);
+//		var newBond = bond.clone();
+//		newBond.molecule = undefined;
+//		target_molecule.addBond(newBond);
 //	});
 //	goog.array.forEach(source_molecule.atoms, function(atom) {
 //		source_molecule.removeAtom(atom);
@@ -592,31 +592,31 @@ modelMolecule.prototype.merge = function(fragment, frag_bond,
 
 /**
  * sprouts a molecule fragment by merging fragment to this molecule
- * fragment_atom is atom of fragment that will be replaced by attachment_atom of
+ * fragAtom is atom of fragment that will be replaced by attachmentAtom of
  * this molecule when the two are merged
  *
  * @param {modelAtom}
- *            attachment_atom
+ *            attachmentAtom
  * @param {modelAtom}
  *            fragement_atom
  * @return {kemia.model.Bond} sprout bond
  */
-modelMolecule.prototype.sproutFragment = function(attachment_atom,
-  fragment_atom) {
-  goog.asserts.assert(goog.array.contains(this.atoms, attachment_atom),
-    'attachment_atom must belong to this molecule');
-  goog.asserts.assertObject(fragment_atom.molecule,
-    'fragment_atom must belong to a molecule');
-  var new_angle = modelAtom.nextBondAngle(attachment_atom);
-  //this.logger.info('new_angle ' + new_angle);
-  if (new_angle !== undefined) {
+modelMolecule.prototype.sproutFragment = function(attachmentAtom,
+  fragAtom) {
+  goog.asserts.assert(goog.array.contains(this.atoms, attachmentAtom),
+    'attachmentAtom must belong to this molecule');
+  goog.asserts.assertObject(fragAtom.molecule,
+    'fragAtom must belong to a molecule');
+  var newAngle = modelAtom.nextBondAngle(attachmentAtom);
+  //this.logger.info('newAngle ' + newAngle);
+  if (newAngle !== undefined) {
     // translate fragment
-    var position_diff = goog.math.Vec2.fromCoordinate(goog.math.Coordinate
-      .difference(attachment_atom.coord, fragment_atom.coord));
-    var angle_diff = goog.math.angle();
-    fragment_atom.molecule.rotate(new_angle, fragment_atom.coord);
-    fragment_atom.molecule.translate(position_diff);
-    modelMolecule.mergeMolecules(fragment_atom, attachment_atom);
+    var positionDiff = goog.math.Vec2.fromCoordinate(goog.math.Coordinate
+      .difference(attachmentAtom.coord, fragAtom.coord));
+    var angleDiff = goog.math.angle();
+    fragAtom.molecule.rotate(newAngle, fragAtom.coord);
+    fragAtom.molecule.translate(positionDiff);
+    modelMolecule.mergeMolecules(fragAtom, attachmentAtom);
   }
 };
 
@@ -626,19 +626,19 @@ modelMolecule.prototype.sproutFragment = function(attachment_atom,
  * @param {modelAtom}
  *            atom
  * @param {kemia.model.Bond.ORDER}
- *            opt_order
+ *            optOrder
  * @param {kemia.model.Bond.STEREO}
- *            opt_stereo
+ *            optStereo
  * @param {String}
- *            opt_symbol
+ *            optSymbol
  * @return {kemia.model.Bond}
  */
-modelMolecule.prototype.sproutBond = function(atom, opt_order,
-  opt_stereo, opt_symbol) {
-  var bond_length = 1.25; // default
+modelMolecule.prototype.sproutBond = function(atom, optOrder,
+  optStereo, optSymbol) {
+  var bondLength = 1.25; // default
   var bonds = atom.bonds.getValues();
   if (bonds.length) {
-    bond_length = goog.array.reduce(bonds, function(r, b) {
+    bondLength = goog.array.reduce(bonds, function(r, b) {
         return r
           + goog.math.Coordinate.distance(b.source.coord,
             b.target.coord);
@@ -646,21 +646,21 @@ modelMolecule.prototype.sproutBond = function(atom, opt_order,
       / bonds.length;
   } // average of other bonds
 
-  var new_angle = modelAtom.nextBondAngle(atom);
-  if (new_angle !== undefined) {
+  var newAngle = modelAtom.nextBondAngle(atom);
+  if (newAngle !== undefined) {
     var symb = 'C';
-    if (opt_symbol)
-      symb = opt_symbol;
-    var new_atom = new modelAtom(symb, atom.coord.x
-      + goog.math.angleDx(new_angle, bond_length), atom.coord.y
-      + goog.math.angleDy(new_angle, bond_length));
+    if (optSymbol)
+      symb = optSymbol;
+    var newAtom = new modelAtom(symb, atom.coord.x
+      + goog.math.angleDx(newAngle, bondLength), atom.coord.y
+      + goog.math.angleDy(newAngle, bondLength));
 
-    var new_bond = new kemia.model.Bond(atom, new_atom, opt_order,
-      opt_stereo);
+    var newBond = new kemia.model.Bond(atom, newAtom, optOrder,
+      optStereo);
 
-    this.addAtom(new_atom);
-    this.addBond(new_bond);
-    return new_bond;
+    this.addAtom(newAtom);
+    this.addBond(newBond);
+    return newBond;
   }
 };
 

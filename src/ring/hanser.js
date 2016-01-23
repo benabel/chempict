@@ -52,13 +52,13 @@ ringHanser.findRings = function(molecule, maxLen) {
       /** @type {ringPathEdge} */
       var edge = edges[j];
       /** @type {Array.<kemia.model.Atom>} */
-      var atom_ring = edge.atoms;
+      var atomRing = edge.atoms;
       // Hanser last atom is same as first atom, remove it..
-      goog.array.removeAt(atom_ring, atom_ring.length - 1);
-      for (var k = 0, lk = atom_ring.length; k < lk; k++) {
-        atom_ring[k] = molecule.indexOfAtom(atom_ring[k]);
+      goog.array.removeAt(atomRing, atomRing.length - 1);
+      for (var k = 0, lk = atomRing.length; k < lk; k++) {
+        atomRing[k] = molecule.indexOfAtom(atomRing[k]);
       }
-      atomOnlyRings.push(atom_ring);
+      atomOnlyRings.push(atomRing);
     }
   }
   // xtra: sort array according to ring size

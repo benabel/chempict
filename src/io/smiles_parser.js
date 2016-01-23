@@ -78,8 +78,8 @@ SmilesParser.parse = function(smi) {
   var items = smi.match(SmilesParser.smiPattern);
   var mol = new modelMolecule(smi);
   var natoms = 0;
-  var previous_atom;
-  var bond_type = SmilesParser.BondType.NONE;
+  var previousAtom;
+  var bondType = SmilesParser.BondType.NONE;
   var branch = new Array();
   var ring = new Array();
   var ringClosureOrder = new Array();
@@ -91,43 +91,43 @@ SmilesParser.parse = function(smi) {
     //alert("item "+item)
     if (item === SmilesParser.punctuation.nobond) {
     } else if (item === SmilesParser.punctuation.openbranch) {
-      branch.push(previous_atom);
+      branch.push(previousAtom);
     } else if (item === SmilesParser.punctuation.closebranch) {
       if (branch.length) {
-        previous_atom = branch.pop();
+        previousAtom = branch.pop();
       } else {
         errstr = ' Unbalanced parents';
       }
     } else if (item === SmilesParser.punctuation.singlebond) {
-      bond_type = SmilesParser.BondType.SINGLE_BOND;
+      bondType = SmilesParser.BondType.SINGLE_BOND;
     } else if (item === SmilesParser.punctuation.doublebond) {
-      bond_type = SmilesParser.BondType.DOUBLE_BOND;
+      bondType = SmilesParser.BondType.DOUBLE_BOND;
     } else if (item === SmilesParser.punctuation.triplebond) {
-      bond_type = SmilesParser.BondType.TRIPLE_BOND;
+      bondType = SmilesParser.BondType.TRIPLE_BOND;
     } else if (item === SmilesParser.punctuation.quadbond) {
-      bond_type = SmilesParser.BondType.QUAD_BOND;
+      bondType = SmilesParser.BondType.QUAD_BOND;
     } else if (item === SmilesParser.punctuation.aromaticbond) {
-      bond_type = SmilesParser.BondType.AROMATIC_BOND;
+      bondType = SmilesParser.BondType.AROMATIC_BOND;
     } else if (item[0] === SmilesParser.punctuation.ringclosure) {
       var ringid = parseInt(item[1] + item[2], 10);
-      var ring_atom = ring[ringid];
-      if (ring_atom) {
-        mol.addBond(SmilesParser.createBond(bond_type,
-          previous_atom, ring_atom));
-        bond_type = SmilesParser.BondType.NONE;
+      var ringAtom = ring[ringid];
+      if (ringAtom) {
+        mol.addBond(SmilesParser.createBond(bondType,
+          previousAtom, ringAtom));
+        bondType = SmilesParser.BondType.NONE;
         ring[ringid] = null;
       } else {
-        ring[ringid] = previous_atom;
+        ring[ringid] = previousAtom;
       }
     } else if (item === SmilesParser.punctuation.cis) {
     } else if (item === SmilesParser.punctuation.trans) {
     } else if (!isNaN(ringid = parseInt(item, 10))) {
-      ring_atom = ring[ringid];
-      if (!ring_atom) {
-        ring[ringid] = previous_atom;
+      ringAtom = ring[ringid];
+      if (!ringAtom) {
+        ring[ringid] = previousAtom;
       } else {
-        mol.addBond(SmilesParser.createBond(bond_type, previous_atom, ring_atom));
-        bond_type = SmilesParser.BondType.NONE;
+        mol.addBond(SmilesParser.createBond(bondType, previousAtom, ringAtom));
+        bondType = SmilesParser.BondType.NONE;
         ring[ringid] = null;
       }
 
@@ -141,37 +141,37 @@ SmilesParser.parse = function(smi) {
       ) &&
       !isNaN(ringid = parseInt(item.substr(1), 10))
     ) {
-      ring_atom = ring[ringid];
-      if (!ring_atom) {
-        ring[ringid] = previous_atom;
+      ringAtom = ring[ringid];
+      if (!ringAtom) {
+        ring[ringid] = previousAtom;
         ringClosureOrder[ringid] = item.substr(0, 1);
       } else {
-        mol.addBond(SmilesParser.createBond(ringClosureOrder[ringid], previous_atom, ring_atom));
-        bond_type = SmilesParser.BondType.NONE;
+        mol.addBond(SmilesParser.createBond(ringClosureOrder[ringid], previousAtom, ringAtom));
+        bondType = SmilesParser.BondType.NONE;
         ring[ringid] = null;
         ringClosureOrder[ringid] = null;
       }
     } else {
-      var smi_atom = SmilesParser.parseAtom(item); // ,chiralCenters);
+      var smiAtom = SmilesParser.parseAtom(item); // ,chiralCenters);
       // parseAtom
       // takes one
       // argument?
-      if (smi_atom.symbol) {
+      if (smiAtom.symbol) {
         natoms += 1;
-        var atom = new modelAtom(smi_atom.symbol, 0, 0,
-          smi_atom.charge, smi_atom.aromatic, smi_atom.isotope);
-        if (previous_atom) {
+        var atom = new modelAtom(smiAtom.symbol, 0, 0,
+          smiAtom.charge, smiAtom.aromatic, smiAtom.isotope);
+        if (previousAtom) {
           mol.addBond(SmilesParser.createBond(
-            bond_type, previous_atom, atom));
-          bond_type = SmilesParser.BondType.NONE;
+            bondType, previousAtom, atom));
+          bondType = SmilesParser.BondType.NONE;
         }
         mol.addAtom(atom);
-        if (smi_atom.stereo !== 'NONE') {
+        if (smiAtom.stereo !== 'NONE') {
           chiralCenters.push(mol.indexOfAtom(atom));
-          chiralCenters.push(smi_atom.stereo);
-          chiralCenters.push(smi_atom.chiralHydrogenNeighbour);
+          chiralCenters.push(smiAtom.stereo);
+          chiralCenters.push(smiAtom.chiralHydrogenNeighbour);
         }
-        previous_atom = atom;
+        previousAtom = atom;
       } else {
         errstr = ' unknown atom ' + item;
       }
@@ -184,7 +184,7 @@ SmilesParser.parse = function(smi) {
 
   SmilesParser.setChiralCenters(mol, chiralCenters);
 
-  if (SmilesParser.sanityCheck(branch, ring, bond_type)) {
+  if (SmilesParser.sanityCheck(branch, ring, bondType)) {
     return mol;
   } else {
     return null;
@@ -193,7 +193,7 @@ SmilesParser.parse = function(smi) {
 
 
 
-SmilesParser.sanityCheck = function(branch, ring, bond_type) {
+SmilesParser.sanityCheck = function(branch, ring, bondType) {
   if (branch.length) {
     throw new Error('unbalanced parens');
   }
@@ -202,8 +202,8 @@ SmilesParser.sanityCheck = function(branch, ring, bond_type) {
       throw new Error('unclosed rings');
     }
   }
-  if (bond_type !== SmilesParser.BondType.NONE) {
-    throw new Error('unpaired bond ' + bond_type);
+  if (bondType !== SmilesParser.BondType.NONE) {
+    throw new Error('unpaired bond ' + bondType);
   }
   return true;
 };

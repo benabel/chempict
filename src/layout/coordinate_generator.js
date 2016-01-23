@@ -27,7 +27,7 @@ const layoutVector2D = require('./vector2d');
  */
 module.exports = layoutCoordinateGenerator = function() {};
 
-layoutCoordinateGenerator.BOND_LENGTH = 1.5;
+layoutCoordinateGenerator.bondLength = 1.5;
 
 
 layoutCoordinateGenerator.generate = function(molecule) {
@@ -79,16 +79,16 @@ layoutCoordinateGenerator.generate = function(molecule) {
     goog.array.sort(ringsets, function(a, b) {
       return goog.array.defaultCompare(a.length, b.length);
     });
-    var largest_ringset = goog.array.peek(ringsets);
-    //alert("ringsets length"+ ringsets.length+" largest_ringset is "+ largest_ringset.length)
+    var largestRingset = goog.array.peek(ringsets);
+    //alert("ringsets length"+ ringsets.length+" largestRingset is "+ largestRingset.length)
 
     // place largest ringset
-    layoutCoordinateGenerator.layoutRingSet(firstBondVector, largest_ringset);
+    layoutCoordinateGenerator.layoutRingSet(firstBondVector, largestRingset);
 
     // place substituents on largest ringset
-    layoutRingPlacer.placeRingSubstituents(molecule, largest_ringset, layoutCoordinateGenerator.BOND_LENGTH);
+    layoutRingPlacer.placeRingSubstituents(molecule, largestRingset, layoutCoordinateGenerator.bondLength);
 
-    goog.array.forEach(largest_ringset, function(ring) {
+    goog.array.forEach(largestRingset, function(ring) {
       ring.isPlaced = true;
     });
   } else {
@@ -101,7 +101,7 @@ layoutCoordinateGenerator.generate = function(molecule) {
     longestChain.getAtom(0).coord = new goog.math.Coordinate(0, 0);
     longestChain.getAtom(0).flags[modelFlags.ISPLACED] = true;
     angle = Math.PI * (-30 / 180);
-    layoutAtomPlacer.placeLinearChain(longestChain, firstBondVector, layoutCoordinateGenerator.BOND_LENGTH);
+    layoutAtomPlacer.placeLinearChain(longestChain, firstBondVector, layoutCoordinateGenerator.bondLength);
   }
 
   /* Do the layout of the rest of the molecule */
@@ -113,7 +113,7 @@ layoutCoordinateGenerator.generate = function(molecule) {
 		 * to the parts which have already been laid out.
 		 */
 
-    layoutCoordinateGenerator.handleAliphatics(molecule, nrOfEdges, layoutCoordinateGenerator.BOND_LENGTH);
+    layoutCoordinateGenerator.handleAliphatics(molecule, nrOfEdges, layoutCoordinateGenerator.bondLength);
 
     /*
 		 * do layout for the next ring aliphatic parts of the molecule which are
@@ -155,39 +155,39 @@ layoutCoordinateGenerator.layoutRingSet = function(bondVector, ringset) {
 
   // TODO apply templates to layout pre-fab rings
 
-  var bl = layoutCoordinateGenerator.BOND_LENGTH;
+  var bl = layoutCoordinateGenerator.bondLength;
 
-  var most_complex_ring = layoutCoordinateGenerator.getMostComplexRing(ringset);
+  var mostComplexRing = layoutCoordinateGenerator.getMostComplexRing(ringset);
 
-  if (!most_complex_ring.flags[modelFlags.ISPLACED]) {
-    var shared_fragment = {
-      atoms: layoutCoordinateGenerator.placeFirstBond(most_complex_ring.bonds[0], bondVector),
-      bonds: [most_complex_ring.bonds[0]]
+  if (!mostComplexRing.flags[modelFlags.ISPLACED]) {
+    var sharedFrag = {
+      atoms: layoutCoordinateGenerator.placeFirstBond(mostComplexRing.bonds[0], bondVector),
+      bonds: [mostComplexRing.bonds[0]]
     };
-    var shared_fragment_sum = goog.array.reduce(shared_fragment.atoms, function(r, atom) {
+    var sharedFragSum = goog.array.reduce(sharedFrag.atoms, function(r, atom) {
       return goog.math.Coordinate.sum(r, atom.coord);
     },
       new goog.math.Coordinate(0, 0));
-    var shared_fragment_center = new layoutVector2D(shared_fragment_sum.x / shared_fragment.atoms.length, shared_fragment_sum.y / shared_fragment.atoms.length);
+    var sharedFragCenter = new layoutVector2D(sharedFragSum.x / sharedFrag.atoms.length, sharedFragSum.y / sharedFrag.atoms.length);
 
-    var ringCenterVector = layoutRingPlacer.getRingCenterOfFirstRing(most_complex_ring, bondVector, bl);
+    var ringCenterVector = layoutRingPlacer.getRingCenterOfFirstRing(mostComplexRing, bondVector, bl);
 
-    layoutRingPlacer.placeRing(most_complex_ring, shared_fragment, shared_fragment_center, ringCenterVector, bl);
+    layoutRingPlacer.placeRing(mostComplexRing, sharedFrag, sharedFragCenter, ringCenterVector, bl);
 
-    most_complex_ring.setFlag(modelFlags.ISPLACED, true);
+    mostComplexRing.setFlag(modelFlags.ISPLACED, true);
 
   }
   var thisRing = 0;
   do {
-    if (most_complex_ring.flags[modelFlags.ISPLACED]) {
-      layoutRingPlacer.placeConnectedRings(ringset, most_complex_ring, 'FUSED', bl);
-      layoutRingPlacer.placeConnectedRings(ringset, most_complex_ring, 'BRIDGED', bl);
-      layoutRingPlacer.placeConnectedRings(ringset, most_complex_ring, 'SPIRO', bl);
+    if (mostComplexRing.flags[modelFlags.ISPLACED]) {
+      layoutRingPlacer.placeConnectedRings(ringset, mostComplexRing, 'FUSED', bl);
+      layoutRingPlacer.placeConnectedRings(ringset, mostComplexRing, 'BRIDGED', bl);
+      layoutRingPlacer.placeConnectedRings(ringset, mostComplexRing, 'SPIRO', bl);
     }
     thisRing++;
     if (thisRing === ringset.length)
       thisRing = 0;
-    most_complex_ring = ringset[thisRing];
+    mostComplexRing = ringset[thisRing];
   } while (!layoutCoordinateGenerator.allPlaced(ringset));
 
 };
@@ -205,7 +205,7 @@ layoutCoordinateGenerator.layoutRingSet = function(bondVector, ringset) {
  */
 layoutCoordinateGenerator.placeFirstBond = function(bond, vector) {
   vector.normalize();
-  vector.scale(layoutCoordinateGenerator.BOND_LENGTH);
+  vector.scale(layoutCoordinateGenerator.bondLength);
   bond.source.coord = new goog.math.Coordinate(0, 0);
   bond.source.setFlag(modelFlags.ISPLACED, true);
   bond.target.coord = new goog.math.Coordinate(vector.x, vector.y);

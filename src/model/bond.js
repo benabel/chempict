@@ -8,19 +8,19 @@ var modelAtom = require('./atom');
  * @param {modelAtom}
  *            target, Atom at other end of bond.
  * @param {modelBond.ORDER=}
- *            opt_order, order of bond
+ *            optOrder, order of bond
  *
  * @param {modelBond.STEREO=}
- *            opt_stereo, stereochemistry of bond
+ *            optStereo, stereochemistry of bond
  *
  * @param {boolean=}
- *            opt_aromatic, true if aromatic
- * @param {kemia.model.Molecule=} opt_molecule, parent molecule
+ *            optAromatic, true if aromatic
+ * @param {kemia.model.Molecule=} optMolecule, parent molecule
  *
  * @constructor
  */
-module.exports = modelBond = function(source, target, opt_order, opt_stereo,
-  opt_aromatic, opt_molecule) {
+module.exports = modelBond = function(source, target, optOrder, optStereo,
+  optAromatic, optMolecule) {
   /**
    * source Atom
    *
@@ -39,28 +39,28 @@ module.exports = modelBond = function(source, target, opt_order, opt_stereo,
    *
    * @type {modelBond.ORDER}
    */
-  this.order = goog.isDef(opt_order) ? opt_order : modelBond.ORDER.SINGLE;
+  this.order = goog.isDef(optOrder) ? optOrder : modelBond.ORDER.SINGLE;
 
   /**
    * Stereochemistry
    *
    * @type {modelBond.STEREO}
    */
-  this.stereo = goog.isDef(opt_stereo) ? opt_stereo : modelBond.STEREO.NOT_STEREO;
+  this.stereo = goog.isDef(optStereo) ? optStereo : modelBond.STEREO.NOT_STEREO;
 
   /**
    * Aromatic flag.
    *
    * @type {boolean}
    */
-  this.aromatic = goog.isDef(opt_aromatic) ? opt_aromatic : false;
+  this.aromatic = goog.isDef(optAromatic) ? optAromatic : false;
 
   /**
    * parent molecule
    *
    * @type {kemia.model.Molecule}
    */
-  this.molecule = goog.isDef(opt_molecule) ? opt_molecule : null;
+  this.molecule = goog.isDef(optMolecule) ? optMolecule : null;
 };
 
 /**

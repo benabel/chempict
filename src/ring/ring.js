@@ -52,12 +52,12 @@ module.exports = ringRing = function(atoms, bonds) {
  * Set a flag to be true or false
  *
  * @param {modelFlags}
- *            flag_type
+ *            flagType
  * @param {boolean}
- *            flag_value true or false
+ *            flagValue true or false
  */
-ringRing.prototype.setFlag = function(flag_type, flag_value) {
-  this.flags[flag_type] = flag_value;
+ringRing.prototype.setFlag = function(flagType, flagValue) {
+  this.flags[flagType] = flagValue;
 };
 
 /**
