@@ -37,7 +37,7 @@ module.exports = modelAtom = function(opt_symbol, opt_x, opt_y, opt_charge, opt_
 	 *
 	 * @type {string}
 	 */
-	this.symbol = goog.isDef(opt_symbol) ? opt_symbol: "C";
+	this.symbol = goog.isDef(opt_symbol) ? opt_symbol: 'C';
 
 	var x = opt_x ? opt_x : 0;
 
@@ -88,12 +88,12 @@ module.exports = modelAtom = function(opt_symbol, opt_x, opt_y, opt_charge, opt_
 /** @return {string} atomic symbol */
 modelAtom.prototype.getSymbol = function(){
 	return this.symbol;
-}
+};
 
 /** @return {number} atomic charge */
 modelAtom.prototype.getCharge = function() {
 	return this.charge;
-}
+};
 
 modelAtom.prototype.countBonds = function() {
 	return this.bonds.getCount();
@@ -179,7 +179,7 @@ modelAtom.nextBondAngle = function(atom){
 		});
 		var diff = goog.math.angleDifference(angles[0], angles[1]);
 		if (Math.abs(diff) < 180) {
-			diff = 180 + diff / 2
+			diff = 180 + diff / 2;
 		} else {
 			diff = diff / 2;
 		}
@@ -191,7 +191,7 @@ modelAtom.nextBondAngle = function(atom){
 			return goog.array.defaultCompare(b1.otherAtom(atom).bonds
 					.getValues().length,
 					b2.otherAtom(atom).bonds.getValues().length);
-		})
+		});
 		var insert_between = goog.array.slice(bonds, 0, 2);
 
 		var angles = goog.array.map(insert_between, function(b) {
@@ -205,7 +205,7 @@ modelAtom.nextBondAngle = function(atom){
 		// + new_angle);
 	}
 	return new_angle;
-}
+};
 
 /**
  * clones this atom
@@ -215,7 +215,7 @@ modelAtom.nextBondAngle = function(atom){
 modelAtom.prototype.clone = function() {
 	return new modelAtom(this.symbol, this.coord.x, this.coord.y,
 			this.charge, this.aromatic, this.isotope);
-}
+};
 
 /**
  * Hybridization states
@@ -245,11 +245,11 @@ modelAtom.Hybridizations = {
  *            flag_value true or false
  */
 modelAtom.prototype.setFlag = function(flag_type, flag_value) {
-	this.flags[flag_type] = flag_value
-}
+	this.flags[flag_type] = flag_value;
+};
 /**
  * @return {string}
  */
 modelAtom.prototype.toString = function() {
-	return "modelAtom [" + this.symbol + "] "+ this.coord.toString();
+	return 'modelAtom [' + this.symbol + '] '+ this.coord.toString();
 };

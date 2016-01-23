@@ -30,7 +30,7 @@ layoutOverlapResolver.resolveOverlap = function(molecule, sssr){
     if (overlapScore > 0)
         overlapScore = layoutOverlapResolver.displace(molecule, overlappingAtoms);
     return overlapScore;
-}
+};
 
 /**
  *  Calculates a score based on the overlap of atoms.
@@ -51,7 +51,7 @@ layoutOverlapResolver.getOverlapScore = function(molecule, overlappingAtoms){
         {
             var atom2 = molecule.getAtom(g);
             var p2 = atom2.coord;
-            var distance = goog.math.Coordinate.distance(p1, p2)
+            var distance = goog.math.Coordinate.distance(p1, p2);
             if (distance < overlapCutoff)
             {
                 overlapScore += overlapCutoff;
@@ -61,7 +61,7 @@ layoutOverlapResolver.getOverlapScore = function(molecule, overlappingAtoms){
         }
     }
     return overlapScore;
-}
+};
 
 
 
@@ -76,16 +76,16 @@ layoutOverlapResolver.displace = function(molecule, overlappingAtoms)
 {
     var maxSteps = 25;
 	var steps=0;
-    do{
+    do {
         var p = Math.round(Math.random() * overlappingAtoms.length);
 		if (p>=overlappingAtoms.length)
-		  p=overlappingAtoms.length-1
-        var op = overlappingAtoms[p]
+		  p=overlappingAtoms.length-1;
+        var op = overlappingAtoms[p];
         if (op != undefined) {
 			/* Now we have an overlapping pair of atoms, we calculate the 2D vector formed by the
 	         * positions of both and translate one of the atoms by one tenth of a bond length. */
-			var a1 = op[0]
-			var a2 = op[1]
+			var a1 = op[0];
+			var a2 = op[1];
 			var v1 = new layoutVector2D(a1.coord.x, a1.coord.y);
 			var v2 = new layoutVector2D(a2.coord.x - a1.coord.x, a2.coord.y - a1.coord.y);
 			v2.normalize();
@@ -99,20 +99,20 @@ layoutOverlapResolver.displace = function(molecule, overlappingAtoms)
 
 			var choice = Math.random();
 			if (choice > 0.5) {
-				a2.coord.x += v2.x
-				a2.coord.y += v2.y
+				a2.coord.x += v2.x;
+				a2.coord.y += v2.y;
 			}
 			else {
-				a1.coord.x -= v2.x
-				a1.coord.y -= v2.y
+				a1.coord.x -= v2.x;
+				a1.coord.y -= v2.y;
 			}
 			var overlapScore = layoutOverlapResolver.getOverlapScore(molecule, overlappingAtoms);
 			steps++;
 		}
 		else {
-			alert("problem layoutOverlapResolver.displace p is "+ p +" and len "+overlappingAtoms.length+" and "+op )
+			alert('problem layoutOverlapResolver.displace p is '+ p +' and len '+overlappingAtoms.length+' and '+op );
 		}
     }
-	while(overlapScore > 0 && !(steps > maxSteps));
+	while (overlapScore > 0 && !(steps > maxSteps));
     return overlapScore;
-}
+};

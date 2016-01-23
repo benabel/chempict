@@ -11,6 +11,12 @@ This is a node app which provide:
 
 The google closure library is used in this package, it is listed in the devDependencies of the the npm package, so, to install it, just run `npm i` from the root folder.
 
+eslint: lint and format javascript code
+
+## `npm` scripts
+
+- format javascript: `npm run format`
+
 ## TODO
 
 - Implement vectorization with [simd.js](https://hacks.mozilla.org/2014/10/introducing-simd-js/) see also <https://hacks.mozilla.org/2015/12/bringing-the-power-of-simd-js-to-gl-matrix/>

@@ -1,5 +1,5 @@
 module.exports = layoutConnectionMatrix = function(){
-}
+};
 
 layoutConnectionMatrix.getMatrix = function(molecule){
 
@@ -24,20 +24,20 @@ layoutConnectionMatrix.getMatrix = function(molecule){
 	}
 	//layoutConnectionMatrix.display(conMat);
 	return conMat;
-}
+};
 
 
 layoutConnectionMatrix.display = function(matrix){
-    var debug="";
+    var debug='';
     var size = matrix.length;
-	for(var i=0; i<size; i++) {
+	for (var i=0; i<size; i++) {
         for (var i2 = 0; i2 < size; i2++) {
 			if (matrix[i][i2]==undefined)
-                debug+="[ ]";
+                debug+='[ ]';
             else
-                debug+="["+matrix[i][i2]+"]";
+                debug+='['+matrix[i][i2]+']';
 		}
-		debug+="\n"
+		debug+="\n";
 	}
 	alert (debug);
-}
+};

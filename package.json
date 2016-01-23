@@ -26,5 +26,8 @@
   "devDependencies": {
     "eslint": "^2.0.0-beta.2",
     "google-closure-library": "^20151015.0.0"
+  },
+  "scripts": {
+    "format": "eslint --fix src/**/*.js" 
   }
 }

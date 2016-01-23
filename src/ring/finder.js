@@ -43,18 +43,18 @@ ringFinder.createRing = function (atomIndexes, molecule) {
 	var bonds = [];
 	for (var i = 0, il = atoms.length-1; i < il; i++) {
 		var bond = molecule.findBond(atoms[i], atoms[i+1]);
-		if(bond!=null) {
+		if (bond!=null) {
 			bonds.push(bond);
 		}
 	}
 	// Don't forget the bond between first & last atom.
 	var bond = molecule.findBond(atoms[0], atoms[atoms.length-1]);
-	if(bond!=null) {
+	if (bond!=null) {
 		bonds.push(bond);
 	}
 	// Create the ring.
 	return new ringRing(atoms,bonds);
-}
+};
 
 /**
  * Check if a candidate ring is already in the SSSR ring set.
@@ -137,7 +137,7 @@ ringFinder.verifySSSR = function(sssr, nsssr, molecule) {
 	}
 
 	return Csssr;
-}
+};
 
     /**
 	 * Make a copy of the molecule. This is needed since we modify the molecule
@@ -285,7 +285,7 @@ ringFinder.detectRingAtoms = function(molecule) {
 	 * li = molecule.countAtoms(); i < li; i++) { if
 	 * (molecule.atoms[i].isInCycle) { after++; } } debug('after: ' + after);
 	 */
-}
+};
 
 /**
  * Create ring systems. These are molecules containing only ring atoms. Each
@@ -424,7 +424,7 @@ ringFinder.createRingSystems = function(molecule) {
 		}
 	}
 	return rings;
-}
+};
 
 /**
  * @param {kemia.model.Molecule}
@@ -455,4 +455,4 @@ ringFinder.findRings = function(molecule) {
 	ringFinder.detectRingAtoms(molecule);
 	// process the ring systems
 	return ringFinder.createRingSystems(molecule);
-}
+};

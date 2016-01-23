@@ -49,7 +49,7 @@ module.exports = modelMolecule = function(opt_name) {
 	 *
 	 * @type {string}
 	 */
-	this.name = opt_name ? opt_name : "";
+	this.name = opt_name ? opt_name : '';
 
 	/**
 	 * id of molecule
@@ -149,7 +149,7 @@ modelMolecule.prototype.getAverageBondLength = function() {
 		average = sum / this.bonds.length;
 	}
 	return average;
-}
+};
 
 /**
  * Find the bond between two given atoms if it exists. Otherwise return null.
@@ -354,7 +354,7 @@ modelMolecule.prototype.clone = function() {
 modelMolecule.prototype.getFragments = function() {
 	var mol = this.clone();
 	if (mol.fragmentCount == 1) {
-		return [ mol ];
+		return [mol];
 	}
 	var fragments = new goog.structs.Map();
 	goog.array.forEach(mol.atoms, function(atom) {
@@ -394,23 +394,23 @@ modelMolecule.prototype.getConnectedBondsList = function(atom) {
 modelMolecule.prototype.toString = function() {
 	return 'modelMolecule - name: '
 			+ this.name
-			+ "\n\t"
+			+ '\n\t'
 			+ goog.array.map(this.atoms, function(atom) {
-				return " " + this.indexOfAtom(atom) + ": " + atom.toString();
-			}, this).join("\n\t")
-			+ "\n\t"
+				return ' ' + this.indexOfAtom(atom) + ': ' + atom.toString();
+			}, this).join('\n\t')
+			+ '\n\t'
 			+ goog.array.map(
 					this.bonds,
 					function(bond) {
-						return " " + this.indexOfAtom(bond.source) + ", "
-								+ this.indexOfAtom(bond.target) + ":  "
+						return ' ' + this.indexOfAtom(bond.source) + ', '
+								+ this.indexOfAtom(bond.target) + ':  '
 								+ bond.toString();
-					}, this).join("\n\t") + "\n\t"
+					}, this).join('\n\t') + '\n\t'
 			+ goog.array.map(
 					this.getRings(),
 					function(ring){
 						return ring.toString();
-					}).join("\n\t");
+					}).join('\n\t');
 };
 /**
  * returns center coordinates of molecule's atoms
@@ -522,7 +522,7 @@ modelMolecule.prototype.merge = function(fragment, frag_bond,
 
 	var yes_copy = goog.array.filter(fragment.bonds, function(b){
 		return !goog.array.contains(processed, b);
-	})
+	});
 
 	// clone and replace fragment atoms and bonds parent molecule with this
 	// parent molecule
@@ -540,7 +540,7 @@ modelMolecule.prototype.merge = function(fragment, frag_bond,
 	this.mustRecalcSSSR=true;
 
 	return this;
-}
+};
 
 ///**
 // * merge two molecules at a single atom
@@ -606,19 +606,19 @@ modelMolecule.prototype.sproutFragment = function(attachment_atom,
 	goog.asserts.assert(goog.array.contains(this.atoms, attachment_atom),
 			'attachment_atom must belong to this molecule');
 	goog.asserts.assertObject(fragment_atom.molecule,
-			'fragment_atom must belong to a molecule')
+			'fragment_atom must belong to a molecule');
 	var new_angle = modelAtom.nextBondAngle(attachment_atom);
 	//this.logger.info('new_angle ' + new_angle);
 	if (new_angle != undefined) {
 		// translate fragment
 		var position_diff = goog.math.Vec2.fromCoordinate(goog.math.Coordinate
 				.difference(attachment_atom.coord, fragment_atom.coord));
-		var angle_diff = goog.math.angle()
+		var angle_diff = goog.math.angle();
 		fragment_atom.molecule.rotate(new_angle, fragment_atom.coord);
 		fragment_atom.molecule.translate(position_diff);
 		modelMolecule.mergeMolecules(fragment_atom, attachment_atom);
 	}
-}
+};
 
 /**
  * sprouts a new bond at the atom
@@ -648,7 +648,7 @@ modelMolecule.prototype.sproutBond = function(atom, opt_order,
 
 	var new_angle = modelAtom.nextBondAngle(atom);
 	if (new_angle != undefined) {
-		var symb="C";
+		var symb='C';
 		if (opt_symbol)
 		  symb=opt_symbol;
 		var new_atom = new modelAtom(symb, atom.coord.x

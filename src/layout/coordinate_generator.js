@@ -33,8 +33,8 @@ layoutCoordinateGenerator.BOND_LENGTH = 1.5;
 
 layoutCoordinateGenerator.generate = function(molecule){
 
-    var safetyCounter = 0
-	var firstBondVector = new layoutVector2D(0, 1)
+    var safetyCounter = 0;
+	var firstBondVector = new layoutVector2D(0, 1);
 
     var atCount=molecule.countAtoms();
     for (var f = 0; f < atCount; f++)
@@ -52,12 +52,12 @@ layoutCoordinateGenerator.generate = function(molecule){
 	 */
     if (atCount == 1)
 	{
-	    molecule.getAtom(0).coords = new goog.math.Coordinate(0,0)
+	    molecule.getAtom(0).coords = new goog.math.Coordinate(0,0);
 	    return molecule;
 	}
 
     if (molecule.fragmentCount > 1){
-    	throw Error("Molecule not connected.");
+    	throw Error('Molecule not connected.');
     }
 
     // TODO: insert template pre-fab substructures here
@@ -131,7 +131,7 @@ layoutCoordinateGenerator.generate = function(molecule){
 	} while ( !layoutAtomPlacer.allPlaced(molecule, atCount) && safetyCounter <= molecule.countAtoms()  );
 
 	//Optional..
-    layoutOverlapResolver.resolveOverlap(molecule, sssr)
+    layoutOverlapResolver.resolveOverlap(molecule, sssr);
 
 
     /* DEBUG coords
@@ -146,7 +146,7 @@ layoutCoordinateGenerator.generate = function(molecule){
 
 
     return molecule;
-}
+};
 
 /**
  * Does a layout of all the rings in a connected ringset.
@@ -192,7 +192,7 @@ layoutCoordinateGenerator.layoutRingSet=function(bondVector, ringset){
         most_complex_ring = ringset[thisRing];
     } while (!layoutCoordinateGenerator.allPlaced(ringset));
 
-}
+};
 
 
 /**
@@ -213,16 +213,16 @@ layoutCoordinateGenerator.placeFirstBond=function(bond, vector){
 	bond.target.coord = new goog.math.Coordinate(vector.x, vector.y);
 	bond.target.setFlag(modelFlags.ISPLACED, true);
 	return [bond.source, bond.target];
-}
+};
 
 layoutCoordinateGenerator.allPlaced=function(rings){
     for (var f1=0; f1<rings.length; f1++) {
-        if (! rings[f1].flags[modelFlags.ISPLACED]) {
+        if (!rings[f1].flags[modelFlags.ISPLACED]) {
             return false;
         }
     }
     return true;
-}
+};
 
 /**
  * Returns the next atom with unplaced aliphatic neighbors
@@ -241,7 +241,7 @@ layoutCoordinateGenerator.getNextAtomWithAliphaticUnplacedNeigbors = function(mo
         }
     }
     return null;
-}
+};
 
 layoutCoordinateGenerator.getAtoms = function(atom,molecule,bondCount,placed){
   var atoms = new modelMolecule;
@@ -255,7 +255,7 @@ layoutCoordinateGenerator.getAtoms = function(atom,molecule,bondCount,placed){
             atoms.addAtom(connectedAtom);
 	}
 	return atoms;
-}
+};
 
 /**
  * Does a layout of all aliphatic parts connected to the parts of the molecule
@@ -275,7 +275,7 @@ layoutCoordinateGenerator.handleAliphatics = function(molecule, bondCount,bondLe
         if (at != null) {
             var unplacedAtoms = layoutCoordinateGenerator.getAtoms(at,molecule,bondCount,false);
             var placedAtoms = layoutCoordinateGenerator.getAtoms(at,molecule,bondCount,true);
-            var longestUnplacedChain = layoutAtomPlacer.getLongestUnplacedChain (molecule, at)
+            var longestUnplacedChain = layoutAtomPlacer.getLongestUnplacedChain (molecule, at);
 			if (longestUnplacedChain.countAtoms() > 1) {
 				if (placedAtoms.countAtoms() > 1) {
 					layoutAtomPlacer.distributePartners(at, placedAtoms, layoutAtomPlacer.get2DCenter(placedAtoms), unplacedAtoms, bondLength);
@@ -288,7 +288,7 @@ layoutCoordinateGenerator.handleAliphatics = function(molecule, bondCount,bondLe
 				}
 
                 for (var z=1, zCnt=longestUnplacedChain.countAtoms(); z<zCnt; z++) {
-                    longestUnplacedChain.getAtom(z).flags[modelFlags.ISPLACED]=false
+                    longestUnplacedChain.getAtom(z).flags[modelFlags.ISPLACED]=false;
                 }
                 layoutAtomPlacer.placeLinearChain(longestUnplacedChain, direction, bondLength);
 
@@ -298,11 +298,11 @@ layoutCoordinateGenerator.handleAliphatics = function(molecule, bondCount,bondLe
             done = true;
     }
     while (!done && cntr <= molecule.countAtoms());
-}
+};
 
 layoutCoordinateGenerator.getMostComplexRing = function(ringSet){
     var neighbors = new Array(ringSet.length);
-	for(var i=0; i<neighbors.length; i++) {
+	for (var i=0; i<neighbors.length; i++) {
 		neighbors[i]=0;
 	}
     var mostComplex = 0;
@@ -334,4 +334,4 @@ layoutCoordinateGenerator.getMostComplexRing = function(ringSet){
         }
     }
     return ringSet[mostComplexPosition];
-}
+};

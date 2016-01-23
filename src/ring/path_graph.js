@@ -31,14 +31,14 @@ kemia.ring.PathGraph = function(molecule) {
 	// load edges
 	for ( var i = 0, il = molecule.countBonds(); i < il; i++) {
 		var bond = molecule.getBond(i);
-		var edge = [ bond.source, bond.target ];
+		var edge = [bond.source, bond.target];
 		this.edges.push(new kemia.ring.PathEdge(edge));
 	}
 	// load atoms
 	for ( var i = 0, il = molecule.countAtoms(); i < il; i++) {
 		this.atoms.push(molecule.getAtom(i));
 	}
-}
+};
 
 /**
  * @param {kemia.model.Atom} atom
@@ -88,7 +88,7 @@ kemia.ring.PathGraph.prototype.remove = function(atom, maxLen) {
 	}
 	goog.array.remove(this.atoms, atom);
 	return result;
-}
+};
 
 /**
  * @param {kemia.model.Atom} atom
@@ -116,7 +116,7 @@ kemia.ring.PathGraph.prototype.getEdges = function(atom) {
 		}
 	}
 	return result;
-}
+};
 
 /**
  * @param {Array.<kemia.ring.PathEdge>} _edges
@@ -135,4 +135,4 @@ kemia.ring.PathGraph.prototype.spliceEdges = function(_edges) {
 		}
 	}
 	return result;
-}
+};

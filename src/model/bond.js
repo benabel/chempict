@@ -77,14 +77,14 @@ modelBond.prototype.otherAtom = function(atom) {
 		return this.target;
 	}
 	if (atom === this.target) {
-		return this.source
+		return this.source;
 	}
 	return null;
 };
 
 modelBond.prototype.getLength = function(){
 	return goog.math.Coordinate.distance(this.source.coord, this.target.coord);
-}
+};
 
 /**
  * clones this bond
@@ -94,13 +94,13 @@ modelBond.prototype.getLength = function(){
 modelBond.prototype.clone = function() {
 	return new modelBond(this.source, this.target, this.order,
 			this.stereo, this.aromatic, this.molecule);
-}
+};
 
 modelBond.prototype.deepClone = function(){
 	return new modelBond(this.source.clone(), this.target.clone(), this.order,
 			this.stereo, this.aromatic, this.molecule);
 
-}
+};
 
 /**
  * enum for bond order
@@ -127,12 +127,12 @@ modelBond.STEREO = {
 };
 
 modelBond.prototype.toString = function(){
-	var molname = this.molecule ? this.molecule.name : "no molecule";
-	return "modelBond[" +
-		this.order + ", " +
-		this.stereo + "]  " +
-		this.source.toString() + " -- " +
-		this.target.toString() + " mol: " +
+	var molname = this.molecule ? this.molecule.name : 'no molecule';
+	return 'modelBond[' +
+		this.order + ', ' +
+		this.stereo + ']  ' +
+		this.source.toString() + ' -- ' +
+		this.target.toString() + ' mol: ' +
 		molname;
 
 };

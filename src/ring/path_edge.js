@@ -24,7 +24,7 @@ goog.provide('kemia.ring.PathEdge');
 kemia.ring.PathEdge = function(_atoms){
 	/** @type {Array.<kemia.model.Atom>} */
     this.atoms = _atoms;
-}
+};
 
 /**
  * @return {boolean}
@@ -32,7 +32,7 @@ kemia.ring.PathEdge = function(_atoms){
 kemia.ring.PathEdge.prototype.isCycle = function(){
     var lastAtomPos = this.atoms.length - 1;
     return (this.atoms.length > 2 && this.atoms[0] == this.atoms[lastAtomPos]);
-}
+};
 
 /**
  * @param {kemia.ring.PathEdge} other
@@ -70,7 +70,7 @@ kemia.ring.PathEdge.prototype.splice = function(other){
     }
 
     return new kemia.ring.PathEdge(newAtoms);
-}
+};
 
 /**
  * @param {Array.<kemia.model.Atom>} atoms
@@ -88,7 +88,7 @@ kemia.ring.PathEdge.prototype.isRealPath = function(atoms){
         }
     }
     return true;
-}
+};
 
 /**
  * @param {Array.<kemia.model.Atom>} others
@@ -104,4 +104,4 @@ kemia.ring.PathEdge.prototype.getIntersection = function(others){
         return this.atoms[0];
     }
     throw "Couldn't splice - no intersection";
-}
+};

@@ -49,7 +49,7 @@ kemia.ring.SSSR.deepCopy = function(arr) {
 		}
 	}
 	return newArray;
-}
+};
 
 /**
  * Debug helper function
@@ -57,16 +57,16 @@ kemia.ring.SSSR.deepCopy = function(arr) {
  * @return {string}
  */
 kemia.ring.SSSR.matrixToHTML = function(matrix) {
-	var text = "";
+	var text = '';
 	var n = matrix.length;
 	for (var i = 0; i < n; i++) {
 		for (var j = 0; j < n; j++) {
-			text += goog.json.serialize(matrix[i][j]) + " ";
+			text += goog.json.serialize(matrix[i][j]) + ' ';
 		}
-		text += "<br>";
+		text += '<br>';
 	}
 	return text;
-}
+};
 
 /**
  * Create a n x n matrix with all elements set to 0.
@@ -83,7 +83,7 @@ kemia.ring.SSSR.createEmptyMatrix = function(n) {
 		matrix.push(row);
 	}
 	return matrix;
-}
+};
 
 /**
  * Create an initial distance matrix. This is  the D matrix from the paper.
@@ -107,7 +107,7 @@ kemia.ring.SSSR.createWeightMatrix = function(molecule, n) {
 		matrix.push(row);
 	}
 	return matrix;
-}
+};
 
 /**
  * Create an empty Path-Included Distance matrix. This is an n x n matrix
@@ -127,7 +127,7 @@ kemia.ring.SSSR.createEmptyPIDMatrix = function(n) {
 	}
 	return matrix;
 
-}
+};
 
 /**
  * Create the initial Pe matrix. The supplementary information
@@ -155,7 +155,7 @@ kemia.ring.SSSR.createPIDMatrix = function(molecule, n) {
 		matrix.push(row);
 	}
 	return matrix;
-}
+};
 
 /**
  * Update a path included distance matrix element (i.e. lhs) by merging
@@ -170,7 +170,7 @@ kemia.ring.SSSR.appendPath = function(lhs, p1, p2) {
 	} else {
 		lhs.push(p1[0].concat(p2[0]));
 	}
-}
+};
 
 
 /**
@@ -211,7 +211,7 @@ kemia.ring.SSSR.makePIDMatrixes = function(molecule) {
 
 					// a new shortest path is found
 					D[i][j] = pathLength;
-					Pe1[i][j] = [path1[0].concat(path2[0]) ]; // change path
+					Pe1[i][j] = [path1[0].concat(path2[0])]; // change path
 				} else if (lastPathLength == pathLength) {
 					// another shortest path is found
 					if (path1.length && path2.length) {
@@ -231,15 +231,15 @@ kemia.ring.SSSR.makePIDMatrixes = function(molecule) {
 	//debug("Pe =<br>" + matrixToHTML(Pe1));
 	//debug("Pe' =<br>" + matrixToHTML(Pe2));
 
-	return { "D": D, "Pe1": Pe1, "Pe2": Pe2 };
+	return { 'D': D, 'Pe1': Pe1, 'Pe2': Pe2};
 };
 
 /**
  * Sort function to sort the set of candidates by increasing Cnum (i.e. ring size).
  */
 kemia.ring.SSSR.sortByCnum = function(a, b) {
-	return a["Cnum"] - b["Cnum"];
-}
+	return a['Cnum'] - b['Cnum'];
+};
 
 /**
  * Compute the set of ring candidates using the distance matrix and the
@@ -265,7 +265,7 @@ kemia.ring.SSSR.makeCandidateSet = function(D, Pe1, Pe2) {
 				} else {
 					Cnum = 2 * D[i][j]; // even ring candidate
 				}
-				Cset.push({ "Cnum": Cnum, "Pe1": Pe1[i][j], "Pe2": Pe2[i][j] });
+				Cset.push({ 'Cnum': Cnum, 'Pe1': Pe1[i][j], 'Pe2': Pe2[i][j]});
 			}
 		}
 	}
@@ -361,7 +361,7 @@ kemia.ring.SSSR.bondRingToAtomRing = function(ring, molecule) {
 		}
 	}
 	return atoms;
-}
+};
 
 /**
  * Process a candidate by checking if it is already in the set.
@@ -385,7 +385,7 @@ kemia.ring.SSSR.processCandidate = function(bondIndexes, Csssr, molecule, valenc
 	if (!kemia.ring.SSSR.isCandidateInSet(atomIndexes, Csssr, valences, ringCount)) {
 		Csssr.push(atomIndexes);
 	}
-}
+};
 
 /**
  * Search the candidates to find the Smallest Set of Smallest rings. This
@@ -413,10 +413,10 @@ kemia.ring.SSSR.candidateSearch = function(Cset, nsssr, molecule, D) {
 	for (var i = 0, li = Cset.length; i < li; i++) {
 		var set = Cset[i];
 
-		if (set["Cnum"] % 2) {
+		if (set['Cnum'] % 2) {
 			// odd ring
-			for (var j = 0, lj = set["Pe2"].length; j < lj; j++) {
-				var bondIndexes = set["Pe1"][0].concat(set["Pe2"][j]);
+			for (var j = 0, lj = set['Pe2'].length; j < lj; j++) {
+				var bondIndexes = set['Pe1'][0].concat(set['Pe2'][j]);
 				kemia.ring.SSSR.processCandidate(bondIndexes, Csssr, molecule, valences, ringCount);
 				if (Csssr.length == nsssr) {
 					return Csssr;
@@ -424,8 +424,8 @@ kemia.ring.SSSR.candidateSearch = function(Cset, nsssr, molecule, D) {
 			}
 		} else {
 			// even ring
-			for (var j = 0, lj = set["Pe1"].length - 1; j < lj; j++) {
-				var bondIndexes = set["Pe1"][j].concat(set["Pe1"][j+1]);
+			for (var j = 0, lj = set['Pe1'].length - 1; j < lj; j++) {
+				var bondIndexes = set['Pe1'][j].concat(set['Pe1'][j+1]);
 				kemia.ring.SSSR.processCandidate(bondIndexes, Csssr, molecule, valences, ringCount);
 				if (Csssr.length == nsssr) {
 					return Csssr;
@@ -462,7 +462,7 @@ kemia.ring.SSSR.sortByPath = function(atomIndexes, molecule) {
 		}
 	}
 	return pathAtomIndexes;
-}
+};
 
 /**
  * Find the Smallest Set of Smallest rings.
@@ -484,9 +484,9 @@ kemia.ring.SSSR.findRings = function(molecule) {
 	// Create the path-included distance matrices
 	var matrices = kemia.ring.SSSR.makePIDMatrixes(molecule);
 	// Create the initial candidate set. This will be  sets with bond indexes.
-	var Cset = kemia.ring.SSSR.makeCandidateSet(matrices["D"], matrices["Pe1"], matrices["Pe2"]);
+	var Cset = kemia.ring.SSSR.makeCandidateSet(matrices['D'], matrices['Pe1'], matrices['Pe2']);
 	// Select the SSSR from the candidates
-	var indexes = kemia.ring.SSSR.candidateSearch(Cset, nsssr, molecule, matrices["D"]);
+	var indexes = kemia.ring.SSSR.candidateSearch(Cset, nsssr, molecule, matrices['D']);
 
 	for (var i = 0, li = indexes.length; i < li; i++) {
 		indexes[i] = kemia.ring.SSSR.sortByPath(indexes[i], molecule);

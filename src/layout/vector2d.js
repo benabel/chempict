@@ -21,7 +21,7 @@ module.exports = layoutVector2D = function(x, y) {
         this.x = x;
         this.y = y;
     }
-}
+};
 
 /*****
 *
@@ -50,7 +50,7 @@ layoutVector2D.prototype.dot = function(that) {
 *****/
 layoutVector2D.prototype.cross = function(that) {
     return this.x*that.y - this.y*that.x;
-}
+};
 
 
 /*****
@@ -205,7 +205,7 @@ layoutVector2D.prototype.project = function(that) {
 *
 *****/
 layoutVector2D.prototype.toString = function() {
-    return this.x + "," + this.y;
+    return this.x + ',' + this.y;
 };
 
 
@@ -229,7 +229,7 @@ layoutVector2D.fromPoints = function(p1, p2) {
 layoutVector2D.prototype.scale = function(s) {
 	this.x *= s;
 	this.y *= s;
-}
+};
 
 /**
  * Normalizes this vector in place.
@@ -238,7 +238,7 @@ layoutVector2D.prototype.normalize = function() {
     var norm = (1.0/Math.sqrt(this.x*this.x + this.y*this.y));
     this.x *= norm;
     this.y *= norm;
-}
+};
 
 /**
  * Sets the value of this tuple to the vector difference of
@@ -248,7 +248,7 @@ layoutVector2D.prototype.normalize = function() {
 layoutVector2D.prototype.sub = function(t1) {
     this.x -= t1.x;
     this.y -= t1.y;
-}
+};
 
 /**
  * Sets the value of this tuple to the negation of tuple t1.
@@ -257,14 +257,14 @@ layoutVector2D.prototype.sub = function(t1) {
 layoutVector2D.prototype.negate = function(t1) {
 	this.x = -t1.x;
 	this.y = -t1.y;
-}
+};
 /**
  * Negates the value of this vector in place.
  */
 layoutVector2D.prototype.negate = function() {
 	this.x = -this.x;
 	this.y = -this.y;
-}
+};
 
 /**
 *   Returns the angle in radians between this vector and the vector
@@ -274,8 +274,8 @@ layoutVector2D.prototype.negate = function() {
 */
 layoutVector2D.prototype.angle = function(v1) {
   var vDot = this.dot(v1) / ( this.length()*v1.length() );
-  if( vDot < -1.0) vDot = -1.0;
-  if( vDot >  1.0) vDot =  1.0;
+  if ( vDot < -1.0) vDot = -1.0;
+  if ( vDot >  1.0) vDot =  1.0;
   return((Math.acos(vDot) ));
 
-}
+};

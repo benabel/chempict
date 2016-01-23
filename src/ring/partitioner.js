@@ -57,7 +57,7 @@ ringPartitioner.getPartitionedRings = function(rings) {
 		}
 	}
 	return partitions;
-}
+};
 
 /**
  * finds rings directly connected to the subject ring
@@ -86,7 +86,7 @@ ringPartitioner.directConnectedRings = function(ring, rings) {
 		}
 	}
 	return result;
-}
+};
 
 /**
  * partitions array of rings into connected lists
@@ -106,7 +106,7 @@ ringPartitioner.getPartitionedRings = function(rings) {
 				return goog.array.contains(rings, ring);
 			});
 			if (connections == null) {
-				connections = [ ring ];// start a new group of rings
+				connections = [ring];// start a new group of rings
 				search = goog.array.filter(search, function(r) {
 					return r !== ring;
 				});

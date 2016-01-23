@@ -34,12 +34,15 @@ svgDepict.drawAtoms = function(mol, fontSize) {
     sb += `<text x="${x}" y="${y}" font-family="Verdana" font-size="${fontSize}" text-anchor="middle" fill="black">${symb}</text>\n`;
   }
   mol.atoms.forEach(svgtxt);
+};
+
+svgDepict.drawBonds = function(mol) {
 
 };
 
 svgDepict.toSvg = function(w, h, mol) {
   this.writeHeader(w, h);
-  sb += '<rect width="100%" height="100%" fill="white"/>\n'
+  sb += '<rect width="100%" height="100%" fill="white"/>\n';
   //const matrix = this.trans
   this.drawAtoms(mol, 1);
   return sb + '</svg>';

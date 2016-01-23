@@ -46,7 +46,7 @@ module.exports = ringRing = function(atoms, bonds) {
 	 * @private
 	 */
 	this._center = null;
-}
+};
 
 /**
  * Set a flag to be true or false
@@ -58,7 +58,7 @@ module.exports = ringRing = function(atoms, bonds) {
  */
 ringRing.prototype.setFlag = function(flag_type, flag_value) {
 	this.flags[flag_type] = flag_value;
-}
+};
 
 /**
  * get ring center
@@ -85,18 +85,18 @@ ringRing.prototype.getCenter = function() {
  */
 ringRing.prototype.resetRingCenter = function(){
 	this._center = undefined;
-}
+};
 
 ringRing.prototype.toString = function(){
-	return "ringRing " +
-	"\n\t" +
+	return 'ringRing ' +
+	'\n\t' +
 	goog.array.map(this.atoms, function(atom) {
-		return " " + atom.toString();
-	}, this).join("\n\t")
-	+ "\n\t"
+		return ' ' + atom.toString();
+	}, this).join('\n\t')
+	+ '\n\t'
 	+ goog.array.map(
 			this.bonds,
 			function(bond) {
-				return " " +  bond.toString();
-			}, this).join("\n\t") + "\n\t";
-}
+				return ' ' +  bond.toString();
+			}, this).join('\n\t') + '\n\t';
+};

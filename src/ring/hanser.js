@@ -44,7 +44,7 @@ ringHanser.findRings = function(molecule, maxLen){
     var atomOnlyRings = [];
 
     /** @type {ringPathGraph} */
-    var graph = new ringPathGraph(molecule)
+    var graph = new ringPathGraph(molecule);
 
     for (var i = 0,il = molecule.countAtoms(); i < il; i++) {
     	/** @type {Array.<ringPathEdge>} */
@@ -65,7 +65,7 @@ ringHanser.findRings = function(molecule, maxLen){
     // xtra: sort array according to ring size
     goog.array.sort(atomOnlyRings);
     return atomOnlyRings;
-}
+};
 
 /**
  * The Hanser Ring Finder produces a ring as just a series of atoms. Here we
@@ -81,7 +81,7 @@ ringHanser.createRing = function(atoms,molecule){
     var bonds = new Array();
     for (var i = 0, il = atoms.length-1; i < il; i++) {
 		var bond = molecule.findBond(atoms[i],atoms[i+1]);
-		if(bond!=null) {
+		if (bond!=null) {
 			bonds.push(bond);
 		}
 	}
@@ -90,4 +90,4 @@ ringHanser.createRing = function(atoms,molecule){
 
 	var ring = new ringRing(atoms,bonds);
     return ring;
-}
+};
