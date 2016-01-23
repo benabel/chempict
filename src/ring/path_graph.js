@@ -75,7 +75,7 @@ kemia.ring.PathGraph.prototype.remove = function(atom, maxLen) {
 	}
 
 	/*
-	 * for (Path newPath : newPaths) { if (maxPathLen == null || newPath.size() <=
+	 * for (Path newPath : newPaths) { if (maxPathLen === null || newPath.size() <=
 	 * (maxPathLen+1)) { paths.add(newPath); } }
 	 */
 
@@ -110,7 +110,7 @@ kemia.ring.PathGraph.prototype.getEdges = function(atom) {
 			}
 		} else {
 			var lastAtomPos = edge.atoms.length - 1;
-			if ((edge.atoms[0] == atom) || (edge.atoms[lastAtomPos] == atom)) {
+			if ((edge.atoms[0] === atom) || (edge.atoms[lastAtomPos] === atom)) {
 				result.push(edge);
 			}
 		}

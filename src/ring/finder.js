@@ -130,7 +130,7 @@ ringFinder.verifySSSR = function(sssr, nsssr, molecule) {
 		var ring = sssr[i];
 		if (!ringSSSR.isCandidateInSet(ring, Csssr, valences, ringCount)) {
 			Csssr.push(ring);
-			if (Csssr.length == nsssr) {
+			if (Csssr.length === nsssr) {
 				return Csssr;
 			}
 		}
@@ -229,7 +229,7 @@ ringFinder.detectRingAtoms = function(molecule) {
 			// is a ring closure or chord
 			if (visitedAtoms[neighborIndex]) {
 				var previous = [], depth;
-				if (atom.depth == neighbor.depth) {
+				if (atom.depth === neighbor.depth) {
 					// odd sized ring
 					previous.push(atom);
 					previous.push(neighbor);
@@ -240,7 +240,7 @@ ringFinder.detectRingAtoms = function(molecule) {
 					var nbrNeighbors = neighbor.getNeighbors();
 					for (var j = 0, lj = nbrNeighbors.length; j < lj; j++) {
 						var nbrNeighbor = nbrNeighbors[j];
-						if (nbrNeighbor.depth == neighbor.depth - 1) {
+						if (nbrNeighbor.depth === neighbor.depth - 1) {
 							previous.push(nbrNeighbor);
 						}
 					}
@@ -254,20 +254,20 @@ ringFinder.detectRingAtoms = function(molecule) {
 					depth--;
 					var prevNeighbors1 = previous[0].getNeighbors();
 					for (var j = 0, lj = prevNeighbors1.length; j < lj; j++) {
-						if (prevNeighbors1[j].depth == depth) {
+						if (prevNeighbors1[j].depth === depth) {
 							previous[0] = prevNeighbors1[j];
 							break;
 						}
 					}
 					var prevNeighbors2 = previous[1].getNeighbors();
 					for (var j = 0, lj = prevNeighbors2.length; j < lj; j++) {
-						if (prevNeighbors2[j].depth == depth) {
+						if (prevNeighbors2[j].depth === depth) {
 							previous[1] = prevNeighbors2[j];
 							break;
 						}
 					}
 
-					if (previous[0] == previous[1]) {
+					if (previous[0] === previous[1]) {
 						previous[0].isInCycle = true;
 						break;
 					}

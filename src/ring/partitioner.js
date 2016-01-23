@@ -42,7 +42,7 @@ ringPartitioner.getPartitionedRings = function(rings) {
 						atomCount = partition[p].atoms.length;
 						for ( var a = 0; a < atomCount; a++) {
 							for ( var a2 = 0; a2 < atomCount2; a2++) {
-								if (partition[p].atoms[a] == rings[k].atoms[a2]) {
+								if (partition[p].atoms[a] === rings[k].atoms[a2]) {
 									partition.push(rings[k]);
 									done[k] = true;
 									k = i;
@@ -77,7 +77,7 @@ ringPartitioner.directConnectedRings = function(ring, rings) {
 			var atomCount2 = rings[k].atoms.length;
 			connected: for ( var a = 0; a < atomCount; a++) {
 				for ( var a2 = 0; a2 < atomCount2; a2++) {
-					if (ring.atoms[a] == rings[k].atoms[a2]) {
+					if (ring.atoms[a] === rings[k].atoms[a2]) {
 						result.push(rings[k]);
 						break connected;
 					}
@@ -105,7 +105,7 @@ ringPartitioner.getPartitionedRings = function(rings) {
 			var connections = goog.array.find(partitions, function(rings) {
 				return goog.array.contains(rings, ring);
 			});
-			if (connections == null) {
+			if (connections === null) {
 				connections = [ring];// start a new group of rings
 				search = goog.array.filter(search, function(r) {
 					return r !== ring;

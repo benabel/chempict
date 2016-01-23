@@ -89,25 +89,25 @@ SmilesParser.parse = function(smi) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
     //alert("item "+item)
-    if (item == SmilesParser.punctuation.nobond) {} else if (item == SmilesParser.punctuation.openbranch) {
+    if (item === SmilesParser.punctuation.nobond) {} else if (item === SmilesParser.punctuation.openbranch) {
       branch.push(previous_atom);
-    } else if (item == SmilesParser.punctuation.closebranch) {
+    } else if (item === SmilesParser.punctuation.closebranch) {
       if (branch.length) {
         previous_atom = branch.pop();
       } else {
         errstr = ' Unbalanced parents';
       }
-    } else if (item == SmilesParser.punctuation.singlebond) {
+    } else if (item === SmilesParser.punctuation.singlebond) {
       bond_type = SmilesParser.BondType.SINGLE_BOND;
-    } else if (item == SmilesParser.punctuation.doublebond) {
+    } else if (item === SmilesParser.punctuation.doublebond) {
       bond_type = SmilesParser.BondType.DOUBLE_BOND;
-    } else if (item == SmilesParser.punctuation.triplebond) {
+    } else if (item === SmilesParser.punctuation.triplebond) {
       bond_type = SmilesParser.BondType.TRIPLE_BOND;
-    } else if (item == SmilesParser.punctuation.quadbond) {
+    } else if (item === SmilesParser.punctuation.quadbond) {
       bond_type = SmilesParser.BondType.QUAD_BOND;
-    } else if (item == SmilesParser.punctuation.aromaticbond) {
+    } else if (item === SmilesParser.punctuation.aromaticbond) {
       bond_type = SmilesParser.BondType.AROMATIC_BOND;
-    } else if (item[0] == SmilesParser.punctuation.ringclosure) {
+    } else if (item[0] === SmilesParser.punctuation.ringclosure) {
       var ringid = parseInt(item[1] + item[2], 10);
       var ring_atom = ring[ringid];
       if (ring_atom) {
@@ -118,7 +118,7 @@ SmilesParser.parse = function(smi) {
       } else {
         ring[ringid] = previous_atom;
       }
-    } else if (item == SmilesParser.punctuation.cis) {} else if (item == SmilesParser.punctuation.trans) {} else if (!isNaN(ringid = parseInt(item, 10))) {
+    } else if (item === SmilesParser.punctuation.cis) {} else if (item === SmilesParser.punctuation.trans) {} else if (!isNaN(ringid = parseInt(item, 10))) {
       ring_atom = ring[ringid];
       if (!ring_atom) {
         ring[ringid] = previous_atom;
@@ -224,15 +224,15 @@ SmilesParser.parseAtom = function(item) {
     if (SmilesParser.periodicTable[atomProp[2]])
       atom.symbol = atomProp[2];
 
-    if (atomProp[3] == SmilesParser.BondStereo.CLOCKWISE || atomProp[3] == SmilesParser.BondStereo.COUNTER_CLOCKWISE) {
+    if (atomProp[3] === SmilesParser.BondStereo.CLOCKWISE || atomProp[3] === SmilesParser.BondStereo.COUNTER_CLOCKWISE) {
       atom.stereo = atomProp[3];
-      if (atomProp[4] == 'H')
+      if (atomProp[4] === 'H')
         atom.chiralHydrogenNeighbour = true;
     } else {
       atom.stereo = SmilesParser.BondStereo.NONE;
     }
 
-    if (atomProp[4] == 'H') {
+    if (atomProp[4] === 'H') {
       if (atomProp[5]) {
         atom.hcount = atomProp[5];
       } else {
@@ -240,9 +240,9 @@ SmilesParser.parseAtom = function(item) {
       }
     }
 
-    if (atomProp[6] == '+') {
+    if (atomProp[6] === '+') {
       atom.charge = 1;
-    } else if (atomProp[6] == '-') {
+    } else if (atomProp[6] === '-') {
       atom.charge = -1;
     } else {
       atom.charge = parseInt(atomProp[6], 10);
@@ -256,7 +256,7 @@ SmilesParser.parseAtom = function(item) {
   }
   if (goog.array.contains(SmilesParser.aromaticAtoms, atom.symbol)) {
     atom.aromatic = true;
-    if (atom.symbol.length == 1) {
+    if (atom.symbol.length === 1) {
       atom.symbol = atom.symbol.toUpperCase();
     } else {
       atom.symbol = atom.symbol[0].toUpperCase() + atom.symbol[1];
@@ -276,7 +276,7 @@ SmilesParser.parseAtom = function(item) {
  */
 SmilesParser.createBond = function(type, source, target) {
   var atype = type;
-  if (type == SmilesParser.BondType.NONE) {
+  if (type === SmilesParser.BondType.NONE) {
     if (source.aromatic && target.aromatic) {
       atype = SmilesParser.BondType.AROMATIC_BOND;
     } else {
@@ -338,25 +338,25 @@ SmilesParser.setChiralCenters = function(molecule,
         }
       });
       var numOfAvBonds = availableBonds.length;
-      if ((cntNeighb == 3 || cntNeighb == 4) && numOfAvBonds > 0) {
+      if ((cntNeighb === 3 || cntNeighb === 4) && numOfAvBonds > 0) {
         var bondidx = 0;
-        if ((cntNeighb == 3 && numOfAvBonds > 1) || (cntNeighb == 4 && numOfAvBonds > 2)) {
+        if ((cntNeighb === 3 && numOfAvBonds > 1) || (cntNeighb === 4 && numOfAvBonds > 2)) {
           bondidx = 1;
         }
         bond = availableBonds[bondidx];
-        if (direction == SmilesParser.BondStereo.CLOCKWISE) {
+        if (direction === SmilesParser.BondStereo.CLOCKWISE) {
           bond.stereo = modelBond.STEREO.UP;
         } else
           bond.stereo = modelBond.STEREO.DOWN;
       }
-      if (cntNeighb == 4 && numOfAvBonds > 1) {
+      if (cntNeighb === 4 && numOfAvBonds > 1) {
         bondidx = 1;
-        if (numOfAvBonds == 4)
+        if (numOfAvBonds === 4)
           bondidx = 3;
-        else if (numOfAvBonds == 4)
+        else if (numOfAvBonds === 4)
           bondidx = 2;
         bond = availableBonds[bondidx];
-        if (direction == SmilesParser.BondStereo.CLOCKWISE)
+        if (direction === SmilesParser.BondStereo.CLOCKWISE)
           bond.stereo = modelBond.STEREO.DOWN;
         else
           bond.stereo = modelBond.STEREO.UP;

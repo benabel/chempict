@@ -31,7 +31,7 @@ kemia.ring.PathEdge = function(_atoms){
  */
 kemia.ring.PathEdge.prototype.isCycle = function(){
     var lastAtomPos = this.atoms.length - 1;
-    return (this.atoms.length > 2 && this.atoms[0] == this.atoms[lastAtomPos]);
+    return (this.atoms.length > 2 && this.atoms[0] === this.atoms[lastAtomPos]);
 };
 
 /**
@@ -50,11 +50,11 @@ kemia.ring.PathEdge.prototype.splice = function(other){
         newAtoms.push(this.atoms[i]);
     }
 
-    if (this.atoms[0] == intersection) {
+    if (this.atoms[0] === intersection) {
         newAtoms.reverse();
     }
 
-    if (other.atoms[0] == intersection) {
+    if (other.atoms[0] === intersection) {
         for (var i = 1,il=other.atoms.length; i < il; i++) {
             newAtoms.push(other.atoms[i]);
         }
@@ -79,10 +79,10 @@ kemia.ring.PathEdge.prototype.splice = function(other){
 kemia.ring.PathEdge.prototype.isRealPath = function(atoms){
     for (var i = 1,il=atoms.length - 1; i < il; i++) {
         for (var j = 1; j < il; j++) {
-            if (i == j) {
+            if (i === j) {
                 continue;
             }
-            if (atoms[i] == atoms[j]) {
+            if (atoms[i] === atoms[j]) {
                 return false;
             }
         }
@@ -97,10 +97,10 @@ kemia.ring.PathEdge.prototype.isRealPath = function(atoms){
 kemia.ring.PathEdge.prototype.getIntersection = function(others){
     var lastAtomPos = this.atoms.length - 1;
     var lastOtherPos = others.length - 1;
-    if (this.atoms[lastAtomPos] == others[0] || this.atoms[lastAtomPos] == others[lastOtherPos]) {
+    if (this.atoms[lastAtomPos] === others[0] || this.atoms[lastAtomPos] === others[lastOtherPos]) {
         return this.atoms[lastAtomPos];
     }
-    if (this.atoms[0] == others[0] || this.atoms[0] == others[lastOtherPos]) {
+    if (this.atoms[0] === others[0] || this.atoms[0] === others[lastOtherPos]) {
         return this.atoms[0];
     }
     throw "Couldn't splice - no intersection";

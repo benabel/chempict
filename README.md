@@ -15,6 +15,7 @@ eslint: lint and format javascript code
 
 ## `npm` scripts
 
+- lint javascript: `npm run lint`
 - format javascript: `npm run format`
 
 ## TODO

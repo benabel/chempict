@@ -28,7 +28,7 @@ layoutAtomPlacer.getInitialLongestChain = function(molecule) {
     for (var f = 0; f < apspLength; f++) {
         var atom = molecule.getAtom(f);
         var connBondCount = layoutAtomPlacer.getConnectedBondsCount(atom, molecule, bondCount);
-        if (connBondCount == 1) {
+        if (connBondCount === 1) {
             for (var g = 0; g < apspLength; g++) {
                 if (apsp[f][g] > maxPathLength) {
                     maxPathLength = apsp[f][g];
@@ -69,7 +69,7 @@ layoutAtomPlacer.computeFloydAPSP = function(costMatrix) {
 
     for (var i = 0; i < nrow; i++) {
         for (var j = 0; j < nrow; j++) {
-            if (costMatrix[i][j] == 0) {
+            if (costMatrix[i][j] === 0) {
                 distMatrix[i][j] = 999999;
             }
             else {
@@ -154,7 +154,7 @@ layoutAtomPlacer.getDegreeSum = function(molecule, superMolecule, superBondCount
 layoutAtomPlacer.getConnectedBondsCount = function(atom, molecule, bondCount) {
 	var connBondCount = 0;
 	for (var i = 0; i < bondCount; i++) {
-		if (molecule.getBond(i).source == atom || molecule.getBond(i).target == atom)
+		if (molecule.getBond(i).source === atom || molecule.getBond(i).target === atom)
 			connBondCount++;
 	}
 	return connBondCount;
@@ -234,19 +234,19 @@ layoutAtomPlacer.placeLinearChain = function(chain, initialBondVector, bondLengt
 		nextAtom.coord = atomPoint;
 		nextAtom.setFlag(modelFlags.ISPLACED, true);
 		var trans = true;
-        if (layoutAtomPlacer.has2DCoordinatesNew(chain) == 2)
+        if (layoutAtomPlacer.has2DCoordinatesNew(chain) === 2)
 	   	   trans = false;
 		bondVector = layoutAtomPlacer.getNextBondVector(nextAtom, atom, layoutAtomPlacer.get2DCenter(chain), trans);
 	}
 };
 
 layoutAtomPlacer.has2DCoordinatesNew = function(chain) {
-    if (chain == null) return 0;
+    if (chain === null) return 0;
 
     var no2d = false;
     var with2d = false;
     goog.array.forEach(chain.atoms, function(atom) {
-        if (atom.coord == null || (atom.coord.x == 0 && atom.coord.y == 0)) {
+        if (atom.coord === null || (atom.coord.x === 0 && atom.coord.y === 0)) {
             no2d = true;
         } else {
             with2d = true;
@@ -268,7 +268,7 @@ layoutAtomPlacer.get2DCenter = function(molecule) {
 	var counter = 0;
 	for (var atIdx = 0, atCount = molecule.countAtoms(); atIdx < atCount; atIdx++) {
 		var atom = molecule.getAtom(atIdx);
-		if (atom.flags[modelFlags.ISPLACED] == true) {
+		if (atom.flags[modelFlags.ISPLACED] === true) {
 		        centerX += atom.coord.x;
 		        centerY += atom.coord.y;
 		        counter++;
@@ -284,7 +284,7 @@ layoutAtomPlacer.getAtoms2DCenter = function(atoms) {
 	var counter = 0;
 	for (var atIdx = 0, atCount = atoms.length; atIdx < atCount; atIdx++) {
 		var atom = atoms[atIdx];
-		if (atom.flags[modelFlags.ISPLACED] == true) {
+		if (atom.flags[modelFlags.ISPLACED] === true) {
 			centerX += atom.coord.x;
 			centerY += atom.coord.y;
 			counter++;
@@ -366,7 +366,7 @@ layoutAtomPlacer.distributePartners = function(atom, placedNeighbours, sharedAto
     var placedNeighboursCountAtoms = placedNeighbours.countAtoms();
     var unPlacedNeighboursCountAtoms = unplacedNeighbours.countAtoms();
 
-	if (placedNeighboursCountAtoms == 1)
+	if (placedNeighboursCountAtoms === 1)
 	{
 	    for (var f1 = 0; f1 < unPlacedNeighboursCountAtoms; f1++) {
 	        atomsToDraw.push(unplacedNeighbours.getAtom(f1));
@@ -379,7 +379,7 @@ layoutAtomPlacer.distributePartners = function(atom, placedNeighbours, sharedAto
 	    startAngle = layoutAtomPlacer.getAngle(xDiff, yDiff);
 	    layoutAtomPlacer.populatePolygonCorners(atomsToDraw, new goog.math.Coordinate(atom.coord.x, atom.coord.y), startAngle, addAngle, bondLength);
 	    return;
-	} else if (placedNeighboursCountAtoms == 0)
+	} else if (placedNeighboursCountAtoms === 0)
 	{
         for (f1 = 0; f1 < unPlacedNeighboursCountAtoms; f1++) {
             atomsToDraw.push(unplacedNeighbours.getAtom(f1));
@@ -494,7 +494,7 @@ layoutAtomPlacer.populatePolygonCorners = function(atomsToDraw, rotationCenter, 
         //Fix Github issue 17 : Generated bond lengths should better reflect bond and participating element chemistry.
         var connectAtom = atomsToDraw[ad];
 
-		if (connectAtom.symbol == 'H')
+		if (connectAtom.symbol === 'H')
 		  radius *= .6;
         //End fix
 

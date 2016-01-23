@@ -66,10 +66,10 @@ layoutRingPlacer.placeRing = function(ring, shared_fragment,
 	if (sharedAtomCount > 2) {
 		layoutRingPlacer.placeBridgedRing(ring, shared_fragment,
 				shared_fragment_center, ringCenterVector, bondLength);
-	} else if (sharedAtomCount == 2) {
+	} else if (sharedAtomCount === 2) {
 		layoutRingPlacer.placeFusedRing(ring, shared_fragment,
 				shared_fragment_center, ringCenterVector, bondLength);
-	} else if (sharedAtomCount == 1) {
+	} else if (sharedAtomCount === 1) {
 		layoutRingPlacer.placeSpiroRing(ring, shared_fragment,
 				shared_fragment_center, ringCenterVector, bondLength);
 	}
@@ -198,7 +198,7 @@ layoutRingPlacer.findDirection = function(ringCenter, atom1, atom2) {
 	var result = 1;
 	var diff = goog.math.Coordinate.difference(atom1.coord, atom2.coord);
 
-	if (diff.x == 0) {
+	if (diff.x === 0) {
 		// vertical bond
 		if (ringCenter.x > atom1.coord.x) {
 			result = -1;
@@ -215,7 +215,7 @@ layoutRingPlacer.findDirection = function(ringCenter, atom1, atom2) {
 
 layoutRingPlacer.findStartAtom = function(ringCenter, atom1, atom2) {
 	var diff = goog.math.Coordinate.difference(atom1.coord, atom2.coord);
-	if (diff.x == 0) {
+	if (diff.x === 0) {
 		// vertical bond
 		// start with the lower Atom
 		if (atom1.coord.y > atom2.coord.y) {
@@ -302,7 +302,7 @@ layoutRingPlacer.placeFusedRing = function(ring, sharedAtoms,
 
     var direction = 1;
     // if bond is vertical
-    if (xDiff == 0)
+    if (xDiff === 0)
     {
     	var startAtom;
         if (bondAtom1.coord.y > bondAtom2.coord.y)
@@ -350,7 +350,7 @@ layoutRingPlacer.placeFusedRing = function(ring, sharedAtoms,
 
 layoutRingPlacer.getNextBond = function(ring, bond,atom) {
     for (var f = 0; f < ring.bonds.length; f++) {
-		if (ring.bonds[f] != bond && (ring.bonds[f].source == atom || ring.bonds[f].target == atom)) {
+		if (ring.bonds[f] != bond && (ring.bonds[f].source === atom || ring.bonds[f].target === atom)) {
             return ring.bonds[f];
 		}
     }
@@ -453,7 +453,7 @@ layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondL
 	                bonds : layoutRingPlacer.getIntersectingBonds(ring,connectedRing)
 	        };
 			var sac = shared_fragment.atoms.length;
-            if ((sac == 2 && handleType == 'FUSED') ||(sac == 1 && handleType == 'SPIRO')||(sac > 2 && handleType == 'BRIDGED'))
+            if ((sac === 2 && handleType === 'FUSED') ||(sac === 1 && handleType === 'SPIRO')||(sac > 2 && handleType === 'BRIDGED'))
             {
 				var debug='';
                 for (var qw=0;qw<shared_fragment.atoms.length;qw++)

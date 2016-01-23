@@ -50,7 +50,7 @@ layoutCoordinateGenerator.generate = function(molecule){
 	 * If molecule contains only one Atom, don't fail, simply set coordinates to
 	 * simplest: 0,0
 	 */
-    if (atCount == 1)
+    if (atCount === 1)
 	{
 	    molecule.getAtom(0).coords = new goog.math.Coordinate(0,0);
 	    return molecule;
@@ -187,7 +187,7 @@ layoutCoordinateGenerator.layoutRingSet=function(bondVector, ringset){
             layoutRingPlacer.placeConnectedRings(ringset, most_complex_ring, 'SPIRO',bl);
         }
         thisRing++;
-        if (thisRing == ringset.length)
+        if (thisRing === ringset.length)
             thisRing = 0;
         most_complex_ring = ringset[thisRing];
     } while (!layoutCoordinateGenerator.allPlaced(ringset));
@@ -316,7 +316,7 @@ layoutCoordinateGenerator.getMostComplexRing = function(ringSet){
                 if (ring1 != ring2){
                     for (var l = 0; l < ring2.atoms.length; l++){
                         var atom2 = ring2[l];
-                        if (atom1 == atom2) {
+                        if (atom1 === atom2) {
                             neighbors[i]++;
                             neighbors[k]++;
                             break;

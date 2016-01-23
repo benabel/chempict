@@ -103,7 +103,7 @@ modelMolecule.prototype.addBond = function(bond) {
 		this.fragmentCount--;
 
 		for ( var i = 0, li = this.atoms.length; i < li; i++) {
-			if (this.fragments[i] == before) {
+			if (this.fragments[i] === before) {
 				this.fragments[i] = after;
 			}
 		}
@@ -164,7 +164,7 @@ modelMolecule.prototype.findBond = function(atom1, atom2) {
 	var bonds = atom1.bonds.getValues();
 	for ( var i = 0, li = bonds.length; i < li; i++) {
 		var bond = bonds[i];
-		if (bond.otherAtom(atom1) == atom2) {
+		if (bond.otherAtom(atom1) === atom2) {
 			return bond;
 		}
 	}
@@ -202,9 +202,9 @@ modelMolecule.prototype.indexOfBond = function(bond) {
 
 modelMolecule.prototype.removeAtom = function(atomOrId) {
 	var atom;
-	if (atomOrId.constructor == Number) {
+	if (atomOrId.constructor === Number) {
 		atom = this.atoms[atomOrId];
-	} else if (atomOrId.constructor == modelAtom) {
+	} else if (atomOrId.constructor === modelAtom) {
 		atom = atomOrId;
 	}
 	var neighborBonds = atom.bonds.getValues();
@@ -227,18 +227,18 @@ modelMolecule.prototype.removeAtom = function(atomOrId) {
 
 modelMolecule.prototype.removeBond = function(bondOrId) {
 	var bond;
-	if (bondOrId.constructor == Number) {
+	if (bondOrId.constructor === Number) {
 		bond = this.bonds[bondOrId];
 	} else {
 		bond = bondOrId;
 	}
 	bond.source.bonds.remove(bond);
 	bond.target.bonds.remove(bond);
-	if (bond.source.bonds.getValues().length == 0) {
+	if (bond.source.bonds.getValues().length === 0) {
 		goog.array.remove(this.atoms, bond.source);
 		bond.source.molecule = undefined;
 	}
-	if (bond.target.bonds.getValues().length == 0) {
+	if (bond.target.bonds.getValues().length === 0) {
 		goog.array.remove(this.atoms, bond.target);
 		bond.target.molecule = undefined;
 
@@ -305,7 +305,7 @@ modelMolecule.prototype.isAtomInRing = function(atom_) {
 	var rings = this.getRings();
 	for (var r = 0, ringCount = rings.length; r < ringCount; r++) {
 		for (var a = 0, atomCount = rings[r].atoms.length; a < atomCount; a++) {
-			if (atom_ == rings[r].atoms[a]) {
+			if (atom_ === rings[r].atoms[a]) {
 				return true;
 			}
 		}
@@ -322,7 +322,7 @@ modelMolecule.prototype.isBondInRing = function(bond_) {
 	var rings = this.getRings();
 	for (var r = 0, ringCount = rings.length; r < ringCount; r++) {
 		for (var b = 0, bondCount = rings[r].bonds.length; b < bondCount; b++) {
-			if (bond_ == rings[r].bonds[b]) {
+			if (bond_ === rings[r].bonds[b]) {
 				return true;
 			}
 		}
@@ -353,13 +353,13 @@ modelMolecule.prototype.clone = function() {
  */
 modelMolecule.prototype.getFragments = function() {
 	var mol = this.clone();
-	if (mol.fragmentCount == 1) {
+	if (mol.fragmentCount === 1) {
 		return [mol];
 	}
 	var fragments = new goog.structs.Map();
 	goog.array.forEach(mol.atoms, function(atom) {
 		var frag = mol.fragments[mol.indexOfAtom(atom)];
-		if (fragments.containsKey(frag) == false) {
+		if (fragments.containsKey(frag) === false) {
 			fragments.set(frag, new modelMolecule());
 		}
 		fragments.get(frag).addAtom(atom);
@@ -380,7 +380,7 @@ modelMolecule.prototype.getConnectedBondsList = function(atom) {
 	var bondsList = new Array();
 	var bondCount = this.bonds.length;
 	for (var i = 0; i < bondCount; i++) {
-		if (this.bonds[i].source == atom || this.bonds[i].target == atom)
+		if (this.bonds[i].source === atom || this.bonds[i].target === atom)
 			bondsList.push(this.bonds[i]);
 	}
 	return bondsList;
@@ -496,7 +496,7 @@ modelMolecule.prototype.merge = function(fragment, frag_bond,
 	var processed = [frag_bond];
 	goog.array.forEach(frag_atom.bonds.getValues(), function(bond) {
 		if (!goog.array.contains(processed, bond)) {
-			frag_atom == bond.source ? bond.source = target_atom
+			frag_atom === bond.source ? bond.source = target_atom
 					: bond.target = target_atom;
 			processed.push(bond);
 			this.addBond(bond);
@@ -512,7 +512,7 @@ modelMolecule.prototype.merge = function(fragment, frag_bond,
 					other_frag_atom.bonds.getValues(),
 					function(bond) {
 						if (!goog.array.contains(processed, bond)) {
-							other_frag_atom == bond.source ? bond.source = other_target_atom
+							other_frag_atom === bond.source ? bond.source = other_target_atom
 									: bond.target = other_target_atom;
 							this.addBond(bond);
 							processed.push(bond);
@@ -559,7 +559,7 @@ modelMolecule.prototype.merge = function(fragment, frag_bond,
 //
 //	goog.array.forEach(target_atom.bonds.getValues(), function(bond) {
 //		var new_bond = bond.clone();
-//		target_atom == new_bond.source ? new_bond.source = source_atom
+//		target_atom === new_bond.source ? new_bond.source = source_atom
 //				: new_bond.target = source_atom;
 //		target_molecule.addBond(new_bond);
 //		target_molecule.removeBond(bond);
