@@ -29,23 +29,23 @@ goog.require('goog.memoize');
  * @constructor
  */
 module.exports = ringRing = function(atoms, bonds) {
-	/** @type {Array.<kemia.model.Atom>} */
-	this.atoms = atoms;
-	/** @type {Array.<kemia.model.Bond>} */
-	this.bonds = bonds;
+  /** @type {Array.<kemia.model.Atom>} */
+  this.atoms = atoms;
+  /** @type {Array.<kemia.model.Bond>} */
+  this.bonds = bonds;
 
-	/**
-	 * Array with property flags (true/false)
-	 *
-	 * @type {Array.<boolean>}
-	 */
-	this.flags = new Array(modelFlags.MAX_FLAG_INDEX + 1);
+  /**
+   * Array with property flags (true/false)
+   *
+   * @type {Array.<boolean>}
+   */
+  this.flags = new Array(modelFlags.MAX_FLAG_INDEX + 1);
 
-	/**
-	 * @type {goog.math.Coordinate}
-	 * @private
-	 */
-	this._center = null;
+  /**
+   * @type {goog.math.Coordinate}
+   * @private
+   */
+  this._center = null;
 };
 
 /**
@@ -57,7 +57,7 @@ module.exports = ringRing = function(atoms, bonds) {
  *            flag_value true or false
  */
 ringRing.prototype.setFlag = function(flag_type, flag_value) {
-	this.flags[flag_type] = flag_value;
+  this.flags[flag_type] = flag_value;
 };
 
 /**
@@ -67,36 +67,36 @@ ringRing.prototype.setFlag = function(flag_type, flag_value) {
  */
 ringRing.prototype.getCenter = function() {
 
-	if (!this._center) {
-		var avgX = 0;
-		var avgY = 0;
-		for ( var j = 0, jl = this.atoms.length; j < jl; j++) {
-			avgX += this.atoms[j].coord.x;
-			avgY += this.atoms[j].coord.y;
-		}
-		this._center = new goog.math.Coordinate(avgX / this.atoms.length, avgY
-				/ this.atoms.length);
-	}
-	return this._center;
+  if (!this._center) {
+    var avgX = 0;
+    var avgY = 0;
+    for (var j = 0, jl = this.atoms.length; j < jl; j++) {
+      avgX += this.atoms[j].coord.x;
+      avgY += this.atoms[j].coord.y;
+    }
+    this._center = new goog.math.Coordinate(avgX / this.atoms.length, avgY
+      / this.atoms.length);
+  }
+  return this._center;
 };
 
 /**
  * force recalc of ring center
  */
-ringRing.prototype.resetRingCenter = function(){
-	this._center = undefined;
+ringRing.prototype.resetRingCenter = function() {
+  this._center = undefined;
 };
 
-ringRing.prototype.toString = function(){
-	return 'ringRing ' +
-	'\n\t' +
-	goog.array.map(this.atoms, function(atom) {
-		return ' ' + atom.toString();
-	}, this).join('\n\t')
-	+ '\n\t'
-	+ goog.array.map(
-			this.bonds,
-			function(bond) {
-				return ' ' +  bond.toString();
-			}, this).join('\n\t') + '\n\t';
+ringRing.prototype.toString = function() {
+  return 'ringRing ' +
+    '\n\t' +
+    goog.array.map(this.atoms, function(atom) {
+      return ' ' + atom.toString();
+    }, this).join('\n\t')
+    + '\n\t'
+    + goog.array.map(
+      this.bonds,
+      function(bond) {
+        return ' ' + bond.toString();
+      }, this).join('\n\t') + '\n\t';
 };

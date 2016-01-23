@@ -4,7 +4,8 @@
   "description": "Create chemical pictures for the web.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint src/**/*.js",
+    "format": "esformatter -i src/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -24,11 +25,8 @@
   },
   "homepage": "https://github.com/benjaminabel/chempict#readme",
   "devDependencies": {
+    "esformatter": "^0.8.1",
     "eslint": "^2.0.0-beta.2",
     "google-closure-library": "^20151015.0.0"
-  },
-  "scripts": {
-    "lint": "eslint src/**/*.js",
-    "format": "eslint --fix src/**/*.js"
   }
 }

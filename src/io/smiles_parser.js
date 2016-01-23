@@ -89,7 +89,8 @@ SmilesParser.parse = function(smi) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
     //alert("item "+item)
-    if (item === SmilesParser.punctuation.nobond) {} else if (item === SmilesParser.punctuation.openbranch) {
+    if (item === SmilesParser.punctuation.nobond) {
+    } else if (item === SmilesParser.punctuation.openbranch) {
       branch.push(previous_atom);
     } else if (item === SmilesParser.punctuation.closebranch) {
       if (branch.length) {
@@ -118,7 +119,9 @@ SmilesParser.parse = function(smi) {
       } else {
         ring[ringid] = previous_atom;
       }
-    } else if (item === SmilesParser.punctuation.cis) {} else if (item === SmilesParser.punctuation.trans) {} else if (!isNaN(ringid = parseInt(item, 10))) {
+    } else if (item === SmilesParser.punctuation.cis) {
+    } else if (item === SmilesParser.punctuation.trans) {
+    } else if (!isNaN(ringid = parseInt(item, 10))) {
       ring_atom = ring[ringid];
       if (!ring_atom) {
         ring[ringid] = previous_atom;
@@ -128,13 +131,13 @@ SmilesParser.parse = function(smi) {
         ring[ringid] = null;
       }
 
-      // The default bond order for the ring closure is single (or aromatic) but may be specified by including a bond symbol between (!) the atom and the closure number.
-      // Example: alternatives for cyclohexene (there is only one double bond here): C1=CCCCC1 <=> C=1CCCCC1 <=> C1CCCCC=1 <=> C=1CCCCC=1
+    // The default bond order for the ring closure is single (or aromatic) but may be specified by including a bond symbol between (!) the atom and the closure number.
+    // Example: alternatives for cyclohexene (there is only one double bond here): C1=CCCCC1 <=> C=1CCCCC1 <=> C1CCCCC=1 <=> C=1CCCCC=1
     } else if (item.length > 1 &&
       (
-        goog.string.startsWith(item, SmilesParser.BondType.DOUBLE_BOND) ||
-        goog.string.startsWith(item, SmilesParser.BondType.TRIPLE_BOND) ||
-        goog.string.startsWith(item, SmilesParser.BondType.QUAD_BOND)
+      goog.string.startsWith(item, SmilesParser.BondType.DOUBLE_BOND) ||
+      goog.string.startsWith(item, SmilesParser.BondType.TRIPLE_BOND) ||
+      goog.string.startsWith(item, SmilesParser.BondType.QUAD_BOND)
       ) &&
       !isNaN(ringid = parseInt(item.substr(1), 10))
     ) {
@@ -163,7 +166,7 @@ SmilesParser.parse = function(smi) {
           bond_type = SmilesParser.BondType.NONE;
         }
         mol.addAtom(atom);
-        if (smi_atom.stereo != 'NONE') {
+        if (smi_atom.stereo !== 'NONE') {
           chiralCenters.push(mol.indexOfAtom(atom));
           chiralCenters.push(smi_atom.stereo);
           chiralCenters.push(smi_atom.chiralHydrogenNeighbour);
@@ -199,7 +202,7 @@ SmilesParser.sanityCheck = function(branch, ring, bond_type) {
       throw new Error('unclosed rings');
     }
   }
-  if (bond_type != SmilesParser.BondType.NONE) {
+  if (bond_type !== SmilesParser.BondType.NONE) {
     throw new Error('unpaired bond ' + bond_type);
   }
   return true;
@@ -250,7 +253,7 @@ SmilesParser.parseAtom = function(item) {
 
   } else {
     if (goog.array
-      .contains(SmilesParser.specialAtoms, item)) {
+        .contains(SmilesParser.specialAtoms, item)) {
       atom.symbol = item;
     }
   }
@@ -301,7 +304,8 @@ SmilesParser.createBond = function(type, source, target) {
     case SmilesParser.BondType.ANY:
     default:
       throw new Error('invalid bond type [' + type + ']');
-  };
+  }
+  ;
 };
 
 /**
@@ -317,7 +321,7 @@ SmilesParser.setChiralCenters = function(molecule,
   for (var c = 0, centers = chiralCenters.length; c < centers; c++) {
     var atIndex = chiralCenters[c];
     var chiralAtom = molecule.getAtom(atIndex);
-    if (chiralAtom != undefined) {
+    if (chiralAtom !== undefined) {
 
       var direction = chiralCenters[++c];
       var chiralHydrogenNeighbour = chiralCenters[++c];
@@ -327,8 +331,8 @@ SmilesParser.setChiralCenters = function(molecule,
       var bond = null;
       goog.array.forEach(molecule.atoms, function(atom) {
         var bond_ = molecule.findBond(chiralAtom, atom);
-        if (bond_ != null && bond_ != undefined) {
-          if (bond_.source != chiralAtom) {
+        if (bond_ !== null && bond_ !== undefined) {
+          if (bond_.source !== chiralAtom) {
             bond_.source = chiralAtom;
             bond_.target = atom;
           }
@@ -352,8 +356,7 @@ SmilesParser.setChiralCenters = function(molecule,
       if (cntNeighb === 4 && numOfAvBonds > 1) {
         bondidx = 1;
         if (numOfAvBonds === 4)
-          bondidx = 3;
-        else if (numOfAvBonds === 4)
+          bondidx = 3;else if (numOfAvBonds === 4)
           bondidx = 2;
         bond = availableBonds[bondidx];
         if (direction === SmilesParser.BondStereo.CLOCKWISE)

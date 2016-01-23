@@ -29,8 +29,7 @@ const ringPathGraph = require('./path_graph');
  * for Exhaustive Ring Perception in a Molecular Graph J. kemia. Inf. Comput.
  * Sci. 1996, 36, 1146-1152
  */
- module.exports = ringHanser = function() {
- };
+module.exports = ringHanser = function() {};
 /**
  * Hanser main loop, produces the rings for a given molecule.
  *
@@ -38,33 +37,33 @@ const ringPathGraph = require('./path_graph');
  * @param {number} maxLen
  * @return {Array.<kemia.model.Atom>}
  */
-ringHanser.findRings = function(molecule, maxLen){
+ringHanser.findRings = function(molecule, maxLen) {
 
-	/** @type {Array.<kemia.model.Atom>} */
-    var atomOnlyRings = [];
+  /** @type {Array.<kemia.model.Atom>} */
+  var atomOnlyRings = [];
 
-    /** @type {ringPathGraph} */
-    var graph = new ringPathGraph(molecule);
+  /** @type {ringPathGraph} */
+  var graph = new ringPathGraph(molecule);
 
-    for (var i = 0,il = molecule.countAtoms(); i < il; i++) {
-    	/** @type {Array.<ringPathEdge>} */
-        var edges = graph.remove(molecule.getAtom(i), maxLen);
-        for (var j = 0; j < edges.length; j++) {
-        	/** @type {ringPathEdge} */
-            var edge = edges[j];
-            /** @type {Array.<kemia.model.Atom>} */
-            var atom_ring = edge.atoms;
-            // Hanser last atom is same as first atom, remove it..
-            goog.array.removeAt(atom_ring, atom_ring.length - 1);
-            for (var k = 0, lk = atom_ring.length; k < lk; k++) {
-                atom_ring[k] = molecule.indexOfAtom(atom_ring[k]);
-            }
-            atomOnlyRings.push(atom_ring);
-        }
+  for (var i = 0, il = molecule.countAtoms(); i < il; i++) {
+    /** @type {Array.<ringPathEdge>} */
+    var edges = graph.remove(molecule.getAtom(i), maxLen);
+    for (var j = 0; j < edges.length; j++) {
+      /** @type {ringPathEdge} */
+      var edge = edges[j];
+      /** @type {Array.<kemia.model.Atom>} */
+      var atom_ring = edge.atoms;
+      // Hanser last atom is same as first atom, remove it..
+      goog.array.removeAt(atom_ring, atom_ring.length - 1);
+      for (var k = 0, lk = atom_ring.length; k < lk; k++) {
+        atom_ring[k] = molecule.indexOfAtom(atom_ring[k]);
+      }
+      atomOnlyRings.push(atom_ring);
     }
-    // xtra: sort array according to ring size
-    goog.array.sort(atomOnlyRings);
-    return atomOnlyRings;
+  }
+  // xtra: sort array according to ring size
+  goog.array.sort(atomOnlyRings);
+  return atomOnlyRings;
 };
 
 /**
@@ -76,18 +75,18 @@ ringHanser.findRings = function(molecule, maxLen){
  * @param {kemia.model.Molecule}  molecule
  * @return {ringRing}
  */
-ringHanser.createRing = function(atoms,molecule){
+ringHanser.createRing = function(atoms, molecule) {
 
-    var bonds = new Array();
-    for (var i = 0, il = atoms.length-1; i < il; i++) {
-		var bond = molecule.findBond(atoms[i],atoms[i+1]);
-		if (bond!=null) {
-			bonds.push(bond);
-		}
-	}
-    // Hanser last atom is same as first atom, remove it..
-    goog.array.removeAt(atoms, atoms.length - 1);
+  var bonds = new Array();
+  for (var i = 0, il = atoms.length - 1; i < il; i++) {
+    var bond = molecule.findBond(atoms[i], atoms[i + 1]);
+    if (bond !== null) {
+      bonds.push(bond);
+    }
+  }
+  // Hanser last atom is same as first atom, remove it..
+  goog.array.removeAt(atoms, atoms.length - 1);
 
-	var ring = new ringRing(atoms,bonds);
-    return ring;
+  var ring = new ringRing(atoms, bonds);
+  return ring;
 };

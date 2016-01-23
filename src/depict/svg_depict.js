@@ -36,9 +36,7 @@ svgDepict.drawAtoms = function(mol, fontSize) {
   mol.atoms.forEach(svgtxt);
 };
 
-svgDepict.drawBonds = function(mol) {
-
-};
+svgDepict.drawBonds = function(mol) {};
 
 svgDepict.toSvg = function(w, h, mol) {
   this.writeHeader(w, h);

@@ -12,8 +12,7 @@
  */
 goog.require('goog.array');
 
-module.exports = ringPartitioner = function() {
- };
+module.exports = ringPartitioner = function() {};
 
 /**
  * partitions array of rings into connected lists
@@ -24,39 +23,40 @@ module.exports = ringPartitioner = function() {
  * @return {Array.<Array.<kemia.ring.Ring>>} array of arrays of Rings
  */
 ringPartitioner.getPartitionedRings = function(rings) {
-	var partitions = [];
-	var done = new Array(rings.length);
-	for (var x = 0, x2 = rings.length; x < x2; x++) {
-		done[x] = false;
-	}
-	for (var i = 0, j = rings.length; i < j; i++) {
-		if (!done[i]) {
-			var partition = new Array();
-			partition.push(rings[i]);
-			done[i] = true;
-			var atomCount = rings[i].atoms.length;
-			for (var k = i + 1; k < rings.length; k++) {
-				if (!done[k]) {
-					var atomCount2 = rings[k].atoms.length;
-					connected: for ( var p = 0; p < partition.length; p++) {
-						atomCount = partition[p].atoms.length;
-						for ( var a = 0; a < atomCount; a++) {
-							for ( var a2 = 0; a2 < atomCount2; a2++) {
-								if (partition[p].atoms[a] === rings[k].atoms[a2]) {
-									partition.push(rings[k]);
-									done[k] = true;
-									k = i;
-									break connected;
-								}
-							}
-						}
-					}
-				}
-			}
-			partitions.push(partition);
-		}
-	}
-	return partitions;
+  var partitions = [];
+  var done = new Array(rings.length);
+  for (var x = 0, x2 = rings.length; x < x2; x++) {
+    done[x] = false;
+  }
+  for (var i = 0, j = rings.length; i < j; i++) {
+    if (!done[i]) {
+      var partition = new Array();
+      partition.push(rings[i]);
+      done[i] = true;
+      var atomCount = rings[i].atoms.length;
+      for (var k = i + 1; k < rings.length; k++) {
+        if (!done[k]) {
+          var atomCount2 = rings[k].atoms.length;
+          connected:
+          for (var p = 0; p < partition.length; p++) {
+            atomCount = partition[p].atoms.length;
+            for (var a = 0; a < atomCount; a++) {
+              for (var a2 = 0; a2 < atomCount2; a2++) {
+                if (partition[p].atoms[a] === rings[k].atoms[a2]) {
+                  partition.push(rings[k]);
+                  done[k] = true;
+                  k = i;
+                  break connected;
+                }
+              }
+            }
+          }
+        }
+      }
+      partitions.push(partition);
+    }
+  }
+  return partitions;
 };
 
 /**
@@ -70,22 +70,23 @@ ringPartitioner.getPartitionedRings = function(rings) {
  *                does *not* include the subject ring
  */
 ringPartitioner.directConnectedRings = function(ring, rings) {
-	var result = [];
-	var atomCount = ring.atoms.length;
-	for ( var k = 0, k1 = rings.length; k < k1; k++) {
-		if (ring != rings[k]) {
-			var atomCount2 = rings[k].atoms.length;
-			connected: for ( var a = 0; a < atomCount; a++) {
-				for ( var a2 = 0; a2 < atomCount2; a2++) {
-					if (ring.atoms[a] === rings[k].atoms[a2]) {
-						result.push(rings[k]);
-						break connected;
-					}
-				}
-			}
-		}
-	}
-	return result;
+  var result = [];
+  var atomCount = ring.atoms.length;
+  for (var k = 0, k1 = rings.length; k < k1; k++) {
+    if (ring !== rings[k]) {
+      var atomCount2 = rings[k].atoms.length;
+      connected:
+      for (var a = 0; a < atomCount; a++) {
+        for (var a2 = 0; a2 < atomCount2; a2++) {
+          if (ring.atoms[a] === rings[k].atoms[a2]) {
+            result.push(rings[k]);
+            break connected;
+          }
+        }
+      }
+    }
+  }
+  return result;
 };
 
 /**
@@ -98,30 +99,30 @@ ringPartitioner.directConnectedRings = function(ring, rings) {
  */
 
 ringPartitioner.getPartitionedRings = function(rings) {
-	var partitions = [];
-	var search = rings;
-	goog.array.forEach(rings, function(ring) {
-		if (!goog.array.contains(goog.array.flatten(partitions), ring)) {
-			var connections = goog.array.find(partitions, function(rings) {
-				return goog.array.contains(rings, ring);
-			});
-			if (connections === null) {
-				connections = [ring];// start a new group of rings
-				search = goog.array.filter(search, function(r) {
-					return r !== ring;
-				});
-			}
-			var connected = ringPartitioner.directConnectedRings(
-					ring, search);
-			connections = goog.array.concat(connections, connected);
-			search = goog.array.filter(search, function(r) {
-				goog.array.contains(connected, r);
-			});
-			partitions.push(connections);
-		}
-		;
-	});
-	return partitions;
+  var partitions = [];
+  var search = rings;
+  goog.array.forEach(rings, function(ring) {
+    if (!goog.array.contains(goog.array.flatten(partitions), ring)) {
+      var connections = goog.array.find(partitions, function(rings) {
+        return goog.array.contains(rings, ring);
+      });
+      if (connections === null) {
+        connections = [ring]; // start a new group of rings
+        search = goog.array.filter(search, function(r) {
+          return r !== ring;
+        });
+      }
+      var connected = ringPartitioner.directConnectedRings(
+        ring, search);
+      connections = goog.array.concat(connections, connected);
+      search = goog.array.filter(search, function(r) {
+        goog.array.contains(connected, r);
+      });
+      partitions.push(connections);
+    }
+    ;
+  });
+  return partitions;
 };
 
 /**
@@ -133,18 +134,18 @@ ringPartitioner.getPartitionedRings = function(rings) {
  * @return{Array.<kemia.ring.Ring>}
  */
 ringPartitioner.directConnectedRings = function(ring, rings) {
-	var result = [];
-	goog.array.forEach(rings, function(r) {
-		var isConnected = goog.array.some(r.atoms, function(atom) {
-			if (r === ring) {
-				return false;
-			} else {
-				return goog.array.contains(ring.atoms, atom);
-			}
-		});
-		if (isConnected) {
-			result.push(r);
-		}
-	});
-	return result;
+  var result = [];
+  goog.array.forEach(rings, function(r) {
+    var isConnected = goog.array.some(r.atoms, function(atom) {
+      if (r === ring) {
+        return false;
+      } else {
+        return goog.array.contains(ring.atoms, atom);
+      }
+    });
+    if (isConnected) {
+      result.push(r);
+    }
+  });
+  return result;
 };

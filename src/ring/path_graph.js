@@ -22,22 +22,22 @@ goog.provide('kemia.ring.PathGraph');
  */
 kemia.ring.PathGraph = function(molecule) {
 
-	/** @type{Array.<kemia.ring.PathEdge>} */
-	this.edges = new Array();
+  /** @type{Array.<kemia.ring.PathEdge>} */
+  this.edges = new Array();
 
-	/** @type{Array.<kemia.model.Atom>} */
-	this.atoms = new Array();
+  /** @type{Array.<kemia.model.Atom>} */
+  this.atoms = new Array();
 
-	// load edges
-	for ( var i = 0, il = molecule.countBonds(); i < il; i++) {
-		var bond = molecule.getBond(i);
-		var edge = [bond.source, bond.target];
-		this.edges.push(new kemia.ring.PathEdge(edge));
-	}
-	// load atoms
-	for ( var i = 0, il = molecule.countAtoms(); i < il; i++) {
-		this.atoms.push(molecule.getAtom(i));
-	}
+  // load edges
+  for (var i = 0, il = molecule.countBonds(); i < il; i++) {
+    var bond = molecule.getBond(i);
+    var edge = [bond.source, bond.target];
+    this.edges.push(new kemia.ring.PathEdge(edge));
+  }
+  // load atoms
+  for (var i = 0, il = molecule.countAtoms(); i < il; i++) {
+    this.atoms.push(molecule.getAtom(i));
+  }
 };
 
 /**
@@ -46,48 +46,48 @@ kemia.ring.PathGraph = function(molecule) {
  * @return {Array.<kemia.ring.PathEdge>}
  */
 kemia.ring.PathGraph.prototype.remove = function(atom, maxLen) {
-	/** @type {Array.<kemia.ring.PathEdge>} */
-	var oldEdges = this.getEdges(atom);
-	/** @type {Array.<kemia.ring.PathEdge>} */
-	var result = new Array();
-	for ( var i = 0, il = oldEdges.length; i < il; i++) {
-		if (oldEdges[i].isCycle()) {
-			result.push(oldEdges[i]);
-		}
-	}
+  /** @type {Array.<kemia.ring.PathEdge>} */
+  var oldEdges = this.getEdges(atom);
+  /** @type {Array.<kemia.ring.PathEdge>} */
+  var result = new Array();
+  for (var i = 0, il = oldEdges.length; i < il; i++) {
+    if (oldEdges[i].isCycle()) {
+      result.push(oldEdges[i]);
+    }
+  }
 
-	for ( var i = 0, il = result.length; i < il; i++) {
-		if (goog.array.contains(oldEdges, result[i])) {
-			goog.array.remove(oldEdges, result[i]);
-		}
-		if (goog.array.contains(this.edges, result[i])) {
-			goog.array.remove(this.edges, result[i]);
-		}
-	}
+  for (var i = 0, il = result.length; i < il; i++) {
+    if (goog.array.contains(oldEdges, result[i])) {
+      goog.array.remove(oldEdges, result[i]);
+    }
+    if (goog.array.contains(this.edges, result[i])) {
+      goog.array.remove(this.edges, result[i]);
+    }
+  }
 
-	/** @type {Array.<kemia.ring.PathEdge>} */
-	var newEdges = this.spliceEdges(oldEdges);
+  /** @type {Array.<kemia.ring.PathEdge>} */
+  var newEdges = this.spliceEdges(oldEdges);
 
-	for ( var i = 0, il = oldEdges.length; i < il; i++) {
-		if (goog.array.contains(this.edges, oldEdges[i])) {
-			goog.array.remove(this.edges, oldEdges[i]);
-		}
-	}
+  for (var i = 0, il = oldEdges.length; i < il; i++) {
+    if (goog.array.contains(this.edges, oldEdges[i])) {
+      goog.array.remove(this.edges, oldEdges[i]);
+    }
+  }
 
-	/*
-	 * for (Path newPath : newPaths) { if (maxPathLen === null || newPath.size() <=
-	 * (maxPathLen+1)) { paths.add(newPath); } }
-	 */
+  /*
+   * for (Path newPath : newPaths) { if (maxPathLen === null || newPath.size() <=
+   * (maxPathLen+1)) { paths.add(newPath); } }
+   */
 
-	for ( var i = 0, il = newEdges.length; i < il; i++) {
-		if (!goog.array.contains(this.edges, newEdges[i])
-				&& (newEdges[i].atoms.length <= maxLen + 1)) {
-			this.edges.push(newEdges[i]);
+  for (var i = 0, il = newEdges.length; i < il; i++) {
+    if (!goog.array.contains(this.edges, newEdges[i])
+      && (newEdges[i].atoms.length <= maxLen + 1)) {
+      this.edges.push(newEdges[i]);
 
-		}
-	}
-	goog.array.remove(this.atoms, atom);
-	return result;
+    }
+  }
+  goog.array.remove(this.atoms, atom);
+  return result;
 };
 
 /**
@@ -96,26 +96,26 @@ kemia.ring.PathGraph.prototype.remove = function(atom, maxLen) {
  */
 kemia.ring.PathGraph.prototype.getEdges = function(atom) {
 
-	/** @type {Array.<kemia.ring.PathEdge>} */
-	var result = new Array();
+  /** @type {Array.<kemia.ring.PathEdge>} */
+  var result = new Array();
 
-	for ( var i = 0, il = this.edges.length; i < il; i++) {
+  for (var i = 0, il = this.edges.length; i < il; i++) {
 
-		/** @type {kemia.ring.PathEdge} */
-		var edge = this.edges[i];
+    /** @type {kemia.ring.PathEdge} */
+    var edge = this.edges[i];
 
-		if (edge.isCycle()) {
-			if (goog.array.contains(edge.atoms, atom)) {
-				result.push(edge);
-			}
-		} else {
-			var lastAtomPos = edge.atoms.length - 1;
-			if ((edge.atoms[0] === atom) || (edge.atoms[lastAtomPos] === atom)) {
-				result.push(edge);
-			}
-		}
-	}
-	return result;
+    if (edge.isCycle()) {
+      if (goog.array.contains(edge.atoms, atom)) {
+        result.push(edge);
+      }
+    } else {
+      var lastAtomPos = edge.atoms.length - 1;
+      if ((edge.atoms[0] === atom) || (edge.atoms[lastAtomPos] === atom)) {
+        result.push(edge);
+      }
+    }
+  }
+  return result;
 };
 
 /**
@@ -124,15 +124,15 @@ kemia.ring.PathGraph.prototype.getEdges = function(atom) {
  */
 
 kemia.ring.PathGraph.prototype.spliceEdges = function(_edges) {
-	var result = new Array();
+  var result = new Array();
 
-	for ( var i = 0, il = _edges.length; i < il; i++) {
-		for ( var j = i + 1; j < il; j++) {
-			var spliced = _edges[j].splice(_edges[i]);
-			if (spliced != null) {
-				result.push(spliced);
-			}
-		}
-	}
-	return result;
+  for (var i = 0, il = _edges.length; i < il; i++) {
+    for (var j = i + 1; j < il; j++) {
+      var spliced = _edges[j].splice(_edges[i]);
+      if (spliced !== null) {
+        result.push(spliced);
+      }
+    }
+  }
+  return result;
 };
