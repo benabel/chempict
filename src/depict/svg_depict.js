@@ -18,7 +18,7 @@ svgDepict.writeHeader = function(w, h) {
 };
 
 svgDepict.drawAtoms = function(mol, fontSize) {
-  const box = mol.getBoundingBox(); //getters: top bottom left right
+  const box = mol.getBoundingBox();  // getters: top bottom left right
   // translations
   const dx = box.left;
   const dy = box.top;
@@ -31,7 +31,8 @@ svgDepict.drawAtoms = function(mol, fontSize) {
     let coord = element.coord;
     let x = (coord.x - dx) * 100 / w;
     let y = (coord.y - dy) * 100 / h;
-    sb += `<text x="${x}" y="${y}" font-family="Verdana" font-size="${fontSize}" text-anchor="middle" fill="black">${symb}</text>\n`;
+    sb +=
+        `<text x="${x}" y="${y}" font-family="Verdana" font-size="${fontSize}" text-anchor="middle" fill="black">${symb}</text>\n`;
   }
   mol.atoms.forEach(svgtxt);
 };
@@ -41,7 +42,7 @@ svgDepict.drawBonds = function(mol) {};
 svgDepict.toSvg = function(w, h, mol) {
   this.writeHeader(w, h);
   sb += '<rect width="100%" height="100%" fill="white"/>\n';
-  //const matrix = this.trans
+  // const matrix = this.trans
   this.drawAtoms(mol, 1);
   return sb + '</svg>';
 };

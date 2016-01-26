@@ -109,9 +109,8 @@ modelAtom.prototype.hydrogenCount = function() {
 
   var bondArray = this.bonds.getValues();
 
-  var totalBondOrder = /** @type {number} */ (goog.array.reduce(bondArray, function(r, v) {
-    return r + v.order;
-  }, 0));
+  var totalBondOrder = /** @type {number} */ (
+      goog.array.reduce(bondArray, function(r, v) { return r + v.order; }, 0));
   var hydrogenCount = 0;
   if (cov) {
     hydrogenCount = cov - totalBondOrder + this.charge;
@@ -146,19 +145,18 @@ modelAtom.nextBondAngle = function(atom) {
 
   } else if (bonds.length === 1) {
     var otherAtom = bonds[0].otherAtom(atom);
-    var existingAngle = goog.math.angle(atom.coord.x, atom.coord.y,
-      otherAtom.coord.x, otherAtom.coord.y);
+    var existingAngle =
+        goog.math.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
 
-    var otherAnglesDiff = goog.array.map(otherAtom.bonds.getValues(),
-      function(b) {
-        var notOther = b.otherAtom(otherAtom);
-        if (notOther !== atom) {
-          return goog.math.angleDifference(existingAngle,
-            goog.math.angle(otherAtom.coord.x,
-              otherAtom.coord.y, notOther.coord.x,
-              notOther.coord.y));
-        }
-      });
+    var otherAnglesDiff = goog.array.map(otherAtom.bonds.getValues(), function(b) {
+      var notOther = b.otherAtom(otherAtom);
+      if (notOther !== atom) {
+        return goog.math.angleDifference(
+            existingAngle,
+            goog.math.angle(
+                otherAtom.coord.x, otherAtom.coord.y, notOther.coord.x, notOther.coord.y));
+      }
+    });
     goog.array.sort(otherAnglesDiff);
 
     var minAngle = otherAnglesDiff[0];
@@ -168,14 +166,13 @@ modelAtom.nextBondAngle = function(atom) {
     } else {
       newAngle = existingAngle + 120;
     }
-  // this.logger.info('existingAngle ' + existingAngle + '
-  // otherAnglesDiff ' + otherAnglesDiff.toString() + ' newAngle ' +
-  // newAngle);
+    // this.logger.info('existingAngle ' + existingAngle + '
+    // otherAnglesDiff ' + otherAnglesDiff.toString() + ' newAngle ' +
+    // newAngle);
   } else if (bonds.length === 2) {
     var angles = goog.array.map(bonds, function(bond) {
       var otherAtom = bond.otherAtom(atom);
-      return goog.math.angle(atom.coord.x, atom.coord.y,
-        otherAtom.coord.x, otherAtom.coord.y);
+      return goog.math.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
     });
     var diff = goog.math.angleDifference(angles[0], angles[1]);
     if (Math.abs(diff) < 180) {
@@ -188,21 +185,18 @@ modelAtom.nextBondAngle = function(atom) {
     // find two bonds with least number of bonds on other end to insert
     // between
     goog.array.sort(bonds, function(b1, b2) {
-      return goog.array.defaultCompare(b1.otherAtom(atom).bonds
-        .getValues().length,
-        b2.otherAtom(atom).bonds.getValues().length);
+      return goog.array.defaultCompare(
+          b1.otherAtom(atom).bonds.getValues().length, b2.otherAtom(atom).bonds.getValues().length);
     });
     var insertBetween = goog.array.slice(bonds, 0, 2);
 
     var angles = goog.array.map(insertBetween, function(b) {
       var otherAtom = b.otherAtom(atom);
-      return goog.math.angle(atom.coord.x, atom.coord.y,
-        otherAtom.coord.x, otherAtom.coord.y);
+      return goog.math.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
     });
-    newAngle = angles[0] + goog.math.angleDifference(angles[0], angles[1])
-      / 2;
-  // this.logger.info('angles ' + angles.toString() + " newAngle "
-  // + newAngle);
+    newAngle = angles[0] + goog.math.angleDifference(angles[0], angles[1]) / 2;
+    // this.logger.info('angles ' + angles.toString() + " newAngle "
+    // + newAngle);
   }
   return newAngle;
 };
@@ -213,8 +207,8 @@ modelAtom.nextBondAngle = function(atom) {
  * @return {modelAtom}
  */
 modelAtom.prototype.clone = function() {
-  return new modelAtom(this.symbol, this.coord.x, this.coord.y,
-    this.charge, this.aromatic, this.isotope);
+  return new modelAtom(
+      this.symbol, this.coord.x, this.coord.y, this.charge, this.aromatic, this.isotope);
 };
 
 /**
@@ -224,16 +218,16 @@ modelAtom.prototype.clone = function() {
  */
 modelAtom.Hybridizations = {
   S: 0,
-  SP1: 1, // linear
-  SP2: 2, // trigonal planar (single pi-electron in pz)
-  SP3: 3, // tetrahedral
-  PLANAR3: 4, // trigonal planar (lone pair in pz)
-  SP3D1: 5, // trigonal planar
-  SP3D2: 6, // octahedral
-  SP3D3: 7, // pentagonal bipyramid
-  SP3D4: 8, // square antiprim
+  SP1: 1,      // linear
+  SP2: 2,      // trigonal planar (single pi-electron in pz)
+  SP3: 3,      // tetrahedral
+  PLANAR3: 4,  // trigonal planar (lone pair in pz)
+  SP3D1: 5,    // trigonal planar
+  SP3D2: 6,    // octahedral
+  SP3D3: 7,    // pentagonal bipyramid
+  SP3D4: 8,    // square antiprim
   SP3D5: 9
-// tricapped trigonal prism
+  // tricapped trigonal prism
 };
 
 /**

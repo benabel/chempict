@@ -215,10 +215,7 @@ layoutVector2D.prototype.toString = function() {
 *
 *****/
 layoutVector2D.fromPoints = function(p1, p2) {
-  return new layoutVector2D(
-    p2.x - p1.x,
-    p2.y - p1.y
-  );
+  return new layoutVector2D(p2.x - p1.x, p2.y - p1.y);
 };
 
 /**
@@ -274,10 +271,8 @@ layoutVector2D.prototype.negate = function() {
 */
 layoutVector2D.prototype.angle = function(v1) {
   var vDot = this.dot(v1) / (this.length() * v1.length());
-  if (vDot < -1.0)
-    vDot = -1.0;
-  if (vDot > 1.0)
-    vDot = 1.0;
+  if (vDot < -1.0) vDot = -1.0;
+  if (vDot > 1.0) vDot = 1.0;
   return ((Math.acos(vDot)));
 
 };

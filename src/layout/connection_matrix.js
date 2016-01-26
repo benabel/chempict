@@ -9,8 +9,7 @@ layoutConnectionMatrix.getMatrix = function(molecule) {
   var conMat = new Array(cntAtoms);
   for (var i = 0; i < cntAtoms; ++i) {
     conMat[i] = new Array(cntAtoms);
-    for (var j = 0; j < cntAtoms; j++)
-      conMat[i][j] = 0;
+    for (var j = 0; j < cntAtoms; j++) conMat[i][j] = 0;
   }
 
   var cntBonds = molecule.countBonds();
@@ -21,7 +20,7 @@ layoutConnectionMatrix.getMatrix = function(molecule) {
     conMat[indexAtom1][indexAtom2] = 1;
     conMat[indexAtom2][indexAtom1] = 1;
   }
-  //layoutConnectionMatrix.display(conMat);
+  // layoutConnectionMatrix.display(conMat);
   return conMat;
 };
 

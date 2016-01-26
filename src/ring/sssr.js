@@ -183,12 +183,12 @@ kemia.ring.SSSR.appendPath = function(lhs, p1, p2) {
 kemia.ring.SSSR.makePIDMatrixes = function(molecule) {
   var n = molecule.countAtoms();
   var D = kemia.ring.SSSR.createWeightMatrix(molecule, n);
-  var Pe1 = kemia.ring.SSSR.createPIDMatrix(molecule, n); // Pe
-  var Pe2 = kemia.ring.SSSR.createEmptyPIDMatrix(n); // Pe'
+  var Pe1 = kemia.ring.SSSR.createPIDMatrix(molecule, n);  // Pe
+  var Pe2 = kemia.ring.SSSR.createEmptyPIDMatrix(n);       // Pe'
   var lastD = D;
 
-  //debug("Pe =<br>" + matrixToHTML(Pe1));
-  //debug("Pe' =<br>" + matrixToHTML(Pe2));
+  // debug("Pe =<br>" + matrixToHTML(Pe1));
+  // debug("Pe' =<br>" + matrixToHTML(Pe2));
 
   for (var k = 0; k < n; k++) {
     for (var i = 0; i < n; i++) {
@@ -213,15 +213,15 @@ kemia.ring.SSSR.makePIDMatrixes = function(molecule) {
 
           // a new shortest path is found
           D[i][j] = pathLength;
-          Pe1[i][j] = [path1[0].concat(path2[0])]; // change path
+          Pe1[i][j] = [path1[0].concat(path2[0])];  // change path
         } else if (lastPathLength === pathLength) {
           // another shortest path is found
           if (path1.length && path2.length) {
-            kemia.ring.SSSR.appendPath(Pe1[i][j], path1, path2); // append path
+            kemia.ring.SSSR.appendPath(Pe1[i][j], path1, path2);  // append path
           }
         } else if (lastPathLength === pathLength - 1) {
           // shortest path + 1 found
-          kemia.ring.SSSR.appendPath(Pe2[i][j], path1, path2); // append path
+          kemia.ring.SSSR.appendPath(Pe2[i][j], path1, path2);  // append path
         } else {
           D[i][j] = lastD[i][j];
         }
@@ -229,15 +229,11 @@ kemia.ring.SSSR.makePIDMatrixes = function(molecule) {
     }
   }
 
-  //debug("D =<br>" + matrixToHTML(D));
-  //debug("Pe =<br>" + matrixToHTML(Pe1));
-  //debug("Pe' =<br>" + matrixToHTML(Pe2));
+  // debug("D =<br>" + matrixToHTML(D));
+  // debug("Pe =<br>" + matrixToHTML(Pe1));
+  // debug("Pe' =<br>" + matrixToHTML(Pe2));
 
-  return {
-    'D': D,
-    'Pe1': Pe1,
-    'Pe2': Pe2
-  };
+  return {'D': D, 'Pe1': Pe1, 'Pe2': Pe2};
 };
 
 /**
@@ -263,19 +259,15 @@ kemia.ring.SSSR.makeCandidateSet = function(D, Pe1, Pe2) {
   for (var i = 0; i < n; i++) {
     for (var j = 0; j < n; j++) {
       if (D[i][j] === 0 || (Pe1[i][j].length === 1 && Pe2[i][j].length === 0)) {
-        continue; // skip degenerate cases
+        continue;  // skip degenerate cases
       } else {
         var Cnum;
         if (Pe2[i][j].length) {
-          Cnum = 2 * (D[i][j] + 0.5); // odd ring candidate
+          Cnum = 2 * (D[i][j] + 0.5);  // odd ring candidate
         } else {
-          Cnum = 2 * D[i][j]; // even ring candidate
+          Cnum = 2 * D[i][j];  // even ring candidate
         }
-        Cset.push({
-          'Cnum': Cnum,
-          'Pe1': Pe1[i][j],
-          'Pe2': Pe2[i][j]
-        });
+        Cset.push({'Cnum': Cnum, 'Pe1': Pe1[i][j], 'Pe2': Pe2[i][j]});
       }
     }
   }
@@ -320,8 +312,7 @@ kemia.ring.SSSR.isCandidateInSet = function(C, Csssr, valences, ringCount) {
           candidateContainsRing = false;
         }
       }
-      if (candidateContainsRing)
-        return true;
+      if (candidateContainsRing) return true;
     }
     // updated part
     for (j = 0, lj = C.length; j < lj; j++) {
@@ -481,7 +472,7 @@ kemia.ring.SSSR.sortByPath = function(atomIndexes, molecule) {
  * @return {Array.<Array.<number>>}
  */
 kemia.ring.SSSR.findRings = function(molecule) {
-  //var start = new Date().getTime();
+  // var start = new Date().getTime();
   // Compute the number of rings in the SSSR using Euler's formula.
   //
   //   nsssr = m - n + 1    m: number of bonds

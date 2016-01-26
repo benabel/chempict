@@ -7,8 +7,10 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
+ * See the License for the specific language governing permissions and limitations under the
+ * License.
  */
 const ringHanser = require('./hanser');
 const ringSSSR = require('./sssr');
@@ -75,8 +77,7 @@ ringFinder.isCandidateInSet = function(C, Csssr, valences, ringCount) {
           candidateContainsRing = false;
         }
       }
-      if (candidateContainsRing)
-        return true;
+      if (candidateContainsRing) return true;
     }
     // updated part
     for (j = 0, lj = C.length; j < lj; j++) {
@@ -139,37 +140,37 @@ ringFinder.verifySSSR = function(sssr, nsssr, molecule) {
 };
 
 /**
-	 * Make a copy of the molecule. This is needed since we modify the molecule
-	 * to increase ring perception performance.
-	 */
+         * Make a copy of the molecule. This is needed since we modify the molecule
+         * to increase ring perception performance.
+         */
 /*
-	 * function copyMolecule(molecule) { var moleculeCopy = new
-	 * kemia.model.Molecule(); for (var i = 0, li = molecule.countAtoms(); i <
-	 * li; i++) { var atomCopy = new kemia.model.Atom(); atomCopy.index = i;
-	 * moleculeCopy.addAtom(atomCopy) } for (i = 0, li = molecule.countBonds();
-	 * i < li; i++) { var bond = molecule.getBond(i); var sourceIndex =
-	 * bond.source.index; var targetIndex = bond.target.index; var sourceCopy =
-	 * moleculeCopy.getAtom(sourceIndex); var targetCopy =
-	 * moleculeCopy.getAtom(targetIndex); var bondCopy = new
-	 * kemia.model.Bond(sourceCopy, targetCopy); bondCopy.index = i;
-	 * moleculeCopy.addBond(bondCopy); } return moleculeCopy; }
-	 */
+         * function copyMolecule(molecule) { var moleculeCopy = new
+         * kemia.model.Molecule(); for (var i = 0, li = molecule.countAtoms(); i <
+         * li; i++) { var atomCopy = new kemia.model.Atom(); atomCopy.index = i;
+         * moleculeCopy.addAtom(atomCopy) } for (i = 0, li = molecule.countBonds();
+         * i < li; i++) { var bond = molecule.getBond(i); var sourceIndex =
+         * bond.source.index; var targetIndex = bond.target.index; var sourceCopy =
+         * moleculeCopy.getAtom(sourceIndex); var targetCopy =
+         * moleculeCopy.getAtom(targetIndex); var bondCopy = new
+         * kemia.model.Bond(sourceCopy, targetCopy); bondCopy.index = i;
+         * moleculeCopy.addBond(bondCopy); } return moleculeCopy; }
+         */
 
 /**
-	 * Reduce the size of a molecule by progressively removing atoms with a
-	 * connectivity of 1. These terminal atoms can never be in a ring. The aim
-	 * of this function is to reduce the number of molecules considered during
-	 * ring perception to speed up the process.
-	 */
+         * Reduce the size of a molecule by progressively removing atoms with a
+         * connectivity of 1. These terminal atoms can never be in a ring. The aim
+         * of this function is to reduce the number of molecules considered during
+         * ring perception to speed up the process.
+         */
 /*
-	 * function reduceMolecule(molecule) { var atomCount =
-	 * molecule.countAtoms(); var lastAtomCount = atomCount + 1; var start = 0;
-	 * while (lastAtomCount !== atomCount) { lastAtomCount = atomCount;
-	 *
-	 * for (var i = start; i < atomCount; i++) { var atom = molecule.getAtom(i);
-	 * if (atom.countBonds() < 2) { molecule.removeAtom(atom); atomCount--;
-	 * start = i; break; } } } }
-	 */
+         * function reduceMolecule(molecule) { var atomCount =
+         * molecule.countAtoms(); var lastAtomCount = atomCount + 1; var start = 0;
+         * while (lastAtomCount !== atomCount) { lastAtomCount = atomCount;
+         *
+         * for (var i = start; i < atomCount; i++) { var atom = molecule.getAtom(i);
+         * if (atom.countBonds() < 2) { molecule.removeAtom(atom); atomCount--;
+         * start = i; break; } } } }
+         */
 
 /**
  * Detect ring membership of atoms and set the isInCycle property. Ring
@@ -270,7 +271,6 @@ ringFinder.detectRingAtoms = function(molecule) {
             previous[0].isInCycle = true;
             break;
           }
-
         }
       } else {
         neighbor.depth = atom.depth + 1;
@@ -279,11 +279,11 @@ ringFinder.detectRingAtoms = function(molecule) {
       }
     }
   }
-/*
- * debug('before: ' + molecule.countAtoms()); var after = 0; for (var i = 0,
- * li = molecule.countAtoms(); i < li; i++) { if
- * (molecule.atoms[i].isInCycle) { after++; } } debug('after: ' + after);
- */
+  /*
+   * debug('before: ' + molecule.countAtoms()); var after = 0; for (var i = 0,
+   * li = molecule.countAtoms(); i < li; i++) { if
+   * (molecule.atoms[i].isInCycle) { after++; } } debug('after: ' + after);
+   */
 };
 
 /**
@@ -303,7 +303,7 @@ ringFinder.createRingSystems = function(molecule) {
   var n = molecule.countAtoms();
   var visitedAtoms = goog.array.repeat(false, n);
   var visitedBonds = goog.array.repeat(false, n);
-  var indexMap = goog.array.repeat(-1, n); // molecule -> ringSystem
+  var indexMap = goog.array.repeat(-1, n);  // molecule -> ringSystem
 
 
   for (var k = 0, lk = molecule.countAtoms(); k < lk; k++) {
@@ -360,7 +360,8 @@ ringFinder.createRingSystems = function(molecule) {
         if (visitedAtoms[neighborIndex]) {
           // create the ring closure bond
           var closureBond = molecule.findBond(atom, neighbor);
-          var newBond = new kemia.model.Bond(ringSystem.atoms[indexMap[atom.index]], ringSystem.atoms[indexMap[neighbor.index]]);
+          var newBond = new kemia.model.Bond(
+              ringSystem.atoms[indexMap[atom.index]], ringSystem.atoms[indexMap[neighbor.index]]);
           newBond.index2 = closureBond.index;
           ringSystem.addBond(newBond);
         } else {

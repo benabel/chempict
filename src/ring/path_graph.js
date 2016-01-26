@@ -80,10 +80,8 @@ kemia.ring.PathGraph.prototype.remove = function(atom, maxLen) {
    */
 
   for (var i = 0, il = newEdges.length; i < il; i++) {
-    if (!goog.array.contains(this.edges, newEdges[i])
-      && (newEdges[i].atoms.length <= maxLen + 1)) {
+    if (!goog.array.contains(this.edges, newEdges[i]) && (newEdges[i].atoms.length <= maxLen + 1)) {
       this.edges.push(newEdges[i]);
-
     }
   }
   goog.array.remove(this.atoms, atom);
@@ -100,7 +98,6 @@ kemia.ring.PathGraph.prototype.getEdges = function(atom) {
   var result = new Array();
 
   for (var i = 0, il = this.edges.length; i < il; i++) {
-
     /** @type {kemia.ring.PathEdge} */
     var edge = this.edges[i];
 

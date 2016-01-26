@@ -19,49 +19,49 @@ var modelAtom = require('./atom');
  *
  * @constructor
  */
-module.exports = modelBond = function(source, target, optOrder, optStereo,
-  optAromatic, optMolecule) {
-  /**
-   * source Atom
-   *
-   * @type {modelAtom}
-   */
-  this.source = source;
-  /**
-   * target Atom
-   *
-   * @type{modelAtom}
-   */
-  this.target = target;
+module.exports =
+    modelBond = function(source, target, optOrder, optStereo, optAromatic, optMolecule) {
+      /**
+       * source Atom
+       *
+       * @type {modelAtom}
+       */
+      this.source = source;
+      /**
+       * target Atom
+       *
+       * @type{modelAtom}
+       */
+      this.target = target;
 
-  /**
-   * The bond order.
-   *
-   * @type {modelBond.ORDER}
-   */
-  this.order = goog.isDef(optOrder) ? optOrder : modelBond.ORDER.SINGLE;
+      /**
+       * The bond order.
+       *
+       * @type {modelBond.ORDER}
+       */
+      this.order = goog.isDef(optOrder) ? optOrder : modelBond.ORDER.SINGLE;
 
-  /**
-   * Stereochemistry
-   *
-   * @type {modelBond.STEREO}
-   */
-  this.stereo = goog.isDef(optStereo) ? optStereo : modelBond.STEREO.NOT_STEREO;
+      /**
+       * Stereochemistry
+       *
+       * @type {modelBond.STEREO}
+       */
+      this.stereo = goog.isDef(optStereo) ? optStereo : modelBond.STEREO.NOT_STEREO;
 
-  /**
-   * Aromatic flag.
-   *
-   * @type {boolean}
-   */
-  this.aromatic = goog.isDef(optAromatic) ? optAromatic : false;
+      /**
+       * Aromatic flag.
+       *
+       * @type {boolean}
+       */
+      this.aromatic = goog.isDef(optAromatic) ? optAromatic : false;
 
-  /**
-   * parent molecule
-   *
-   * @type {kemia.model.Molecule}
-   */
-  this.molecule = goog.isDef(optMolecule) ? optMolecule : null;
-};
+      /**
+       * parent molecule
+       *
+       * @type {kemia.model.Molecule}
+       */
+      this.molecule = goog.isDef(optMolecule) ? optMolecule : null;
+    };
 
 /**
  * Get the atom at the other end of the bond from the subject atom
@@ -92,13 +92,14 @@ modelBond.prototype.getLength = function() {
  * @return {modelBond}
  */
 modelBond.prototype.clone = function() {
-  return new modelBond(this.source, this.target, this.order,
-    this.stereo, this.aromatic, this.molecule);
+  return new modelBond(
+      this.source, this.target, this.order, this.stereo, this.aromatic, this.molecule);
 };
 
 modelBond.prototype.deepClone = function() {
-  return new modelBond(this.source.clone(), this.target.clone(), this.order,
-    this.stereo, this.aromatic, this.molecule);
+  return new modelBond(
+      this.source.clone(), this.target.clone(), this.order, this.stereo, this.aromatic,
+      this.molecule);
 
 };
 
@@ -128,11 +129,7 @@ modelBond.STEREO = {
 
 modelBond.prototype.toString = function() {
   var molname = this.molecule ? this.molecule.name : 'no molecule';
-  return 'modelBond[' +
-    this.order + ', ' +
-    this.stereo + ']  ' +
-    this.source.toString() + ' -- ' +
-    this.target.toString() + ' mol: ' +
-    molname;
+  return 'modelBond[' + this.order + ', ' + this.stereo + ']  ' + this.source.toString() + ' -- ' +
+      this.target.toString() + ' mol: ' + molname;
 
 };

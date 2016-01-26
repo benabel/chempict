@@ -7,8 +7,10 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
+ * See the License for the specific language governing permissions and limitations under the
+ * License.
  */
 
 goog.require('goog.math');
@@ -40,7 +42,8 @@ layoutRingPlacer.getRingCenterOfFirstRing = function(ring, bondVector, bondLengt
   /* get the angle between the x axis and the bond vector */
   var rotangle = layoutAtomPlacer.getAngle(bondVector.x, bondVector.y);
   rotangle += Math.PI / 2;
-  return new layoutVector2D(Math.cos(rotangle) * newRingPerpendicular, Math.sin(rotangle) * newRingPerpendicular);
+  return new layoutVector2D(
+      Math.cos(rotangle) * newRingPerpendicular, Math.sin(rotangle) * newRingPerpendicular);
 };
 
 /**
@@ -59,18 +62,18 @@ layoutRingPlacer.getRingCenterOfFirstRing = function(ring, bondVector, bondLengt
  * @param bondLength
  *            The standard bondlength
  */
-layoutRingPlacer.placeRing = function(ring, sharedFrag,
-  sharedFragCenter, ringCenterVector, bondLength) {
+layoutRingPlacer.placeRing = function(
+    ring, sharedFrag, sharedFragCenter, ringCenterVector, bondLength) {
   var sharedAtomCount = sharedFrag.atoms.length;
   if (sharedAtomCount > 2) {
-    layoutRingPlacer.placeBridgedRing(ring, sharedFrag,
-      sharedFragCenter, ringCenterVector, bondLength);
+    layoutRingPlacer.placeBridgedRing(
+        ring, sharedFrag, sharedFragCenter, ringCenterVector, bondLength);
   } else if (sharedAtomCount === 2) {
-    layoutRingPlacer.placeFusedRing(ring, sharedFrag,
-      sharedFragCenter, ringCenterVector, bondLength);
+    layoutRingPlacer.placeFusedRing(
+        ring, sharedFrag, sharedFragCenter, ringCenterVector, bondLength);
   } else if (sharedAtomCount === 1) {
-    layoutRingPlacer.placeSpiroRing(ring, sharedFrag,
-      sharedFragCenter, ringCenterVector, bondLength);
+    layoutRingPlacer.placeSpiroRing(
+        ring, sharedFrag, sharedFragCenter, ringCenterVector, bondLength);
   }
 };
 
@@ -81,25 +84,17 @@ layoutRingPlacer.placeRingSubstituents = function(molec, ringset, bondLength) {
     goog.array.forEach(ring.atoms, function(atom) {
       var unplacedPartners = new modelMolecule();
       var sharedAtoms = new modelMolecule();
-      var rings = goog.array.filter(ringset, function(r) {
-        return goog.array.contains(r.atoms, atom);
-      });
-      var ringsAtoms = goog.array.flatten(goog.array.map(rings,
-        function(r) {
-          return r.atoms;
-        }));
-      var centerOfRingGravity = layoutRingPlacer
-        .center(ringsAtoms);
-      cntDbg += layoutAtomPlacer.partitionPartners(molec, atom, unplacedPartners,
-        sharedAtoms);
+      var rings =
+          goog.array.filter(ringset, function(r) { return goog.array.contains(r.atoms, atom); });
+      var ringsAtoms = goog.array.flatten(goog.array.map(rings, function(r) { return r.atoms; }));
+      var centerOfRingGravity = layoutRingPlacer.center(ringsAtoms);
+      cntDbg += layoutAtomPlacer.partitionPartners(molec, atom, unplacedPartners, sharedAtoms);
 
       layoutAtomPlacer.markNotPlaced(unplacedPartners.atoms);
-      goog.array.forEach(unplacedPartners.atoms, function(atom) {
-        treatedAtoms.addAtom(atom);
-      });
+      goog.array.forEach(unplacedPartners.atoms, function(atom) { treatedAtoms.addAtom(atom); });
       if (unplacedPartners.atoms.length > 0) {
-        layoutAtomPlacer.distributePartners(atom, sharedAtoms,
-          centerOfRingGravity, unplacedPartners, bondLength);
+        layoutAtomPlacer.distributePartners(
+            atom, sharedAtoms, centerOfRingGravity, unplacedPartners, bondLength);
       }
     });
   });
@@ -123,13 +118,14 @@ layoutRingPlacer.placeRingSubstituents = function(molec, ringset, bondLength) {
  * @param bondLength
  *            The standard bondlength
  */
-layoutRingPlacer.placeBridgedRing = function(ring, sharedFrag,
-  sharedFragCenter, ringCenterVector, bondLength) {
+layoutRingPlacer.placeBridgedRing = function(
+    ring, sharedFrag, sharedFragCenter, ringCenterVector, bondLength) {
 
   var radius = layoutRingPlacer.getNativeRingRadius(ring.atoms.length, bondLength);
   ringCenterVector.normalize();
   ringCenterVector.scale(radius);
-  var ringCenter = new goog.math.Coordinate(sharedFragCenter.x + ringCenterVector.x, sharedFragCenter.y + ringCenterVector.y);
+  var ringCenter = new goog.math.Coordinate(
+      sharedFragCenter.x + ringCenterVector.x, sharedFragCenter.y + ringCenterVector.y);
 
 
   var bridgeAtoms = layoutRingPlacer.getBridgeAtoms(sharedFrag);
@@ -137,10 +133,8 @@ layoutRingPlacer.placeBridgedRing = function(ring, sharedFrag,
   var bondAtom1 = bridgeAtoms[0];
   var bondAtom2 = bridgeAtoms[1];
 
-  var bondAtom1Vector = new layoutVector2D(bondAtom1.coord.x,
-    bondAtom1.coord.y);
-  var bondAtom2Vector = new layoutVector2D(bondAtom2.coord.x,
-    bondAtom2.coord.y);
+  var bondAtom1Vector = new layoutVector2D(bondAtom1.coord.x, bondAtom1.coord.y);
+  var bondAtom2Vector = new layoutVector2D(bondAtom2.coord.x, bondAtom2.coord.y);
 
   bondAtom1Vector.sub(ringCenterVector);
   bondAtom2Vector.sub(ringCenterVector);
@@ -148,35 +142,28 @@ layoutRingPlacer.placeBridgedRing = function(ring, sharedFrag,
   var occupiedAngle = bondAtom1Vector.angle(bondAtom2Vector);
 
   var remainingAngle = (2 * Math.PI) - occupiedAngle;
-  var addAngle = remainingAngle
-    / (ring.atoms.length - sharedFrag.atoms.length + 1);
+  var addAngle = remainingAngle / (ring.atoms.length - sharedFrag.atoms.length + 1);
 
-  var startAtom = layoutRingPlacer.findStartAtom(ringCenterVector,
-    bondAtom1, bondAtom2);
-  var startAngle = goog.math.toRadians(goog.math.angle(startAtom.coord.x, startAtom.coord.y, ringCenterVector.x, ringCenterVector.y));
+  var startAtom = layoutRingPlacer.findStartAtom(ringCenterVector, bondAtom1, bondAtom2);
+  var startAngle = goog.math.toRadians(
+      goog.math.angle(
+          startAtom.coord.x, startAtom.coord.y, ringCenterVector.x, ringCenterVector.y));
 
-  var atomsToPlace = layoutRingPlacer.atomsInPlacementOrder(
-    startAtom, sharedFrag.bonds[0], ring.bonds);
+  var atomsToPlace =
+      layoutRingPlacer.atomsInPlacementOrder(startAtom, sharedFrag.bonds[0], ring.bonds);
 
-  var addAngle = addAngle
-    * layoutRingPlacer.findDirection(ringCenterVector,
-      bondAtom1, bondAtom2);
-  layoutAtomPlacer.populatePolygonCorners(atomsToPlace, ringCenter, startAngle,
-    addAngle, radius);
+  var addAngle = addAngle * layoutRingPlacer.findDirection(ringCenterVector, bondAtom1, bondAtom2);
+  layoutAtomPlacer.populatePolygonCorners(atomsToPlace, ringCenter, startAngle, addAngle, radius);
 };
 
 layoutRingPlacer.atomsInPlacementOrder = function(atom, bond, bonds) {
-  var nextBond = goog.array.find(bonds, function(b) {
-    return b.otherAtom(atom);
-  });
+  var nextBond = goog.array.find(bonds, function(b) { return b.otherAtom(atom); });
 
-  var remainingBonds = goog.array.filter(bonds, function(b) {
-    return b !== nextBond;
-  });
+  var remainingBonds = goog.array.filter(bonds, function(b) { return b !== nextBond; });
   if (remainingBonds.length > 0) {
     var nextAtom = nextBond.otherAtom(atom);
-    return goog.array.concat(nextAtom, layoutRingPlacer
-      .atomsInPlacementOrder(nextAtom, nextBond, remainingBonds));
+    return goog.array.concat(
+        nextAtom, layoutRingPlacer.atomsInPlacementOrder(nextAtom, nextBond, remainingBonds));
   } else {
     return [];
   }
@@ -204,8 +191,7 @@ layoutRingPlacer.findDirection = function(ringCenter, atom1, atom2) {
     }
   } else {
     // not vertical
-    if (ringCenter.y - atom1.coord.y < (ringCenter.x - atom1.coord.x)
-      * diff.y / diff.x) {
+    if (ringCenter.y - atom1.coord.y < (ringCenter.x - atom1.coord.x) * diff.y / diff.x) {
       result = -1;
     }
   }
@@ -266,16 +252,15 @@ layoutRingPlacer.getBridgeAtoms = function(sharedFrag) {
  * @param bondLength
  *            The standard bondlength
  */
-layoutRingPlacer.placeFusedRing = function(ring, sharedAtoms,
-  sharedAtomsCenter, ringCenterVector, bondLength) {
-  var radius = layoutRingPlacer.getNativeRingRadius(ring.atoms.length,
-    bondLength);
-  var newRingPerpendicular = Math.sqrt(Math.pow(radius, 2)
-    - Math.pow(bondLength / 2, 2));
+layoutRingPlacer.placeFusedRing = function(
+    ring, sharedAtoms, sharedAtomsCenter, ringCenterVector, bondLength) {
+  var radius = layoutRingPlacer.getNativeRingRadius(ring.atoms.length, bondLength);
+  var newRingPerpendicular = Math.sqrt(Math.pow(radius, 2) - Math.pow(bondLength / 2, 2));
 
   ringCenterVector.normalize();
   ringCenterVector.scale(newRingPerpendicular);
-  var ringCenter = new goog.math.Coordinate(sharedAtomsCenter.x + ringCenterVector.x, sharedAtomsCenter.y + ringCenterVector.y);
+  var ringCenter = new goog.math.Coordinate(
+      sharedAtomsCenter.x + ringCenterVector.x, sharedAtomsCenter.y + ringCenterVector.y);
 
   var bondAtom1 = sharedAtoms.atoms[0];
   var bondAtom2 = sharedAtoms.atoms[1];
@@ -328,7 +313,8 @@ layoutRingPlacer.placeFusedRing = function(ring, sharedAtoms,
     else
       direction = -1;
   }
-  var startAngle = layoutAtomPlacer.getAngle(startAtom.coord.x - ringCenter.x, startAtom.coord.y - ringCenter.y);
+  var startAngle =
+      layoutAtomPlacer.getAngle(startAtom.coord.x - ringCenter.x, startAtom.coord.y - ringCenter.y);
 
   var currentAtom = startAtom;
   var currentBond = sharedAtoms.bonds[0];
@@ -346,7 +332,8 @@ layoutRingPlacer.placeFusedRing = function(ring, sharedAtoms,
 
 layoutRingPlacer.getNextBond = function(ring, bond, atom) {
   for (var f = 0; f < ring.bonds.length; f++) {
-    if (ring.bonds[f] !== bond && (ring.bonds[f].source === atom || ring.bonds[f].target === atom)) {
+    if (ring.bonds[f] !== bond &&
+        (ring.bonds[f].source === atom || ring.bonds[f].target === atom)) {
       return ring.bonds[f];
     }
   }
@@ -369,22 +356,24 @@ layoutRingPlacer.getNextBond = function(ring, bond, atom) {
  * @param bondLength
  *            The standard bondlength
  */
-layoutRingPlacer.placeSpiroRing = function(ring, sharedFrag, sharedAtomsCenter, ringCenterVector, bondLength) {
+layoutRingPlacer.placeSpiroRing = function(
+    ring, sharedFrag, sharedAtomsCenter, ringCenterVector, bondLength) {
   var radius = layoutRingPlacer.getNativeRingRadius(ring.atoms.length, bondLength);
   ringCenterVector.normalize();
   ringCenterVector.scale(radius);
-  var ringCenter = new goog.math.Coordinate(sharedAtomsCenter.x + ringCenterVector.x, sharedAtomsCenter.y + ringCenterVector.y);
+  var ringCenter = new goog.math.Coordinate(
+      sharedAtomsCenter.x + ringCenterVector.x, sharedAtomsCenter.y + ringCenterVector.y);
 
   var addAngle = 2 * Math.PI / ring.atoms.length;
 
   var startAtom = sharedFrag.atoms[0];
-  var startAngle = layoutAtomPlacer.getAngle(startAtom.coord.x - ringCenter.x, startAtom.coord.y - ringCenter.y);
+  var startAngle =
+      layoutAtomPlacer.getAngle(startAtom.coord.x - ringCenter.x, startAtom.coord.y - ringCenter.y);
 
-  var atomsToPlace = layoutRingPlacer.atomsInPlacementOrder(
-    startAtom, sharedFrag.bonds[0], ring.bonds);
+  var atomsToPlace =
+      layoutRingPlacer.atomsInPlacementOrder(startAtom, sharedFrag.bonds[0], ring.bonds);
 
-  layoutAtomPlacer.populatePolygonCorners(atomsToPlace, ringCenter,
-    startAngle, addAngle, radius);
+  layoutAtomPlacer.populatePolygonCorners(atomsToPlace, ringCenter, startAngle, addAngle, radius);
 };
 
 /**
@@ -434,8 +423,7 @@ layoutRingPlacer.center = function(atoms) {
     return goog.math.Coordinate.sum(rval, atom.coord);
   }, new goog.math.Coordinate(0, 0));
 
-  return new goog.math.Coordinate(sum.x / atoms.length, sum.y
-    / atoms.length);
+  return new goog.math.Coordinate(sum.x / atoms.length, sum.y / atoms.length);
 };
 
 
@@ -449,18 +437,24 @@ layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondL
         bonds: layoutRingPlacer.getIntersectingBonds(ring, connectedRing)
       };
       var sac = sharedFrag.atoms.length;
-      if ((sac === 2 && handleType === 'FUSED') || (sac === 1 && handleType === 'SPIRO') || (sac > 2 && handleType === 'BRIDGED')) {
+      if ((sac === 2 && handleType === 'FUSED') || (sac === 1 && handleType === 'SPIRO') ||
+          (sac > 2 && handleType === 'BRIDGED')) {
         var debug = '';
         for (var qw = 0; qw < sharedFrag.atoms.length; qw++)
-          debug += ('\n         ' + sharedFrag.atoms[qw].coord + ' ' + sharedFrag.atoms[qw].flags[modelFlags.ISPLACED]);
+          debug +=
+              ('\n         ' + sharedFrag.atoms[qw].coord + ' ' +
+               sharedFrag.atoms[qw].flags[modelFlags.ISPLACED]);
         var sharedAtomsCenter = layoutAtomPlacer.getAtoms2DCenter(sharedFrag.atoms);
         var oldRingCenter = layoutAtomPlacer.getAtoms2DCenter(ring.atoms);
         var tempVector = new layoutVector2D(sharedAtomsCenter.x, sharedAtomsCenter.y);
         var newRingCenterVector = new layoutVector2D(tempVector.x, tempVector.y);
         newRingCenterVector.sub(new layoutVector2D(oldRingCenter.x, oldRingCenter.y));
         var oldRingCenterVector = new layoutVector2D(newRingCenterVector.x, newRingCenterVector.y);
-        var tempPoint = new goog.math.Coordinate(sharedAtomsCenter.x + newRingCenterVector.x, sharedAtomsCenter.y + newRingCenterVector.y);
-        layoutRingPlacer.placeRing(connectedRing, sharedFrag, sharedAtomsCenter, newRingCenterVector, bondLength);
+        var tempPoint = new goog.math.Coordinate(
+            sharedAtomsCenter.x + newRingCenterVector.x,
+            sharedAtomsCenter.y + newRingCenterVector.y);
+        layoutRingPlacer.placeRing(
+            connectedRing, sharedFrag, sharedAtomsCenter, newRingCenterVector, bondLength);
         connectedRing.setFlag(modelFlags.ISPLACED, true);
         layoutRingPlacer.placeConnectedRings(ringset, connectedRing, handleType, bondLength);
       }
@@ -477,9 +471,7 @@ layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondL
 layoutRingPlacer.resetUnplacedRingAtoms = function(ringset) {
   goog.array.forEach(ringset, function(ring) {
     if (!ring.isPlaced) {
-      goog.array.forEach(ring.atoms, function(atom) {
-        atom.setFlag(modelFlags.ISPLACED, false);
-      });
+      goog.array.forEach(ring.atoms, function(atom) { atom.setFlag(modelFlags.ISPLACED, false); });
     }
   });
 };
@@ -487,7 +479,8 @@ layoutRingPlacer.resetUnplacedRingAtoms = function(ringset) {
 layoutRingPlacer.findNextRingBondWithUnplacedRingAtom = function(bonds) {
   return goog.array.find(bonds, function(bond) {
     return goog.array.some([bond.source, bond.target], function(atom) {
-      return atom.flags[modelFlags.ISINRING] && !atom.flags[modelFlags.ISPLACED] && bond.otherAtom(atom).flags[modelFlags.ISPLACED];
+      return atom.flags[modelFlags.ISINRING] && !atom.flags[modelFlags.ISPLACED] &&
+          bond.otherAtom(atom).flags[modelFlags.ISPLACED];
     });
   });
 };
@@ -495,9 +488,8 @@ layoutRingPlacer.findNextRingBondWithUnplacedRingAtom = function(bonds) {
 layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr, ringsets) {
 
   layoutRingPlacer.resetUnplacedRingAtoms(sssr);
-  var placedAtoms = goog.array.filter(molecule.atoms, function(atom) {
-    return atom.flags[modelFlags.ISPLACED];
-  });
+  var placedAtoms =
+      goog.array.filter(molecule.atoms, function(atom) { return atom.flags[modelFlags.ISPLACED]; });
 
   var nextBond = layoutRingPlacer.findNextRingBondWithUnplacedRingAtom(molecule.bonds);
 
@@ -510,9 +502,8 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
 
     // ringset containing ringAtom
     var nextRingSet = goog.array.find(ringsets, function(ringset) {
-      return goog.array.find(ringset, function(ring) {
-        return goog.array.contains(ring.atoms, ringAtom);
-      });
+      return goog.array.find(
+          ringset, function(ring) { return goog.array.contains(ring.atoms, ringAtom); });
     });
 
     var oldRingAtomCoord = ringAtom.coord.clone();
@@ -522,14 +513,13 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
 
     // Place all the substituents of next ring system
     layoutAtomPlacer.markNotPlaced(placedAtoms);
-    var substituents = layoutRingPlacer.placeRingSubstituents(molecule, nextRingSet, kemia.layout.CoordinateGenerator.bondLength);
+    var substituents = layoutRingPlacer.placeRingSubstituents(
+        molecule, nextRingSet, kemia.layout.CoordinateGenerator.bondLength);
     layoutAtomPlacer.markPlaced(placedAtoms);
 
-    var placedAtoms = goog.array.concat(substituents.atoms,
-      goog.array.flatten(goog.array.map(nextRingSet, function(ring) {
-        return ring.atoms;
-      }))
-    );
+    var placedAtoms = goog.array.concat(
+        substituents.atoms,
+        goog.array.flatten(goog.array.map(nextRingSet, function(ring) { return ring.atoms; })));
     goog.array.removeDuplicates(placedAtoms);
 
     var oldPoint2 = oldRingAtomCoord;
@@ -558,8 +548,6 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
       point.y = relativex * sintheta + relativey * costheta + oldPoint1.y;
     });
 
-    goog.array.forEach(nextRingSet, function(ring) {
-      ring.isPlaced = true;
-    });
+    goog.array.forEach(nextRingSet, function(ring) { ring.isPlaced = true; });
   }
 };

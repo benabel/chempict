@@ -63,8 +63,7 @@ layoutAtomPlacer.computeFloydAPSP = function(costMatrix) {
   var nrow = costMatrix.length;
 
   var distMatrix = new Array(nrow);
-  for (var i = 0; i < nrow; ++i)
-    distMatrix[i] = new Array(nrow);
+  for (var i = 0; i < nrow; ++i) distMatrix[i] = new Array(nrow);
 
   for (var i = 0; i < nrow; i++) {
     for (var j = 0; j < nrow; j++) {
@@ -77,7 +76,7 @@ layoutAtomPlacer.computeFloydAPSP = function(costMatrix) {
   }
 
   for (i = 0; i < nrow; i++) {
-    distMatrix[i][i] = 0; // no self cycle
+    distMatrix[i][i] = 0;  // no self cycle
   }
   for (var k = 0; k < nrow; k++) {
     for (i = 0; i < nrow; i++) {
@@ -104,7 +103,7 @@ layoutAtomPlacer.getLongestUnplacedChain = function(molecule, startAtom) {
   var longestPathLength = 0;
   var maxDegreeSum = 0;
   var degreeSum = 0;
-  var paths = new Array(); // of molecules
+  var paths = new Array();  // of molecules
   var atCount = molecule.countAtoms();
   var bondCount = molecule.countBonds();
 
@@ -121,7 +120,6 @@ layoutAtomPlacer.getLongestUnplacedChain = function(molecule, startAtom) {
   layoutAtomPlacer.breadthFirstSearch(molecule, startSphere, paths, bondCount);
 
   for (var ds = 0; ds < atCount; ds++) {
-
     if (paths[ds].countAtoms() >= longestPathLength) {
       degreeSum = layoutAtomPlacer.getDegreeSum(paths[ds], molecule, bondCount);
       if (degreeSum > maxDegreeSum) {
@@ -141,7 +139,8 @@ layoutAtomPlacer.getDegreeSum = function(molecule, superMolecule, superBondCount
   var degreeSum = 0;
   var atCount = molecule.countAtoms();
   for (var cb = 0; cb < atCount; cb++) {
-    degreeSum += layoutAtomPlacer.getConnectedBondsCount(molecule.getAtom(cb), superMolecule, superBondCount);
+    degreeSum += layoutAtomPlacer.getConnectedBondsCount(
+        molecule.getAtom(cb), superMolecule, superBondCount);
   }
   return degreeSum;
 };
@@ -152,8 +151,7 @@ layoutAtomPlacer.getDegreeSum = function(molecule, superMolecule, superBondCount
 layoutAtomPlacer.getConnectedBondsCount = function(atom, molecule, bondCount) {
   var connBondCount = 0;
   for (var i = 0; i < bondCount; i++) {
-    if (molecule.getBond(i).source === atom || molecule.getBond(i).target === atom)
-      connBondCount++;
+    if (molecule.getBond(i).source === atom || molecule.getBond(i).target === atom) connBondCount++;
   }
   return connBondCount;
 };
@@ -227,9 +225,9 @@ layoutAtomPlacer.placeLinearChain = function(chain, initialBondVector, bondLengt
     nextAtom.coord = atomPoint;
     nextAtom.setFlag(modelFlags.ISPLACED, true);
     var trans = true;
-    if (layoutAtomPlacer.has2DCoordinatesNew(chain) === 2)
-      trans = false;
-    bondVector = layoutAtomPlacer.getNextBondVector(nextAtom, atom, layoutAtomPlacer.get2DCenter(chain), trans);
+    if (layoutAtomPlacer.has2DCoordinatesNew(chain) === 2) trans = false;
+    bondVector = layoutAtomPlacer.getNextBondVector(
+        nextAtom, atom, layoutAtomPlacer.get2DCenter(chain), trans);
   }
 };
 
@@ -305,10 +303,10 @@ layoutAtomPlacer.getAngle = function(xDiff, yDiff) {
 
 layoutAtomPlacer.getNextBondVector = function(atom, previousAtom, distanceMeasure, trans) {
 
-  var angle = layoutAtomPlacer.getAngle(previousAtom.coord.x - atom.coord.x, previousAtom.coord.y - atom.coord.y);
+  var angle = layoutAtomPlacer.getAngle(
+      previousAtom.coord.x - atom.coord.x, previousAtom.coord.y - atom.coord.y);
   var addAngle = Math.PI * (120 / 180);
-  if (!trans)
-    addAngle = Math.PI * (60 / 180);
+  if (!trans) addAngle = Math.PI * (60 / 180);
 
   angle += addAngle;
   var vec1 = new layoutVector2D(Math.cos(angle), Math.sin(angle));
@@ -330,8 +328,7 @@ layoutAtomPlacer.getNextBondVector = function(atom, previousAtom, distanceMeasur
 
 layoutAtomPlacer.allPlaced = function(molecule, atCount) {
   for (var ap = 0; ap < atCount; ap++)
-    if (!molecule.getAtom(ap).flags[modelFlags.ISPLACED])
-      return false;
+    if (!molecule.getAtom(ap).flags[modelFlags.ISPLACED]) return false;
   return true;
 };
 
@@ -339,7 +336,8 @@ layoutAtomPlacer.allPlaced = function(molecule, atCount) {
  * Distribute the bonded atoms (neighbours) of an atom such that they fill the
  * remaining space around an atom in a geometrically nice way.
  */
-layoutAtomPlacer.distributePartners = function(atom, placedNeighbours, sharedAtomsCenter, unplacedNeighbours, bondLength) {
+layoutAtomPlacer.distributePartners = function(
+    atom, placedNeighbours, sharedAtomsCenter, unplacedNeighbours, bondLength) {
 
   var occupiedAngle = 0;
   var startAngle = 0.0;
@@ -368,7 +366,9 @@ layoutAtomPlacer.distributePartners = function(atom, placedNeighbours, sharedAto
     var yDiff = placedAtom.coord.y - atom.coord.y;
 
     startAngle = layoutAtomPlacer.getAngle(xDiff, yDiff);
-    layoutAtomPlacer.populatePolygonCorners(atomsToDraw, new goog.math.Coordinate(atom.coord.x, atom.coord.y), startAngle, addAngle, bondLength);
+    layoutAtomPlacer.populatePolygonCorners(
+        atomsToDraw, new goog.math.Coordinate(atom.coord.x, atom.coord.y), startAngle, addAngle,
+        bondLength);
     return;
   } else if (placedNeighboursCountAtoms === 0) {
     for (f1 = 0; f1 < unPlacedNeighboursCountAtoms; f1++) {
@@ -376,7 +376,9 @@ layoutAtomPlacer.distributePartners = function(atom, placedNeighbours, sharedAto
     }
     addAngle = Math.PI * 2.0 / unPlacedNeighboursCountAtoms;
     startAngle = 0.0;
-    layoutAtomPlacer.populatePolygonCorners(atomsToDraw, new goog.math.Coordinate(atom.coord.x, atom.coord.y), startAngle, addAngle, bondLength);
+    layoutAtomPlacer.populatePolygonCorners(
+        atomsToDraw, new goog.math.Coordinate(atom.coord.x, atom.coord.y), startAngle, addAngle,
+        bondLength);
     return;
   }
   var sortedAtoms = new Array();
@@ -406,9 +408,12 @@ layoutAtomPlacer.distributePartners = function(atom, placedNeighbours, sharedAto
   occupiedAngle = closestPoint1.angle(occupiedDirection);
   occupiedAngle += closestPoint2.angle(occupiedDirection);
 
-  var angle1 = layoutAtomPlacer.getAngle(sortedAtoms[0].coord.x - atom.coord.x, sortedAtoms[0].coord.y - atom.coord.y);
-  var angle2 = layoutAtomPlacer.getAngle(sortedAtoms[1].coord.x - atom.coord.x, sortedAtoms[1].coord.y - atom.coord.y);
-  var angle3 = layoutAtomPlacer.getAngle(distanceMeasure.x - atom.coord.x, distanceMeasure.y - atom.coord.y);
+  var angle1 = layoutAtomPlacer.getAngle(
+      sortedAtoms[0].coord.x - atom.coord.x, sortedAtoms[0].coord.y - atom.coord.y);
+  var angle2 = layoutAtomPlacer.getAngle(
+      sortedAtoms[1].coord.x - atom.coord.x, sortedAtoms[1].coord.y - atom.coord.y);
+  var angle3 =
+      layoutAtomPlacer.getAngle(distanceMeasure.x - atom.coord.x, distanceMeasure.y - atom.coord.y);
 
   var startAtom = null;
 
@@ -431,9 +436,12 @@ layoutAtomPlacer.distributePartners = function(atom, placedNeighbours, sharedAto
     atomsToDraw.push(unplacedNeighbours.getAtom(fff));
   }
   radius = bondLength;
-  startAngle = layoutAtomPlacer.getAngle(startAtom.coord.x - atom.coord.x, startAtom.coord.y - atom.coord.y);
+  startAngle =
+      layoutAtomPlacer.getAngle(startAtom.coord.x - atom.coord.x, startAtom.coord.y - atom.coord.y);
 
-  layoutAtomPlacer.populatePolygonCorners(atomsToDraw, new goog.math.Coordinate(atom.coord.x, atom.coord.y), startAngle, addAngle, radius);
+  layoutAtomPlacer.populatePolygonCorners(
+      atomsToDraw, new goog.math.Coordinate(atom.coord.x, atom.coord.y), startAngle, addAngle,
+      radius);
 };
 
 
@@ -462,29 +470,28 @@ layoutAtomPlacer.sortBy2DDistance = function(atoms, point) {
 };
 
 /**
-	 * Populates the corners of a polygon with atoms. Used to place atoms in a
-	 * geometrically regular way around a ring center or another atom. If this
-	 * is used to place the bonding partner of an atom (and not to draw a ring)
-	 * we want to place the atoms such that those with highest "weight" are
-	 * placed farmost away from the rest of the molecules. The "weight"
-	 * mentioned here is calculated by a modified morgan number algorithm.
-	 */
-layoutAtomPlacer.populatePolygonCorners = function(atomsToDraw, rotationCenter, startAngle, addAngle, radius) {
+         * Populates the corners of a polygon with atoms. Used to place atoms in a
+         * geometrically regular way around a ring center or another atom. If this
+         * is used to place the bonding partner of an atom (and not to draw a ring)
+         * we want to place the atoms such that those with highest "weight" are
+         * placed farmost away from the rest of the molecules. The "weight"
+         * mentioned here is calculated by a modified morgan number algorithm.
+         */
+layoutAtomPlacer.populatePolygonCorners = function(
+    atomsToDraw, rotationCenter, startAngle, addAngle, radius) {
 
   var points = new Array();
   var angle = startAngle;
   for (var ad = 0, ads = atomsToDraw.length; ad < ads; ad++) {
-
     angle = angle + addAngle;
-    if (angle >= 2.0 * Math.PI)
-      angle -= 2.0 * Math.PI;
+    if (angle >= 2.0 * Math.PI) angle -= 2.0 * Math.PI;
 
-    //Fix Github issue 17 : Generated bond lengths should better reflect bond and participating element chemistry.
+    // Fix Github issue 17 : Generated bond lengths should better reflect bond and participating
+    // element chemistry.
     var connectAtom = atomsToDraw[ad];
 
-    if (connectAtom.symbol === 'H')
-      radius *= .6;
-      //End fix
+    if (connectAtom.symbol === 'H') radius *= .6;
+    // End fix
 
     var x = Math.cos(angle) * radius;
     var y = Math.sin(angle) * radius;
@@ -526,13 +533,9 @@ layoutAtomPlacer.partitionPartners = function(molec, atom, unplacedPartners, pla
 };
 
 layoutAtomPlacer.markNotPlaced = function(atoms) {
-  goog.array.forEach(atoms, function(atom) {
-    atom.setFlag(modelFlags.ISPLACED, false);
-  });
+  goog.array.forEach(atoms, function(atom) { atom.setFlag(modelFlags.ISPLACED, false); });
 };
 
 layoutAtomPlacer.markPlaced = function(atoms) {
-  goog.array.forEach(atoms, function(atom) {
-    atom.setFlag(modelFlags.ISPLACED, true);
-  });
+  goog.array.forEach(atoms, function(atom) { atom.setFlag(modelFlags.ISPLACED, true); });
 };

@@ -75,9 +75,7 @@ module.exports = modelMolecule = function(optName) {
 };
 
 modelMolecule.prototype.resetRingCenters = function() {
-  goog.array.forEach(this.getRings(), function(ring) {
-    ring.resetRingCenter();
-  });
+  goog.array.forEach(this.getRings(), function(ring) { ring.resetRingCenter(); });
 };
 /**
  * Add a bond to molecule.
@@ -143,9 +141,7 @@ modelMolecule.prototype.getBond = function(id) {
 modelMolecule.prototype.getAverageBondLength = function() {
   var average = 1.25;
   if (this.bonds.length) {
-    var sum = goog.array.reduce(this.bonds, function(r, b) {
-      return r + b.getLength();
-    }, 0);
+    var sum = goog.array.reduce(this.bonds, function(r, b) { return r + b.getLength(); }, 0);
     average = sum / this.bonds.length;
   }
   return average;
@@ -209,9 +205,8 @@ modelMolecule.prototype.removeAtom = function(atomOrId) {
   }
   var neighborBonds = atom.bonds.getValues();
 
-  goog.array.forEach(neighborBonds, function(element) {
-    goog.array.remove(this.bonds, element);
-  }, this);
+  goog.array.forEach(
+      neighborBonds, function(element) { goog.array.remove(this.bonds, element); }, this);
   atom.bonds.clear();
   goog.array.remove(this.atoms, atom);
   atom.molecule = undefined;
@@ -241,7 +236,6 @@ modelMolecule.prototype.removeBond = function(bondOrId) {
   if (bond.target.bonds.getValues().length === 0) {
     goog.array.remove(this.atoms, bond.target);
     bond.target.molecule = undefined;
-
   }
   goog.array.remove(this.bonds, bond);
   bond.molecule = undefined;
@@ -337,12 +331,8 @@ modelMolecule.prototype.isBondInRing = function(bond_) {
  */
 modelMolecule.prototype.clone = function() {
   var mol = new modelMolecule(this.name);
-  goog.array.forEach(this.atoms, function(atom) {
-    mol.addAtom(atom);
-  });
-  goog.array.forEach(this.bonds, function(bond) {
-    mol.addBond(bond);
-  });
+  goog.array.forEach(this.atoms, function(atom) { mol.addAtom(atom); });
+  goog.array.forEach(this.bonds, function(bond) { mol.addBond(bond); });
   return mol;
 };
 
@@ -392,25 +382,25 @@ modelMolecule.prototype.getConnectedBondsList = function(atom) {
  * @return {string}
  */
 modelMolecule.prototype.toString = function() {
-  return 'modelMolecule - name: '
-    + this.name
-    + '\n\t'
-    + goog.array.map(this.atoms, function(atom) {
-      return ' ' + this.indexOfAtom(atom) + ': ' + atom.toString();
-    }, this).join('\n\t')
-    + '\n\t'
-    + goog.array.map(
-      this.bonds,
-      function(bond) {
-        return ' ' + this.indexOfAtom(bond.source) + ', '
-          + this.indexOfAtom(bond.target) + ':  '
-          + bond.toString();
-      }, this).join('\n\t') + '\n\t'
-    + goog.array.map(
-      this.getRings(),
-      function(ring) {
-        return ring.toString();
-      }).join('\n\t');
+  return 'modelMolecule - name: ' + this.name + '\n\t' +
+      goog.array
+          .map(
+              this.atoms,
+              function(atom) { return ' ' + this.indexOfAtom(atom) + ': ' + atom.toString(); },
+              this)
+          .join('\n\t') +
+      '\n\t' +
+      goog.array
+          .map(
+              this.bonds,
+              function(bond) {
+                return ' ' + this.indexOfAtom(bond.source) + ', ' + this.indexOfAtom(bond.target) +
+                    ':  ' + bond.toString();
+              },
+              this)
+          .join('\n\t') +
+      '\n\t' +
+      goog.array.map(this.getRings(), function(ring) { return ring.toString(); }).join('\n\t');
 };
 /**
  * returns center coordinates of molecule's atoms
@@ -419,8 +409,7 @@ modelMolecule.prototype.toString = function() {
  */
 modelMolecule.prototype.getCenter = function() {
   var box = this.getBoundingBox();
-  return new goog.math.Coordinate((box.left + box.right) / 2,
-    (box.top + box.bottom) / 2);
+  return new goog.math.Coordinate((box.left + box.right) / 2, (box.top + box.bottom) / 2);
 };
 
 /**
@@ -429,10 +418,8 @@ modelMolecule.prototype.getCenter = function() {
  * @return {goog.math.Box}
  */
 modelMolecule.prototype.getBoundingBox = function() {
-  return goog.math.Box.boundingBox.apply(null, goog.array.map(this.atoms,
-    function(a) {
-      return a.coord;
-    }));
+  return goog.math.Box.boundingBox.apply(
+      null, goog.array.map(this.atoms, function(a) { return a.coord; }));
 };
 
 /**
@@ -443,9 +430,8 @@ modelMolecule.prototype.getBoundingBox = function() {
  *
  */
 modelMolecule.prototype.translate = function(vector) {
-  goog.array.forEach(this.atoms, function(a) {
-    a.coord = goog.math.Coordinate.sum(a.coord, vector);
-  });
+  goog.array.forEach(
+      this.atoms, function(a) { a.coord = goog.math.Coordinate.sum(a.coord, vector); });
 };
 
 
@@ -464,27 +450,23 @@ modelMolecule.prototype.translate = function(vector) {
  * @param {modelAtom}
  *            targetAtom atom in this molecule to replace fragAtom
  */
-modelMolecule.prototype.merge = function(fragment, fragBond,
-  targetBond, fragAtom, targetAtom) {
+modelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAtom, targetAtom) {
   goog.asserts.assert(goog.array.contains(fragment.bonds, fragBond));
   goog.asserts.assert(goog.array.contains(this.bonds, targetBond));
-  goog.asserts.assert(goog.array.contains(fragAtom.bonds.getValues(),
-    fragBond));
-  goog.asserts.assert(goog.array.contains(targetAtom.bonds.getValues(),
-    targetBond));
+  goog.asserts.assert(goog.array.contains(fragAtom.bonds.getValues(), fragBond));
+  goog.asserts.assert(goog.array.contains(targetAtom.bonds.getValues(), targetBond));
 
   // scale and translate and rotate fragment into position
   var scale = this.getAverageBondLength() / fragment.getAverageBondLength();
   fragment.scale(scale);
-  var positionDiff = goog.math.Vec2.fromCoordinate(goog.math.Coordinate
-    .difference(targetAtom.coord, fragAtom.coord));
+  var positionDiff = goog.math.Vec2.fromCoordinate(
+      goog.math.Coordinate.difference(targetAtom.coord, fragAtom.coord));
   var otherTargetAtom = targetBond.otherAtom(targetAtom);
-  var targetAngle = goog.math
-    .angle(otherTargetAtom.coord.x, otherTargetAtom.coord.y,
-      targetAtom.coord.x, targetAtom.coord.y);
+  var targetAngle = goog.math.angle(
+      otherTargetAtom.coord.x, otherTargetAtom.coord.y, targetAtom.coord.x, targetAtom.coord.y);
   var otherFragAtom = fragBond.otherAtom(fragAtom);
-  var fragAngle = goog.math.angle(fragAtom.coord.x, fragAtom.coord.y,
-    otherFragAtom.coord.x, otherFragAtom.coord.y);
+  var fragAngle = goog.math.angle(
+      fragAtom.coord.x, fragAtom.coord.y, otherFragAtom.coord.x, otherFragAtom.coord.y);
   var angleDiff = goog.math.angleDifference(fragAngle, targetAngle);
 
   fragment.rotate(180 + angleDiff, fragAtom.coord);
@@ -496,8 +478,7 @@ modelMolecule.prototype.merge = function(fragment, fragBond,
   var processed = [fragBond];
   goog.array.forEach(fragAtom.bonds.getValues(), function(bond) {
     if (!goog.array.contains(processed, bond)) {
-      fragAtom === bond.source ? bond.source = targetAtom
-        : bond.target = targetAtom;
+      fragAtom === bond.source ? bond.source = targetAtom : bond.target = targetAtom;
       processed.push(bond);
       this.addBond(bond);
     }
@@ -507,28 +488,21 @@ modelMolecule.prototype.merge = function(fragment, fragBond,
 
   // transfer bonds attached to other end of fragBond to atom at
   // other end of targetBond (except fragBond)
-  goog.array
-    .forEach(
-      otherFragAtom.bonds.getValues(),
-      function(bond) {
-        if (!goog.array.contains(processed, bond)) {
-          otherFragAtom === bond.source ? bond.source = otherTargetAtom
-            : bond.target = otherTargetAtom;
-          this.addBond(bond);
-          processed.push(bond);
-        }
-      }, this);
+  goog.array.forEach(otherFragAtom.bonds.getValues(), function(bond) {
+    if (!goog.array.contains(processed, bond)) {
+      otherFragAtom === bond.source ? bond.source = otherTargetAtom : bond.target = otherTargetAtom;
+      this.addBond(bond);
+      processed.push(bond);
+    }
+  }, this);
 
 
-  var yesCopy = goog.array.filter(fragment.bonds, function(b) {
-    return !goog.array.contains(processed, b);
-  });
+  var yesCopy =
+      goog.array.filter(fragment.bonds, function(b) { return !goog.array.contains(processed, b); });
 
   // clone and replace fragment atoms and bonds parent molecule with this
   // parent molecule
-  goog.array.forEach(yesCopy, function(bond) {
-    this.addBond(bond);
-  }, this);
+  goog.array.forEach(yesCopy, function(bond) { this.addBond(bond); }, this);
   fragment.bonds.length = 0;
   fragment.atoms.length = 0;
 
@@ -550,7 +524,7 @@ modelMolecule.prototype.merge = function(fragment, fragBond,
 // *
 // * @return{modelMolecule} resulting merged molecule
 // */
-//modelMolecule.mergeMolecules = function(source_atom, targetAtom) {
+// modelMolecule.mergeMolecules = function(source_atom, targetAtom) {
 //	// replace target atom with source atom
 //
 //	// clone and connect target atom bonds to source atom
@@ -601,18 +575,17 @@ modelMolecule.prototype.merge = function(fragment, fragBond,
  *            fragement_atom
  * @return {kemia.model.Bond} sprout bond
  */
-modelMolecule.prototype.sproutFragment = function(attachmentAtom,
-  fragAtom) {
-  goog.asserts.assert(goog.array.contains(this.atoms, attachmentAtom),
-    'attachmentAtom must belong to this molecule');
-  goog.asserts.assertObject(fragAtom.molecule,
-    'fragAtom must belong to a molecule');
+modelMolecule.prototype.sproutFragment = function(attachmentAtom, fragAtom) {
+  goog.asserts.assert(
+      goog.array.contains(this.atoms, attachmentAtom),
+      'attachmentAtom must belong to this molecule');
+  goog.asserts.assertObject(fragAtom.molecule, 'fragAtom must belong to a molecule');
   var newAngle = modelAtom.nextBondAngle(attachmentAtom);
-  //this.logger.info('newAngle ' + newAngle);
+  // this.logger.info('newAngle ' + newAngle);
   if (newAngle !== undefined) {
     // translate fragment
-    var positionDiff = goog.math.Vec2.fromCoordinate(goog.math.Coordinate
-      .difference(attachmentAtom.coord, fragAtom.coord));
+    var positionDiff = goog.math.Vec2.fromCoordinate(
+        goog.math.Coordinate.difference(attachmentAtom.coord, fragAtom.coord));
     var angleDiff = goog.math.angle();
     fragAtom.molecule.rotate(newAngle, fragAtom.coord);
     fragAtom.molecule.translate(positionDiff);
@@ -633,30 +606,24 @@ modelMolecule.prototype.sproutFragment = function(attachmentAtom,
  *            optSymbol
  * @return {kemia.model.Bond}
  */
-modelMolecule.prototype.sproutBond = function(atom, optOrder,
-  optStereo, optSymbol) {
-  var bondLength = 1.25; // default
+modelMolecule.prototype.sproutBond = function(atom, optOrder, optStereo, optSymbol) {
+  var bondLength = 1.25;  // default
   var bonds = atom.bonds.getValues();
   if (bonds.length) {
     bondLength = goog.array.reduce(bonds, function(r, b) {
-        return r
-          + goog.math.Coordinate.distance(b.source.coord,
-            b.target.coord);
-      }, 0)
-      / bonds.length;
-  } // average of other bonds
+      return r + goog.math.Coordinate.distance(b.source.coord, b.target.coord);
+    }, 0) / bonds.length;
+  }  // average of other bonds
 
   var newAngle = modelAtom.nextBondAngle(atom);
   if (newAngle !== undefined) {
     var symb = 'C';
-    if (optSymbol)
-      symb = optSymbol;
-    var newAtom = new modelAtom(symb, atom.coord.x
-      + goog.math.angleDx(newAngle, bondLength), atom.coord.y
-      + goog.math.angleDy(newAngle, bondLength));
+    if (optSymbol) symb = optSymbol;
+    var newAtom = new modelAtom(
+        symb, atom.coord.x + goog.math.angleDx(newAngle, bondLength),
+        atom.coord.y + goog.math.angleDy(newAngle, bondLength));
 
-    var newBond = new kemia.model.Bond(atom, newAtom, optOrder,
-      optStereo);
+    var newBond = new kemia.model.Bond(atom, newAtom, optOrder, optStereo);
 
     this.addAtom(newAtom);
     this.addBond(newBond);
@@ -670,5 +637,4 @@ modelMolecule.prototype.sproutBond = function(atom, optOrder,
  * @type {goog.debug.Logger}
  * @protected
  */
-modelMolecule.prototype.logger = goog.debug.Logger
-  .getLogger('modelMolecule');
+modelMolecule.prototype.logger = goog.debug.Logger.getLogger('modelMolecule');

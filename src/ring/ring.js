@@ -74,8 +74,7 @@ ringRing.prototype.getCenter = function() {
       avgX += this.atoms[j].coord.x;
       avgY += this.atoms[j].coord.y;
     }
-    this._center = new goog.math.Coordinate(avgX / this.atoms.length, avgY
-      / this.atoms.length);
+    this._center = new goog.math.Coordinate(avgX / this.atoms.length, avgY / this.atoms.length);
   }
   return this._center;
 };
@@ -89,14 +88,10 @@ ringRing.prototype.resetRingCenter = function() {
 
 ringRing.prototype.toString = function() {
   return 'ringRing ' +
-    '\n\t' +
-    goog.array.map(this.atoms, function(atom) {
-      return ' ' + atom.toString();
-    }, this).join('\n\t')
-    + '\n\t'
-    + goog.array.map(
-      this.bonds,
-      function(bond) {
-        return ' ' + bond.toString();
-      }, this).join('\n\t') + '\n\t';
+      '\n\t' +
+      goog.array.map(this.atoms, function(atom) { return ' ' + atom.toString(); }, this)
+          .join('\n\t') +
+      '\n\t' + goog.array.map(this.bonds, function(bond) {
+                           return ' ' + bond.toString();
+                         }, this).join('\n\t') + '\n\t';
 };

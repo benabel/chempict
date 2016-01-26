@@ -7,8 +7,10 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
+ * See the License for the specific language governing permissions and limitations under the
+ * License.
  */
 goog.require('goog.array');
 
@@ -37,8 +39,7 @@ ringPartitioner.getPartitionedRings = function(rings) {
       for (var k = i + 1; k < rings.length; k++) {
         if (!done[k]) {
           var atomCount2 = rings[k].atoms.length;
-          connected:
-          for (var p = 0; p < partition.length; p++) {
+          connected: for (var p = 0; p < partition.length; p++) {
             atomCount = partition[p].atoms.length;
             for (var a = 0; a < atomCount; a++) {
               for (var a2 = 0; a2 < atomCount2; a2++) {
@@ -75,8 +76,7 @@ ringPartitioner.directConnectedRings = function(ring, rings) {
   for (var k = 0, k1 = rings.length; k < k1; k++) {
     if (ring !== rings[k]) {
       var atomCount2 = rings[k].atoms.length;
-      connected:
-      for (var a = 0; a < atomCount; a++) {
+      connected: for (var a = 0; a < atomCount; a++) {
         for (var a2 = 0; a2 < atomCount2; a2++) {
           if (ring.atoms[a] === rings[k].atoms[a2]) {
             result.push(rings[k]);
@@ -103,24 +103,17 @@ ringPartitioner.getPartitionedRings = function(rings) {
   var search = rings;
   goog.array.forEach(rings, function(ring) {
     if (!goog.array.contains(goog.array.flatten(partitions), ring)) {
-      var connections = goog.array.find(partitions, function(rings) {
-        return goog.array.contains(rings, ring);
-      });
+      var connections =
+          goog.array.find(partitions, function(rings) { return goog.array.contains(rings, ring); });
       if (connections === null) {
-        connections = [ring]; // start a new group of rings
-        search = goog.array.filter(search, function(r) {
-          return r !== ring;
-        });
+        connections = [ring];  // start a new group of rings
+        search = goog.array.filter(search, function(r) { return r !== ring; });
       }
-      var connected = ringPartitioner.directConnectedRings(
-        ring, search);
+      var connected = ringPartitioner.directConnectedRings(ring, search);
       connections = goog.array.concat(connections, connected);
-      search = goog.array.filter(search, function(r) {
-        goog.array.contains(connected, r);
-      });
+      search = goog.array.filter(search, function(r) { goog.array.contains(connected, r); });
       partitions.push(connections);
-    }
-    ;
+    };
   });
   return partitions;
 };
