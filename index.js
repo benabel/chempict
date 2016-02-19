@@ -7,6 +7,8 @@ const SvgDepict = require('./src/depict/svg_depict');
 
 //console.log(SmilesParser);
 const smiles = 'N[C@@H](CCC(=O)N[C@@H](CSSC[C@H](NC(=O)CC[C@H](N)C(O)=O)C(=O)NCC(O)=O)C(=O)NCC(O)=O)C(O)=O'; // eslint-disable-line
+// TODO: probleme avec les cycles
+//const smiles = 'O=C(O)c1ccccc1OC(=O)C';
 //const smiles = 'CCCC(O)=O';
 //const smiles = 'O=C=O';
 var mol = SmilesParser.parse(smiles);
@@ -14,7 +16,11 @@ var mol = SmilesParser.parse(smiles);
 
 CoordinateGenerator.generate(mol);
 
-var svg = SvgDepict.toSvg(100, 100, mol);
+// TODO: remove these globals
+width = 600;
+height = 600;
+
+var svg = SvgDepict.toSvg(width, height, mol);
 
 // write svg file
 fs.writeFile('/home/ben/Bureau/mol.svg', svg, function(err) {
