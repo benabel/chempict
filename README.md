@@ -12,12 +12,12 @@ This is a node app which provide:
 The google closure library is used in this package, it is listed in the devDependencies of the the npm package, so, to install it, just run `npm i` from the root folder.
 
 eslint: lint javascript code
-esformatter: format js code
+clang-format: format js code
 
 ## `npm` scripts
 
 - lint javascript with eslint: `npm run lint`
-- format javascript with esformatter: `npm run format`
+- format javascript with clang-format: `npm run format`
 
 ## TODO
 
