@@ -12,12 +12,15 @@
  * See the License for the specific language governing permissions and limitations under the
  * License.
  */
-const ringHanser = require('./hanser');
-const ringSSSR = require('./sssr');
+
 goog.require('goog.structs.Set');
 goog.require('goog.structs.Set');
 goog.require('goog.array');
 const ringRing = require('./ring');
+const ringHanser = require('./hanser');
+const ringSSSR = require('./sssr');
+const modelAtom = require('../model/atom');
+const modelBond = require('../model/bond');
 
 
 module.exports = ringFinder = function() {};
@@ -318,13 +321,13 @@ ringFinder.createRingSystems = function(molecule) {
     }
 
     // create a new ring system
-    var ringSystem = new kemia.model.Molecule();
+    var ringSystem = new molecule.constructor;
 
     var queue = [];
 
     queue.push(startAtom);
     visitedAtoms[0] = true;
-    var newAtom = new kemia.model.Atom();
+    var newAtom = new modelAtom();
     newAtom.index2 = startAtom.index;
     indexMap[startAtom.index] = 0;
     ringSystem.addAtom(newAtom);
@@ -360,7 +363,7 @@ ringFinder.createRingSystems = function(molecule) {
         if (visitedAtoms[neighborIndex]) {
           // create the ring closure bond
           var closureBond = molecule.findBond(atom, neighbor);
-          var newBond = new kemia.model.Bond(
+          var newBond = new modelBond(
               ringSystem.atoms[indexMap[atom.index]], ringSystem.atoms[indexMap[neighbor.index]]);
           newBond.index2 = closureBond.index;
           ringSystem.addBond(newBond);
@@ -368,13 +371,13 @@ ringFinder.createRingSystems = function(molecule) {
           visitedAtoms[neighborIndex] = true;
           queue.push(neighbor);
           // create the new atom
-          newAtom = new kemia.model.Atom();
+          newAtom = new modelAtom();
           newAtom.index2 = neighbor.index;
           indexMap[neighbor.index] = ringSystem.atoms.length;
           ringSystem.addAtom(newAtom);
           // create the new bond
           var bond = molecule.findBond(atom, neighbor);
-          var newBond = new kemia.model.Bond(ringSystem.atoms[indexMap[atom.index]], newAtom);
+          var newBond = new modelBond(ringSystem.atoms[indexMap[atom.index]], newAtom);
           newBond.index2 = bond.index;
           ringSystem.addBond(newBond);
         }

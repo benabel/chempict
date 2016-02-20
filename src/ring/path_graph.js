@@ -14,13 +14,12 @@
  *  See the License for the specific language governing permissions and
  * limitations under the License.
  */
-goog.provide('kemia.ring.PathGraph');
 /**
  * @param {kemia.model.Molecule}
  *            molecule
  * @constructor
  */
-kemia.ring.PathGraph = function(molecule) {
+module.exports = ringPathGraph = function(molecule) {
 
   /** @type{Array.<kemia.ring.PathEdge>} */
   this.edges = new Array();
@@ -45,7 +44,7 @@ kemia.ring.PathGraph = function(molecule) {
  * @param {number} maxLen
  * @return {Array.<kemia.ring.PathEdge>}
  */
-kemia.ring.PathGraph.prototype.remove = function(atom, maxLen) {
+ringPathGraph.prototype.remove = function(atom, maxLen) {
   /** @type {Array.<kemia.ring.PathEdge>} */
   var oldEdges = this.getEdges(atom);
   /** @type {Array.<kemia.ring.PathEdge>} */
@@ -92,7 +91,7 @@ kemia.ring.PathGraph.prototype.remove = function(atom, maxLen) {
  * @param {kemia.model.Atom} atom
  * @return {Array.<kemia.ring.PathEdge>}
  */
-kemia.ring.PathGraph.prototype.getEdges = function(atom) {
+ringPathGraph.prototype.getEdges = function(atom) {
 
   /** @type {Array.<kemia.ring.PathEdge>} */
   var result = new Array();
@@ -120,7 +119,7 @@ kemia.ring.PathGraph.prototype.getEdges = function(atom) {
  * @return {Array.<kemia.ring.PathEdge>}
  */
 
-kemia.ring.PathGraph.prototype.spliceEdges = function(_edges) {
+ringPathGraph.prototype.spliceEdges = function(_edges) {
   var result = new Array();
 
   for (var i = 0, il = _edges.length; i < il; i++) {

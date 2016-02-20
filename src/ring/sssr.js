@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-goog.provide('kemia.ring.SSSR');
-
 goog.require('goog.structs.Set');
 goog.require('goog.array');
 const ringRing = goog.require('./ring');
@@ -32,18 +30,20 @@ goog.require('goog.json');
  * http://www.pnas.org/content/106/41/17355/suppl/DCSupplemental
  */
 
+goog.provide('ringSSSR');
+module.exports = ringSSSR = function () {};
 
 /**
  * Make a deep copy of an array
  * @param {Array} arr
  * @return {Array}
  */
-kemia.ring.SSSR.deepCopy = function(arr) {
+ringSSSR.deepCopy = function(arr) {
   var newArray = [];
   for (var i = 0, li = arr.length; i < li; i++) {
     var item = arr[i];
     if (item instanceof Array) {
-      newArray.push(kemia.ring.SSSR.deepCopy(item));
+      newArray.push(ringSSSR.deepCopy(item));
     } else {
       newArray.push(item);
     }
@@ -56,7 +56,7 @@ kemia.ring.SSSR.deepCopy = function(arr) {
  * @param {Array.<Array.<number>>} matrix
  * @return {string}
  */
-kemia.ring.SSSR.matrixToHTML = function(matrix) {
+ringSSSR.matrixToHTML = function(matrix) {
   var text = '';
   var n = matrix.length;
   for (var i = 0; i < n; i++) {
@@ -73,7 +73,7 @@ kemia.ring.SSSR.matrixToHTML = function(matrix) {
  * @param {number} n dimension
  * @return {Array.<Array.<number>>}
  */
-kemia.ring.SSSR.createEmptyMatrix = function(n) {
+ringSSSR.createEmptyMatrix = function(n) {
   var matrix = [];
   for (var i = 0; i < n; i++) {
     var row = [];
@@ -91,7 +91,7 @@ kemia.ring.SSSR.createEmptyMatrix = function(n) {
  * @param {number} n
  * @return {Array.<Array.<number>>}
  */
-kemia.ring.SSSR.createWeightMatrix = function(molecule, n) {
+ringSSSR.createWeightMatrix = function(molecule, n) {
   var matrix = [];
   for (var i = 0; i < n; i++) {
     var row = [];
@@ -116,7 +116,7 @@ kemia.ring.SSSR.createWeightMatrix = function(molecule, n) {
  * @param {number} n
  * @return {Array.<Array.<Array>>}
  */
-kemia.ring.SSSR.createEmptyPIDMatrix = function(n) {
+ringSSSR.createEmptyPIDMatrix = function(n) {
   var matrix = [];
   for (var i = 0; i < n; i++) {
     var row = [];
@@ -138,7 +138,7 @@ kemia.ring.SSSR.createEmptyPIDMatrix = function(n) {
  * @param {number} n
  * @return {Array.<Array.<Array.<Array.<number>>>>}
  */
-kemia.ring.SSSR.createPIDMatrix = function(molecule, n) {
+ringSSSR.createPIDMatrix = function(molecule, n) {
   var matrix = [];
   for (var i = 0; i < n; i++) {
     var row = [];
@@ -164,7 +164,7 @@ kemia.ring.SSSR.createPIDMatrix = function(molecule, n) {
  * @param {Array} p1
  * @param {Array} p2
  */
-kemia.ring.SSSR.appendPath = function(lhs, p1, p2) {
+ringSSSR.appendPath = function(lhs, p1, p2) {
   if (!lhs.length) {
     lhs[0] = p1[0].concat(p2[0]);
   } else {
@@ -180,11 +180,11 @@ kemia.ring.SSSR.appendPath = function(lhs, p1, p2) {
  * @param {kemia.model.Molecule} molecule
  * @return {Object}
  */
-kemia.ring.SSSR.makePIDMatrixes = function(molecule) {
+ringSSSR.makePIDMatrixes = function(molecule) {
   var n = molecule.countAtoms();
-  var D = kemia.ring.SSSR.createWeightMatrix(molecule, n);
-  var Pe1 = kemia.ring.SSSR.createPIDMatrix(molecule, n);  // Pe
-  var Pe2 = kemia.ring.SSSR.createEmptyPIDMatrix(n);       // Pe'
+  var D = ringSSSR.createWeightMatrix(molecule, n);
+  var Pe1 = ringSSSR.createPIDMatrix(molecule, n);  // Pe
+  var Pe2 = ringSSSR.createEmptyPIDMatrix(n);       // Pe'
   var lastD = D;
 
   // debug("Pe =<br>" + matrixToHTML(Pe1));
@@ -206,7 +206,7 @@ kemia.ring.SSSR.makePIDMatrixes = function(molecule) {
         if (lastPathLength > pathLength) {
           if (lastPathLength === pathLength + 1) {
             // a new shortest path = previous shortest path -1 => Pe' <- Pe
-            Pe2[i][j] = kemia.ring.SSSR.deepCopy(Pe1[i][j]);
+            Pe2[i][j] = ringSSSR.deepCopy(Pe1[i][j]);
           } else {
             Pe2[i][j] = [];
           }
@@ -217,11 +217,11 @@ kemia.ring.SSSR.makePIDMatrixes = function(molecule) {
         } else if (lastPathLength === pathLength) {
           // another shortest path is found
           if (path1.length && path2.length) {
-            kemia.ring.SSSR.appendPath(Pe1[i][j], path1, path2);  // append path
+            ringSSSR.appendPath(Pe1[i][j], path1, path2);  // append path
           }
         } else if (lastPathLength === pathLength - 1) {
           // shortest path + 1 found
-          kemia.ring.SSSR.appendPath(Pe2[i][j], path1, path2);  // append path
+          ringSSSR.appendPath(Pe2[i][j], path1, path2);  // append path
         } else {
           D[i][j] = lastD[i][j];
         }
@@ -239,7 +239,7 @@ kemia.ring.SSSR.makePIDMatrixes = function(molecule) {
 /**
  * Sort function to sort the set of candidates by increasing Cnum (i.e. ring size).
  */
-kemia.ring.SSSR.sortByCnum = function(a, b) {
+ringSSSR.sortByCnum = function(a, b) {
   return a['Cnum'] - b['Cnum'];
 };
 
@@ -252,7 +252,7 @@ kemia.ring.SSSR.sortByCnum = function(a, b) {
  * @param {Array.<Array.<Array>>} Pe2
  * @return {Array}
  */
-kemia.ring.SSSR.makeCandidateSet = function(D, Pe1, Pe2) {
+ringSSSR.makeCandidateSet = function(D, Pe1, Pe2) {
   var n = D.length;
   var Cset = [];
 
@@ -273,7 +273,7 @@ kemia.ring.SSSR.makeCandidateSet = function(D, Pe1, Pe2) {
   }
 
   // sort the candidates by increasing ring size
-  Cset.sort(kemia.ring.SSSR.sortByCnum);
+  Cset.sort(ringSSSR.sortByCnum);
 
   return Cset;
 };
@@ -301,7 +301,7 @@ kemia.ring.SSSR.makeCandidateSet = function(D, Pe1, Pe2) {
  * @param {Array} ringCount
  * @return {boolean}
  */
-kemia.ring.SSSR.isCandidateInSet = function(C, Csssr, valences, ringCount) {
+ringSSSR.isCandidateInSet = function(C, Csssr, valences, ringCount) {
   for (var i = 0, li = Csssr.length; i < li; i++) {
     var sssr = Csssr[i];
     // the part from the paper
@@ -348,7 +348,7 @@ kemia.ring.SSSR.isCandidateInSet = function(C, Csssr, valences, ringCount) {
  * @param {kemia.model.Molecule} molecule
  * @return {Array.<number>}
  */
-kemia.ring.SSSR.bondRingToAtomRing = function(ring, molecule) {
+ringSSSR.bondRingToAtomRing = function(ring, molecule) {
   var atoms = [];
   for (var i = 0, li = ring.length; i < li; i++) {
     var bond = molecule.getBond(ring[i]);
@@ -373,8 +373,8 @@ kemia.ring.SSSR.bondRingToAtomRing = function(ring, molecule) {
  * @param {Array} valences
  * @param {Array} ringCount
  */
-kemia.ring.SSSR.processCandidate = function(bondIndexes, Csssr, molecule, valences, ringCount) {
-  var atomIndexes = kemia.ring.SSSR.bondRingToAtomRing(bondIndexes, molecule);
+ringSSSR.processCandidate = function(bondIndexes, Csssr, molecule, valences, ringCount) {
+  var atomIndexes = ringSSSR.bondRingToAtomRing(bondIndexes, molecule);
   if (bondIndexes.length !== atomIndexes.length) {
     // these are two connected rings for example;
     //      1 --- 4
@@ -383,7 +383,7 @@ kemia.ring.SSSR.processCandidate = function(bondIndexes, Csssr, molecule, valenc
     //   2 --- 3
     return;
   }
-  if (!kemia.ring.SSSR.isCandidateInSet(atomIndexes, Csssr, valences, ringCount)) {
+  if (!ringSSSR.isCandidateInSet(atomIndexes, Csssr, valences, ringCount)) {
     Csssr.push(atomIndexes);
   }
 };
@@ -397,7 +397,7 @@ kemia.ring.SSSR.processCandidate = function(bondIndexes, Csssr, molecule, valenc
  * @param {Object} D
  * @return {Array}
  */
-kemia.ring.SSSR.candidateSearch = function(Cset, nsssr, molecule, D) {
+ringSSSR.candidateSearch = function(Cset, nsssr, molecule, D) {
   // The final SSSR set
   var Csssr = [];
   // store the valences for all atoms
@@ -418,7 +418,7 @@ kemia.ring.SSSR.candidateSearch = function(Cset, nsssr, molecule, D) {
       // odd ring
       for (var j = 0, lj = set['Pe2'].length; j < lj; j++) {
         var bondIndexes = set['Pe1'][0].concat(set['Pe2'][j]);
-        kemia.ring.SSSR.processCandidate(bondIndexes, Csssr, molecule, valences, ringCount);
+        ringSSSR.processCandidate(bondIndexes, Csssr, molecule, valences, ringCount);
         if (Csssr.length === nsssr) {
           return Csssr;
         }
@@ -427,7 +427,7 @@ kemia.ring.SSSR.candidateSearch = function(Cset, nsssr, molecule, D) {
       // even ring
       for (var j = 0, lj = set['Pe1'].length - 1; j < lj; j++) {
         var bondIndexes = set['Pe1'][j].concat(set['Pe1'][j + 1]);
-        kemia.ring.SSSR.processCandidate(bondIndexes, Csssr, molecule, valences, ringCount);
+        ringSSSR.processCandidate(bondIndexes, Csssr, molecule, valences, ringCount);
         if (Csssr.length === nsssr) {
           return Csssr;
         }
@@ -443,7 +443,7 @@ kemia.ring.SSSR.candidateSearch = function(Cset, nsssr, molecule, D) {
  * @param {kemia.model.Molecule} molecule
  * @return {Array}
  */
-kemia.ring.SSSR.sortByPath = function(atomIndexes, molecule) {
+ringSSSR.sortByPath = function(atomIndexes, molecule) {
   var pathAtomIndexes = [atomIndexes[0]];
   var beginAtom = molecule.getAtom(atomIndexes[0]);
   var l = 0;
@@ -471,7 +471,7 @@ kemia.ring.SSSR.sortByPath = function(atomIndexes, molecule) {
  * @param {kemia.model.Molecule} molecule
  * @return {Array.<Array.<number>>}
  */
-kemia.ring.SSSR.findRings = function(molecule) {
+ringSSSR.findRings = function(molecule) {
   // var start = new Date().getTime();
   // Compute the number of rings in the SSSR using Euler's formula.
   //
@@ -484,14 +484,14 @@ kemia.ring.SSSR.findRings = function(molecule) {
     return [];
   }
   // Create the path-included distance matrices
-  var matrices = kemia.ring.SSSR.makePIDMatrixes(molecule);
+  var matrices = ringSSSR.makePIDMatrixes(molecule);
   // Create the initial candidate set. This will be  sets with bond indexes.
-  var Cset = kemia.ring.SSSR.makeCandidateSet(matrices['D'], matrices['Pe1'], matrices['Pe2']);
+  var Cset = ringSSSR.makeCandidateSet(matrices['D'], matrices['Pe1'], matrices['Pe2']);
   // Select the SSSR from the candidates
-  var indexes = kemia.ring.SSSR.candidateSearch(Cset, nsssr, molecule, matrices['D']);
+  var indexes = ringSSSR.candidateSearch(Cset, nsssr, molecule, matrices['D']);
 
   for (var i = 0, li = indexes.length; i < li; i++) {
-    indexes[i] = kemia.ring.SSSR.sortByPath(indexes[i], molecule);
+    indexes[i] = ringSSSR.sortByPath(indexes[i], molecule);
   }
 
   return indexes;

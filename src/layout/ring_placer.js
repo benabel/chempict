@@ -18,6 +18,7 @@ goog.require('goog.math.Coordinate');
 
 const modelFlags = require('../model/flags.js');
 const modelMolecule = require('../model/molecule.js');
+const ringPartitioner = require('../ring/partitioner.js');
 
 const layoutVector2D = require('./vector2d');
 const layoutAtomPlacer = require('./atom_placer');
@@ -428,7 +429,7 @@ layoutRingPlacer.center = function(atoms) {
 
 
 layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondLength) {
-  var connectedRings = kemia.ring.RingPartitioner.directConnectedRings(ring, ringset);
+  var connectedRings = ringPartitioner.directConnectedRings(ring, ringset);
   for (var r = 0, r1 = connectedRings.length; r < r1; r++) {
     var connectedRing = connectedRings[r];
     if (!connectedRing.flags[modelFlags.ISPLACED]) {
