@@ -23,6 +23,7 @@ const ringPartitioner = require('../ring/partitioner.js');
 const layoutVector2D = require('./vector2d');
 const layoutAtomPlacer = require('./atom_placer');
 const layoutRingSet = require('./ring_set');
+const config = require('./config');
 
 module.exports = layoutRingPlacer = function() {};
 /**
@@ -516,7 +517,7 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
     // Place all the substituents of next ring system
     layoutAtomPlacer.markNotPlaced(placedAtoms);
     var substituents = layoutRingPlacer.placeRingSubstituents(
-        molecule, nextRingSet, kemia.layout.CoordinateGenerator.bondLength);
+        molecule, nextRingSet, config.bondLength);
     layoutAtomPlacer.markPlaced(placedAtoms);
 
     var placedAtoms = goog.array.concat(

@@ -7,11 +7,13 @@
  * The connected RingSet to be layed out
  */
 
+const config = require('./config');
+
 module.exports = layoutRingSet = function(bondVector, ringset) {
 
   // TODO apply templates to layout pre-fab rings
 
-  var bl = layoutCoordinateGenerator.bondLength;
+  const bl = config.bondLength;
 
   var mostComplexRing = layoutCoordinateGenerator.getMostComplexRing(ringset);
 
