@@ -1,6 +1,6 @@
 /*
  * Copyright 2010 Tim Vandermeersch
- * Copyright 2015 Benjamin Abel bbig26@gmail.com
+ * Copyright 2015-2016 Benjamin Abel bbig26@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+'use strict';
 
 goog.require('goog.structs.Set');
 goog.require('goog.array');
@@ -30,8 +31,7 @@ goog.require('goog.json');
  * http://www.pnas.org/content/106/41/17355/suppl/DCSupplemental
  */
 
-goog.provide('ringSSSR');
-module.exports = ringSSSR = function() {};
+const ringSSSR = function() {};
 
 /**
  * Make a deep copy of an array
@@ -493,3 +493,5 @@ ringSSSR.findRings = function(molecule) {
 
   return indexes;
 };
+
+module.exports = ringSSSR;

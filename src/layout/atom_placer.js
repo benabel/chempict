@@ -1,3 +1,5 @@
+'use strict';
+
 goog.require('goog.math');
 
 const modelFlags = require('../model/flags.js');
@@ -12,7 +14,7 @@ const layoutVector2D = require('./vector2d.js');
  *
  * @author: markr@ebi.ac.uk
  */
-module.exports = layoutAtomPlacer = function() {};
+const layoutAtomPlacer = function() {};
 
 layoutAtomPlacer.getInitialLongestChain = function(molecule) {
 
@@ -533,3 +535,5 @@ layoutAtomPlacer.markNotPlaced = function(atoms) {
 layoutAtomPlacer.markPlaced = function(atoms) {
   goog.array.forEach(atoms, function(atom) { atom.setFlag(modelFlags.ISPLACED, true); });
 };
+
+module.exports = layoutAtomPlacer;

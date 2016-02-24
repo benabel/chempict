@@ -9,11 +9,12 @@
  * See the License for the specific language governing permissions and limitations under the
  * License.
  */
+'use strict';
 
 const layoutVector2D = require('./vector2d.js');
 const layoutCoordinateGenerator = require('./coordinate_generator.js');
 
-module.exports = layoutOverlapResolver = function() {};
+const layoutOverlapResolver = function() {};
 
 /**
  * Helper class for Structure Diagram Generation. Resolves atom or bond
@@ -107,3 +108,5 @@ layoutOverlapResolver.displace = function(molecule, overlappingAtoms) {
   } while (overlapScore > 0 && !(steps > maxSteps));
   return overlapScore;
 };
+
+module.exports = layoutOverlapResolver;

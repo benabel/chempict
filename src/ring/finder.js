@@ -1,6 +1,6 @@
 /*
  * Copyright 2010 Tim Vandermeersch
- * Copyright 2015 Benjamin Abel bbig26@gmail.com
+ * Copyright 2015-2016 Benjamin Abel bbig26@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and limitations under the
  * License.
  */
+'use strict';
 
 goog.require('goog.structs.Set');
 goog.require('goog.structs.Set');
@@ -22,7 +23,7 @@ const ringSSSR = require('./sssr');
 const modelAtom = require('../model/atom');
 const modelBond = require('../model/bond');
 
-module.exports = ringFinder = function() {};
+const ringFinder = function() {};
 /**
  * The Hanser Ring Finder produces a ring as just a series of atoms. Here we
  * complete this information with the bonds and the ring center, creating a ring
@@ -456,3 +457,5 @@ ringFinder.findRings = function(molecule) {
   // process the ring systems
   return ringFinder.createRingSystems(molecule);
 };
+
+module.exports = ringFinder;

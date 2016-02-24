@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2010 Mark Rijnbeek (markr@ebi.ac.uk)
- * Copyright 2015 Benjamin Abel bbig26@gmail.com
+ * Copyright 2015-2016 Benjamin Abel bbig26@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,11 +15,13 @@
  * the License.
  *
  */
+ 'use strict';
 
-modelFlags = require('../model/flags');
 goog.require('goog.array');
 goog.require('goog.structs.Map');
 goog.require('goog.memoize');
+
+const modelFlags = require('../model/flags');
 
 /**
  * Creates a new Ring
@@ -28,7 +30,7 @@ goog.require('goog.memoize');
  * @param {Array.<kemia.model.Bond>} bonds
  * @constructor
  */
-module.exports = ringRing = function(atoms, bonds) {
+const ringRing = function(atoms, bonds) {
   /** @type {Array.<kemia.model.Atom>} */
   this.atoms = atoms;
   /** @type {Array.<kemia.model.Bond>} */
@@ -95,3 +97,5 @@ ringRing.prototype.toString = function() {
                            return ' ' + bond.toString();
                          }, this).join('\n\t') + '\n\t';
 };
+
+module.exports = ringRing;

@@ -1,6 +1,6 @@
 /**
  * Copyright 2010 Paul Novak (paul@wingu.com)
- * Copyright 2015 Benjamin Abel bbig26@gmail.com
+ * Copyright 2015-2016 Benjamin Abel bbig26@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -14,13 +14,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+'use strict';
+
 goog.require('goog.array');
-const ringFinder = require('../ring/finder');
-const modelAtom = require('../model/atom');
 goog.require('goog.debug.Logger');
 goog.require('goog.math.Vec2');
 goog.require('goog.math.Box');
 
+const modelAtom = require('../model/atom');
+const ringFinder = require('../ring/finder');
 /**
  * Class representing a Molecule
  *
@@ -28,7 +30,7 @@ goog.require('goog.math.Box');
  *            optName, Name of molecule, defaults to empty string.
  * @constructor
  */
-module.exports = modelMolecule = function(optName) {
+const modelMolecule = function(optName) {
   /**
    * bonds belonging to this molecule
    *
@@ -635,3 +637,5 @@ modelMolecule.prototype.sproutBond = function(atom, optOrder, optStereo, optSymb
  * @protected
  */
 modelMolecule.prototype.logger = goog.debug.Logger.getLogger('modelMolecule');
+
+module.exports = modelMolecule;

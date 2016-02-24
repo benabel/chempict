@@ -1,6 +1,6 @@
 /*
  * Copyright 2010 Paul Novak paul@wingu.com
- * Copyright 2015 Benjamin Abel bbig26@gmail.com
+ * Copyright 2015-2016 Benjamin Abel bbig26@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,9 +12,11 @@
  * See the License for the specific language governing permissions and limitations under the
  * License.
  */
+ 'use strict';
+
 goog.require('goog.array');
 
-module.exports = ringPartitioner = function() {};
+const ringPartitioner = function() {};
 
 /**
  * partitions array of rings into connected lists
@@ -142,3 +144,5 @@ ringPartitioner.directConnectedRings = function(ring, rings) {
   });
   return result;
 };
+
+module.exports = ringPartitioner;

@@ -1,6 +1,6 @@
 /**
  * Copyright 2010 Paul Novak (paul@wingu.com)
- * Copyright 2015 Benjamin Abel bbig26@gmail.com
+ * Copyright 2015-2016 Benjamin Abel bbig26@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,17 @@
  *  See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 'use strict';
+const ringPathEdge = require('./path_edge');
+
 /**
  * @param {kemia.model.Molecule}
  *            molecule
  * @constructor
  */
-module.exports = ringPathGraph = function(molecule) {
+const ringPathGraph = function(molecule) {
 
-  /** @type{Array.<kemia.ring.PathEdge>} */
+  /** @type{Array.<ringPathEdge>} */
   this.edges = new Array();
 
   /** @type{Array.<kemia.model.Atom>} */
@@ -31,7 +34,7 @@ module.exports = ringPathGraph = function(molecule) {
   for (var i = 0, il = molecule.countBonds(); i < il; i++) {
     var bond = molecule.getBond(i);
     var edge = [bond.source, bond.target];
-    this.edges.push(new kemia.ring.PathEdge(edge));
+    this.edges.push(new ringPathEdge(edge));
   }
   // load atoms
   for (var i = 0, il = molecule.countAtoms(); i < il; i++) {
@@ -42,12 +45,12 @@ module.exports = ringPathGraph = function(molecule) {
 /**
  * @param {kemia.model.Atom} atom
  * @param {number} maxLen
- * @return {Array.<kemia.ring.PathEdge>}
+ * @return {Array.<ringPathEdge>}
  */
 ringPathGraph.prototype.remove = function(atom, maxLen) {
-  /** @type {Array.<kemia.ring.PathEdge>} */
+  /** @type {Array.<ringPathEdge>} */
   var oldEdges = this.getEdges(atom);
-  /** @type {Array.<kemia.ring.PathEdge>} */
+  /** @type {Array.<ringPathEdge>} */
   var result = new Array();
   for (var i = 0, il = oldEdges.length; i < il; i++) {
     if (oldEdges[i].isCycle()) {
@@ -64,7 +67,7 @@ ringPathGraph.prototype.remove = function(atom, maxLen) {
     }
   }
 
-  /** @type {Array.<kemia.ring.PathEdge>} */
+  /** @type {Array.<ringPathEdge>} */
   var newEdges = this.spliceEdges(oldEdges);
 
   for (var i = 0, il = oldEdges.length; i < il; i++) {
@@ -89,15 +92,15 @@ ringPathGraph.prototype.remove = function(atom, maxLen) {
 
 /**
  * @param {kemia.model.Atom} atom
- * @return {Array.<kemia.ring.PathEdge>}
+ * @return {Array.<ringPathEdge>}
  */
 ringPathGraph.prototype.getEdges = function(atom) {
 
-  /** @type {Array.<kemia.ring.PathEdge>} */
+  /** @type {Array.<ringPathEdge>} */
   var result = new Array();
 
   for (var i = 0, il = this.edges.length; i < il; i++) {
-    /** @type {kemia.ring.PathEdge} */
+    /** @type {ringPathEdge} */
     var edge = this.edges[i];
 
     if (edge.isCycle()) {
@@ -115,8 +118,8 @@ ringPathGraph.prototype.getEdges = function(atom) {
 };
 
 /**
- * @param {Array.<kemia.ring.PathEdge>} _edges
- * @return {Array.<kemia.ring.PathEdge>}
+ * @param {Array.<ringPathEdge>} _edges
+ * @return {Array.<ringPathEdge>}
  */
 
 ringPathGraph.prototype.spliceEdges = function(_edges) {
@@ -132,3 +135,5 @@ ringPathGraph.prototype.spliceEdges = function(_edges) {
   }
   return result;
 };
+
+module.exports = ringPathGraph;

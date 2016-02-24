@@ -1,6 +1,6 @@
 /*
  * Copyright 2010 Paul Novak paul@wingu.com
- * Copyright 2015 Benjamin Abel bbig26@gmail.com
+ * Copyright 2015-2016 Benjamin Abel bbig26@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 
 'use strict';
 
-const SmilesParser = exports;
+const SmilesParser = {};
 const modelAtom = require('../model/atom');
 const modelBond = require('../model/bond');
 const modelMolecule = require('../model/molecule');
@@ -473,3 +473,5 @@ SmilesParser.periodicTable = {
   'Rg': {'number': 111, 'name': 'Roentgenium'},
   'Cn': {'number': 112, 'name': 'Copernicium'}
 };
+
+module.exports = SmilesParser;

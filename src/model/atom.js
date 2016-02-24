@@ -1,6 +1,6 @@
 /**
  * Copyright 2010 Paul Novak (paul@wingu.com)
- * Copyright 2015 Benjamin Abel bbig26@gmail.com
+ * Copyright 2015-2016 Benjamin Abel bbig26@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,8 @@
  *  See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// goog.provide('modelAtom.Hybridizations');
+ 'use strict';
+
 const modelFlags = require('./flags');
 const resourceCovalence = require('../resource/covalence');
 goog.require('goog.structs.Set');
@@ -31,7 +32,7 @@ goog.require('goog.math.Coordinate');
  * @param {number=} optIsotope, isotope, defaults to 0
  * @constructor
  */
-module.exports = modelAtom = function(optSymbol, optX, optY, optCharge, optAromatic, optIsotope) {
+const modelAtom = function(optSymbol, optX, optY, optCharge, optAromatic, optIsotope) {
   /**
    * Atom symbol
    *
@@ -247,3 +248,5 @@ modelAtom.prototype.setFlag = function(flagType, flagValue) {
 modelAtom.prototype.toString = function() {
   return 'modelAtom [' + this.symbol + '] ' + this.coord.toString();
 };
+
+module.exports = modelAtom;

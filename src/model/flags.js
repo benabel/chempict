@@ -1,6 +1,10 @@
-const modelFlags = exports;
+'use strict';
 
-modelFlags.ISPLACED = 0;
-modelFlags.VISITED = 1;
-modelFlags.ISINRING = 2;
-modelFlags.MAX_FLAG_INDEX = 2;
+const modelFlags = {
+  ISPLACED: 0,
+  VISITED: 1,
+  ISINRING: 2,
+  MAX_FLAG_INDEX: 2
+};
+
+module.exports = modelFlags;

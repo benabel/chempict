@@ -1,6 +1,6 @@
 /*
  * Copyright [2010] [Mark Rijnbeek]
- * Copyright 2015 Benjamin Abel bbig26@gmail.com
+ * Copyright 2015-2016 Benjamin Abel bbig26@gmail.com
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,6 +17,8 @@
  * http://github.com/rapodaca/mx/tree/master/src/com/metamolecular/mx/ring/
  * http://metamolecular.com/mx
  */
+ 'use strict';
+
 goog.require('goog.structs.Set');
 goog.require('goog.structs.Set');
 goog.require('goog.array');
@@ -31,7 +33,7 @@ const ringPathGraph = require('./path_graph');
  * for Exhaustive Ring Perception in a Molecular Graph J. kemia. Inf. Comput.
  * Sci. 1996, 36, 1146-1152
  */
-module.exports = ringHanser = function() {};
+const ringHanser = function() {};
 /**
  * Hanser main loop, produces the rings for a given molecule.
  *
@@ -92,3 +94,5 @@ ringHanser.createRing = function(atoms, molecule) {
   var ring = new ringRing(atoms, bonds);
   return ring;
 };
+
+module.exports = ringHanser;

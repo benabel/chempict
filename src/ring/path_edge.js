@@ -1,6 +1,6 @@
 /**
  * Copyright 2010 Paul Novak (paul@wingu.com)
- * Copyright 2015 Benjamin Abel bbig26@gmail.com
+ * Copyright 2015-2016 Benjamin Abel bbig26@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  *  See the License for the specific language governing permissions and
  * limitations under the License.
  */
-goog.provide('kemia.ring.PathEdge');
+ 'use strict';
 
 /**
  * @param {Array.<kemia.model.Atom>} _atoms
  * @constructor
  */
-kemia.ring.PathEdge = function(_atoms) {
+const ringPathEdge = function(_atoms) {
   /** @type {Array.<kemia.model.Atom>} */
   this.atoms = _atoms;
 };
@@ -28,16 +28,16 @@ kemia.ring.PathEdge = function(_atoms) {
 /**
  * @return {boolean}
  */
-kemia.ring.PathEdge.prototype.isCycle = function() {
+ringPathEdge.prototype.isCycle = function() {
   var lastAtomPos = this.atoms.length - 1;
   return (this.atoms.length > 2 && this.atoms[0] === this.atoms[lastAtomPos]);
 };
 
 /**
- * @param {kemia.ring.PathEdge} other
- * @return {kemia.ring.PathEdge}
+ * @param {ringPathEdge} other
+ * @return {ringPathEdge}
  */
-kemia.ring.PathEdge.prototype.splice = function(other) {
+ringPathEdge.prototype.splice = function(other) {
 
   /** @type {kemia.model.Atom} */
   var intersection = this.getIntersection(other.atoms);
@@ -67,14 +67,14 @@ kemia.ring.PathEdge.prototype.splice = function(other) {
     return null;
   }
 
-  return new kemia.ring.PathEdge(newAtoms);
+  return new ringPathEdge(newAtoms);
 };
 
 /**
  * @param {Array.<kemia.model.Atom>} atoms
  * @return {boolean}
  */
-kemia.ring.PathEdge.prototype.isRealPath = function(atoms) {
+ringPathEdge.prototype.isRealPath = function(atoms) {
   for (var i = 1, il = atoms.length - 1; i < il; i++) {
     for (var j = 1; j < il; j++) {
       if (i === j) {
@@ -92,7 +92,7 @@ kemia.ring.PathEdge.prototype.isRealPath = function(atoms) {
  * @param {Array.<kemia.model.Atom>} others
  * @return {kemia.model.Atom}
  */
-kemia.ring.PathEdge.prototype.getIntersection = function(others) {
+ringPathEdge.prototype.getIntersection = function(others) {
   var lastAtomPos = this.atoms.length - 1;
   var lastOtherPos = others.length - 1;
   if (this.atoms[lastAtomPos] === others[0] || this.atoms[lastAtomPos] === others[lastOtherPos]) {
@@ -103,3 +103,5 @@ kemia.ring.PathEdge.prototype.getIntersection = function(others) {
   }
   throw 'Couldn\'t splice - no intersection';
 };
+
+module.exports = ringPathEdge;

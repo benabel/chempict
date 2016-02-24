@@ -3,11 +3,12 @@
 *   Vector2D.js
 *
 *   copyright 2001-2002, Kevin Lindsey
-* Copyright 2015 Benjamin Abel bbig26@gmail.com
+*   Copyright 2015-2016 Benjamin Abel bbig26@gmail.com
 *
 *   markr: added extra functions
 *
 *****/
+'use strict';
 
 /*****
 *
@@ -15,7 +16,7 @@
 *
 *****/
 
-module.exports = layoutVector2D = function(x, y) {
+const layoutVector2D = function(x, y) {
   if (arguments.length > 0) {
     this.x = x;
     this.y = y;
@@ -258,3 +259,5 @@ layoutVector2D.prototype.angle = function(v1) {
   return ((Math.acos(vDot)));
 
 };
+
+module.exports = layoutVector2D;

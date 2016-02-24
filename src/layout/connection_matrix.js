@@ -1,4 +1,6 @@
-module.exports = layoutConnectionMatrix = function() {};
+'use strict';
+
+const layoutConnectionMatrix = function() {};
 
 layoutConnectionMatrix.getMatrix = function(molecule) {
 
@@ -38,3 +40,5 @@ layoutConnectionMatrix.display = function(matrix) {
   }
   alert(debug);
 };
+
+module.exports = layoutConnectionMatrix;

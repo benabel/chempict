@@ -1,3 +1,5 @@
+'use strict';
+
 var modelAtom = require('./atom');
 
 /**
@@ -19,8 +21,7 @@ var modelAtom = require('./atom');
  *
  * @constructor
  */
-module.exports =
-    modelBond = function(source, target, optOrder, optStereo, optAromatic, optMolecule) {
+const modelBond = function(source, target, optOrder, optStereo, optAromatic, optMolecule) {
       /**
        * source Atom
        *
@@ -133,3 +134,5 @@ modelBond.prototype.toString = function() {
       this.target.toString() + ' mol: ' + molname;
 
 };
+
+module.exports = modelBond;

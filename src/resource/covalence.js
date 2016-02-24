@@ -1,6 +1,6 @@
-var resourceCovalence = exports;
+'use strict';
 
-resourceCovalence = {
+const resourceCovalence = {
   'C': 4,
   'Si': 4,
   'N': 3,
@@ -13,3 +13,5 @@ resourceCovalence = {
   'I': 1,
   'F': 1
 };
+
+module.exports = resourceCovalence;
