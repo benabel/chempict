@@ -60,8 +60,6 @@ layoutOverlapResolver.getOverlapScore = function(molecule, overlappingAtoms) {
   return overlapScore;
 };
 
-
-
 /**
  *  Makes a small displacement to some atoms or rings in the given
  *  atomcontainer.

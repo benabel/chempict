@@ -24,7 +24,6 @@ layoutConnectionMatrix.getMatrix = function(molecule) {
   return conMat;
 };
 
-
 layoutConnectionMatrix.display = function(matrix) {
   var debug = '';
   var size = matrix.length;

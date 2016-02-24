@@ -187,8 +187,6 @@ SmilesParser.parse = function(smi) {
   }
 };
 
-
-
 SmilesParser.sanityCheck = function(branch, ring, bondType) {
   if (branch.length) {
     throw new Error('unbalanced parens');

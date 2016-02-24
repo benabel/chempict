@@ -104,8 +104,6 @@ layoutRingPlacer.placeRingSubstituents = function(molec, ringset, bondLength) {
   return treatedAtoms;
 };
 
-
-
 /**
  * Generated coordinates for a bridged ring.
  *
@@ -129,7 +127,6 @@ layoutRingPlacer.placeBridgedRing = function(
   ringCenterVector.scale(radius);
   var ringCenter = new goog.math.Coordinate(
       sharedFragCenter.x + ringCenterVector.x, sharedFragCenter.y + ringCenterVector.y);
-
 
   var bridgeAtoms = layoutRingPlacer.getBridgeAtoms(sharedFrag);
 
@@ -332,7 +329,6 @@ layoutRingPlacer.placeFusedRing = function(
   layoutAtomPlacer.populatePolygonCorners(atomsToDraw, ringCenter, startAngle, addAngle, radius);
 };
 
-
 layoutRingPlacer.getNextBond = function(ring, bond, atom) {
   for (var f = 0; f < ring.bonds.length; f++) {
     if (ring.bonds[f] !== bond &&
@@ -342,7 +338,6 @@ layoutRingPlacer.getNextBond = function(ring, bond, atom) {
   }
   return null;
 };
-
 
 /**
  * Generated coordinates for a spiro ring.
@@ -428,7 +423,6 @@ layoutRingPlacer.center = function(atoms) {
 
   return new goog.math.Coordinate(sum.x / atoms.length, sum.y / atoms.length);
 };
-
 
 layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondLength) {
   var connectedRings = ringPartitioner.directConnectedRings(ring, ringset);
@@ -516,8 +510,8 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
 
     // Place all the substituents of next ring system
     layoutAtomPlacer.markNotPlaced(placedAtoms);
-    var substituents = layoutRingPlacer.placeRingSubstituents(
-        molecule, nextRingSet, config.bondLength);
+    var substituents =
+        layoutRingPlacer.placeRingSubstituents(molecule, nextRingSet, config.bondLength);
     layoutAtomPlacer.markPlaced(placedAtoms);
 
     var placedAtoms = goog.array.concat(

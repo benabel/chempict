@@ -1,11 +1,21 @@
 {
   "name": "chempict",
   "version": "0.0.1",
-  "description": "Create chemical pictures for the web.",
+  "description": "Depict chemical pictures for the web.",
   "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "clang-format": "^1.0.34",
+    "eslint": "^2.2.0",
+    "eslint-config-google": "^0.4.0",
+    "google-closure-library": "^20151015.0.0",
+    "jscs": "^2.10.1"
+  },
   "scripts": {
+    "fix": "jscs --fix src/**/*.js", 
+    "format": "clang-format -i src/**/*.js",
     "lint": "eslint src/**/*.js",
-    "format": "clang-format -i src/**/*.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -23,10 +33,5 @@
   "bugs": {
     "url": "https://github.com/benjaminabel/chempict/issues"
   },
-  "homepage": "https://github.com/benjaminabel/chempict#readme",
-  "devDependencies": {
-    "clang-format": "^1.0.34",
-    "eslint": "^2.0.0-beta.2",
-    "google-closure-library": "^20151015.0.0"
-  }
+  "homepage": "https://github.com/benjaminabel/chempict#readme"
 }

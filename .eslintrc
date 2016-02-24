@@ -1,5 +1,6 @@
-"extends": "node-style-guide"
+"extends": "google"
 
+"max-len": [2, 80, 4, {"ignoreComments": true, "ignoreUrls": true}]
 "env": {
   "browser": true,
   "node": true,

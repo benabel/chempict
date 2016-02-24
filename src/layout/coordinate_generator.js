@@ -19,7 +19,6 @@ const layoutRingSet = require('./ring_set');
 const layoutOverlapResolver = require('./overlap_resolver');
 const layoutVector2D = require('./vector2d');
 
-
 /**
  * Generates 2D coordinates for a molecule for which only connectivity is known
  * or the coordinates have been discarded for some reason.
@@ -31,7 +30,6 @@ const layoutVector2D = require('./vector2d');
 module.exports = layoutCoordinateGenerator = function() {};
 
 layoutCoordinateGenerator.bondLength = 1.5;
-
 
 layoutCoordinateGenerator.generate = function(molecule) {
 
@@ -122,13 +120,11 @@ layoutCoordinateGenerator.generate = function(molecule) {
 
     layoutRingPlacer.layoutNextRingSystem(firstBondVector, molecule, sssr, ringsets);
 
-
   } while (!layoutAtomPlacer.allPlaced(molecule, atCount) &&
            safetyCounter <= molecule.countAtoms());
 
   // Optional..
   layoutOverlapResolver.resolveOverlap(molecule, sssr);
-
 
   /* DEBUG coords
    alrt="";
@@ -139,11 +135,8 @@ layoutCoordinateGenerator.generate = function(molecule) {
          alert (alrt)
   /* DEBUG coords */
 
-
-
   return molecule;
 };
-
 
 /**
  * places first bond of first ring with source at origin and target at scaled

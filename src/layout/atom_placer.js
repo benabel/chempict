@@ -53,7 +53,6 @@ layoutAtomPlacer.getInitialLongestChain = function(molecule) {
   return path;
 };
 
-
 /**
  * All-Pairs-Shortest-Path computation based on Floyds algorithm. Takes an nxn
  * matrix C of edge costs and produces an nxn matrix A of lengths of shortest
@@ -156,7 +155,6 @@ layoutAtomPlacer.getConnectedBondsCount = function(atom, molecule, bondCount) {
   return connBondCount;
 };
 
-
 /**
  * Performs a breadthFirstSearch in an molecule starting with a particular
  * sphere, which usually consists of one start atom, and searches for the
@@ -204,7 +202,6 @@ layoutAtomPlacer.copyPath = function(path) {
   }
   return pathCopy;
 };
-
 
 /**
  * Places the atoms in a linear chain. Not included: CIS/TRANS logic from CDK
@@ -300,7 +297,6 @@ layoutAtomPlacer.getAngle = function(xDiff, yDiff) {
   return angle;
 };
 
-
 layoutAtomPlacer.getNextBondVector = function(atom, previousAtom, distanceMeasure, trans) {
 
   var angle = layoutAtomPlacer.getAngle(
@@ -324,7 +320,6 @@ layoutAtomPlacer.getNextBondVector = function(atom, previousAtom, distanceMeasur
     return vec1;
   }
 };
-
 
 layoutAtomPlacer.allPlaced = function(molecule, atCount) {
   for (var ap = 0; ap < atCount; ap++)
@@ -443,7 +438,6 @@ layoutAtomPlacer.distributePartners = function(
       atomsToDraw, new goog.math.Coordinate(atom.coord.x, atom.coord.y), startAngle, addAngle,
       radius);
 };
-
 
 /**
  * Sorts an array of atoms such that the 2D distances of the atom locations from

@@ -434,7 +434,6 @@ modelMolecule.prototype.translate = function(vector) {
       this.atoms, function(a) { a.coord = goog.math.Coordinate.sum(a.coord, vector); });
 };
 
-
 /**
  * merge with a molecule fragment targetBond replaces fragBond and targetAtom
  * replaces fragAtom
@@ -496,7 +495,6 @@ modelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
     }
   }, this);
 
-
   var yesCopy =
       goog.array.filter(fragment.bonds, function(b) { return !goog.array.contains(processed, b); });
 
@@ -505,7 +503,6 @@ modelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
   goog.array.forEach(yesCopy, function(bond) { this.addBond(bond); }, this);
   fragment.bonds.length = 0;
   fragment.atoms.length = 0;
-
 
   if (fragment.reaction) {
     fragment.reaction.removeMolecule(fragment);

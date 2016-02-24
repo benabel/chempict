@@ -16,7 +16,6 @@
  */
 goog.provide('kemia.ring.PathEdge');
 
-
 /**
  * @param {Array.<kemia.model.Atom>} _atoms
  * @constructor
@@ -102,5 +101,5 @@ kemia.ring.PathEdge.prototype.getIntersection = function(others) {
   if (this.atoms[0] === others[0] || this.atoms[0] === others[lastOtherPos]) {
     return this.atoms[0];
   }
-  throw "Couldn't splice - no intersection";
+  throw 'Couldn\'t splice - no intersection';
 };

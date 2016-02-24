@@ -1,6 +1,7 @@
 /*
  * Layout should follow ACS setting 1996
- * see https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Chemistry/Structure_drawing#Suggested_molecule_editor_settings
+ * see
+ https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Chemistry/Structure_drawing#Suggested_molecule_editor_settings
 
    The ACS settings are as follows:
 
@@ -15,7 +16,8 @@
      Atom labels: Arial 10 pt
      Bond angles and length: “fixed” is recommended
 
- Also recommended: For minus symbols on atoms, change the font for the minus symbol to “Symbol” for clarity.
+ Also recommended: For minus symbols on atoms, change the font for the minus symbol to “Symbol” for
+ clarity.
  */
 'use strict';
 

@@ -22,7 +22,6 @@ const ringSSSR = require('./sssr');
 const modelAtom = require('../model/atom');
 const modelBond = require('../model/bond');
 
-
 module.exports = ringFinder = function() {};
 /**
  * The Hanser Ring Finder produces a ring as just a series of atoms. Here we
@@ -108,7 +107,6 @@ ringFinder.isCandidateInSet = function(C, Csssr, valences, ringCount) {
   }
   return true;
 };
-
 
 /**
  * Verify if a ring set is the SSSR ring set.
@@ -307,7 +305,6 @@ ringFinder.createRingSystems = function(molecule) {
   var visitedAtoms = goog.array.repeat(false, n);
   var visitedBonds = goog.array.repeat(false, n);
   var indexMap = goog.array.repeat(-1, n);  // molecule -> ringSystem
-
 
   for (var k = 0, lk = molecule.countAtoms(); k < lk; k++) {
     var startAtom = molecule.atoms[k];

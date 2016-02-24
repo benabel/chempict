@@ -9,7 +9,6 @@
 *
 *****/
 
-
 /*****
 *
 *   constructor
@@ -32,7 +31,6 @@ layoutVector2D.prototype.length = function() {
   return Math.sqrt(this.x * this.x + this.y * this.y);
 };
 
-
 /*****
 *
 *   dot
@@ -41,7 +39,6 @@ layoutVector2D.prototype.length = function() {
 layoutVector2D.prototype.dot = function(that) {
   return this.x * that.x + this.y * that.y;
 };
-
 
 /*****
 *
@@ -52,7 +49,6 @@ layoutVector2D.prototype.cross = function(that) {
   return this.x * that.y - this.y * that.x;
 };
 
-
 /*****
 *
 *   unit
@@ -61,7 +57,6 @@ layoutVector2D.prototype.cross = function(that) {
 layoutVector2D.prototype.unit = function() {
   return this.divide(this.length());
 };
-
 
 /*****
 *
@@ -74,7 +69,6 @@ layoutVector2D.prototype.unitEquals = function() {
   return this;
 };
 
-
 /*****
 *
 *   add
@@ -83,7 +77,6 @@ layoutVector2D.prototype.unitEquals = function() {
 layoutVector2D.prototype.add = function(that) {
   return new layoutVector2D(this.x + that.x, this.y + that.y);
 };
-
 
 /*****
 *
@@ -97,7 +90,6 @@ layoutVector2D.prototype.addEquals = function(that) {
   return this;
 };
 
-
 /*****
 *
 *   subtract
@@ -106,7 +98,6 @@ layoutVector2D.prototype.addEquals = function(that) {
 layoutVector2D.prototype.subtract = function(that) {
   return new layoutVector2D(this.x - that.x, this.y - that.y);
 };
-
 
 /*****
 *
@@ -120,7 +111,6 @@ layoutVector2D.prototype.subtractEquals = function(that) {
   return this;
 };
 
-
 /*****
 *
 *   multiply
@@ -129,7 +119,6 @@ layoutVector2D.prototype.subtractEquals = function(that) {
 layoutVector2D.prototype.multiply = function(scalar) {
   return new layoutVector2D(this.x * scalar, this.y * scalar);
 };
-
 
 /*****
 *
@@ -143,7 +132,6 @@ layoutVector2D.prototype.multiplyEquals = function(scalar) {
   return this;
 };
 
-
 /*****
 *
 *   divide
@@ -152,7 +140,6 @@ layoutVector2D.prototype.multiplyEquals = function(scalar) {
 layoutVector2D.prototype.divide = function(scalar) {
   return new layoutVector2D(this.x / scalar, this.y / scalar);
 };
-
 
 /*****
 *
@@ -166,7 +153,6 @@ layoutVector2D.prototype.divideEquals = function(scalar) {
   return this;
 };
 
-
 /*****
 *
 *   perp
@@ -176,7 +162,6 @@ layoutVector2D.prototype.perp = function() {
   return new layoutVector2D(-this.y, this.x);
 };
 
-
 /*****
 *
 *   perpendicular
@@ -185,7 +170,6 @@ layoutVector2D.prototype.perp = function() {
 layoutVector2D.prototype.perpendicular = function(that) {
   return this.subtract(this.project(that));
 };
-
 
 /*****
 *
@@ -198,7 +182,6 @@ layoutVector2D.prototype.project = function(that) {
   return that.multiply(percent);
 };
 
-
 /*****
 *
 *   toString
@@ -207,7 +190,6 @@ layoutVector2D.prototype.project = function(that) {
 layoutVector2D.prototype.toString = function() {
   return this.x + ',' + this.y;
 };
-
 
 /*****
 *

@@ -31,7 +31,7 @@ goog.require('goog.json');
  */
 
 goog.provide('ringSSSR');
-module.exports = ringSSSR = function () {};
+module.exports = ringSSSR = function() {};
 
 /**
  * Make a deep copy of an array
@@ -172,7 +172,6 @@ ringSSSR.appendPath = function(lhs, p1, p2) {
   }
 };
 
-
 /**
  * Create the two Path-Included Distance matrices (Pe and Pe') and the
  * distance matrix D. This is Algorithm 1 in the supplementary information
@@ -278,7 +277,6 @@ ringSSSR.makeCandidateSet = function(D, Pe1, Pe2) {
   return Cset;
 };
 
-
 /**
  * Check if a candidate is already part of the SSSR set. A ring is considered
  * to be in the set if the set contains an identical ring or a ring that is a
@@ -331,7 +329,6 @@ ringSSSR.isCandidateInSet = function(C, Csssr, valences, ringCount) {
       isNewRing = true;
     }
   }
-
 
   if (isNewRing) {
     for (j = 0, lj = C.length; j < lj; j++) {

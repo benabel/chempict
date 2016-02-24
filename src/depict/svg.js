@@ -18,7 +18,7 @@ svgDepict.writeHeader = function(w, h) {
 };
 
 svgDepict.drawAtoms = function(mol, fontSize) {
-  const box = mol.getBoundingBox(); // getters: top bottom left right
+  const box = mol.getBoundingBox();  // getters: top bottom left right
   // translations
   const dx = box.left;
   const dy = box.top;
@@ -34,14 +34,14 @@ svgDepict.drawAtoms = function(mol, fontSize) {
     let x = (coord.x - dx) * width / w;
     let y = (coord.y - dy) * height / h;
     sb +=
-      `<text x="${x}" y="${y}" font-family="Verdana" font-size="${fontSize}" text-anchor="middle" fill="black">${symb}</text>\n`;
+        `<text x="${x}" y="${y}" font-family="Verdana" font-size="${fontSize}" text-anchor="middle" fill="black">${symb}</text>\n`;
   }
   mol.atoms.forEach(svgtxt);
 };
 
 svgDepict.drawBonds = function(mol) {
 
-  const box = mol.getBoundingBox(); // getters: top bottom left right
+  const box = mol.getBoundingBox();  // getters: top bottom left right
   // translations
   const dx = box.left;
   const dy = box.top;
