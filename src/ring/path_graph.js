@@ -14,17 +14,17 @@
  *  See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 'use strict';
-const ringPathEdge = require('./path_edge');
+'use strict';
+const RingPathEdge = require('./path_edge');
 
 /**
  * @param {kemia.model.Molecule}
  *            molecule
  * @constructor
  */
-const ringPathGraph = function(molecule) {
+const RingPathGraph = function(molecule) {
 
-  /** @type{Array.<ringPathEdge>} */
+  /** @type{Array.<RingPathEdge>} */
   this.edges = new Array();
 
   /** @type{Array.<kemia.model.Atom>} */
@@ -34,7 +34,7 @@ const ringPathGraph = function(molecule) {
   for (var i = 0, il = molecule.countBonds(); i < il; i++) {
     var bond = molecule.getBond(i);
     var edge = [bond.source, bond.target];
-    this.edges.push(new ringPathEdge(edge));
+    this.edges.push(new RingPathEdge(edge));
   }
   // load atoms
   for (var i = 0, il = molecule.countAtoms(); i < il; i++) {
@@ -45,12 +45,12 @@ const ringPathGraph = function(molecule) {
 /**
  * @param {kemia.model.Atom} atom
  * @param {number} maxLen
- * @return {Array.<ringPathEdge>}
+ * @return {Array.<RingPathEdge>}
  */
-ringPathGraph.prototype.remove = function(atom, maxLen) {
-  /** @type {Array.<ringPathEdge>} */
+RingPathGraph.prototype.remove = function(atom, maxLen) {
+  /** @type {Array.<RingPathEdge>} */
   var oldEdges = this.getEdges(atom);
-  /** @type {Array.<ringPathEdge>} */
+  /** @type {Array.<RingPathEdge>} */
   var result = new Array();
   for (var i = 0, il = oldEdges.length; i < il; i++) {
     if (oldEdges[i].isCycle()) {
@@ -67,7 +67,7 @@ ringPathGraph.prototype.remove = function(atom, maxLen) {
     }
   }
 
-  /** @type {Array.<ringPathEdge>} */
+  /** @type {Array.<RingPathEdge>} */
   var newEdges = this.spliceEdges(oldEdges);
 
   for (var i = 0, il = oldEdges.length; i < il; i++) {
@@ -92,15 +92,15 @@ ringPathGraph.prototype.remove = function(atom, maxLen) {
 
 /**
  * @param {kemia.model.Atom} atom
- * @return {Array.<ringPathEdge>}
+ * @return {Array.<RingPathEdge>}
  */
-ringPathGraph.prototype.getEdges = function(atom) {
+RingPathGraph.prototype.getEdges = function(atom) {
 
-  /** @type {Array.<ringPathEdge>} */
+  /** @type {Array.<RingPathEdge>} */
   var result = new Array();
 
   for (var i = 0, il = this.edges.length; i < il; i++) {
-    /** @type {ringPathEdge} */
+    /** @type {RingPathEdge} */
     var edge = this.edges[i];
 
     if (edge.isCycle()) {
@@ -118,11 +118,11 @@ ringPathGraph.prototype.getEdges = function(atom) {
 };
 
 /**
- * @param {Array.<ringPathEdge>} _edges
- * @return {Array.<ringPathEdge>}
+ * @param {Array.<RingPathEdge>} _edges
+ * @return {Array.<RingPathEdge>}
  */
 
-ringPathGraph.prototype.spliceEdges = function(_edges) {
+RingPathGraph.prototype.spliceEdges = function(_edges) {
   var result = new Array();
 
   for (var i = 0, il = _edges.length; i < il; i++) {
@@ -136,4 +136,4 @@ ringPathGraph.prototype.spliceEdges = function(_edges) {
   return result;
 };
 
-module.exports = ringPathGraph;
+module.exports = RingPathGraph;

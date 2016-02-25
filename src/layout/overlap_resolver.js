@@ -11,7 +11,7 @@
  */
 'use strict';
 
-const layoutVector2D = require('./vector2d.js');
+const LayoutVector2D = require('./vector2d.js');
 const layoutCoordinateGenerator = require('./coordinate_generator.js');
 
 const layoutOverlapResolver = function() {};
@@ -81,8 +81,8 @@ layoutOverlapResolver.displace = function(molecule, overlappingAtoms) {
        */
       var a1 = op[0];
       var a2 = op[1];
-      var v1 = new layoutVector2D(a1.coord.x, a1.coord.y);
-      var v2 = new layoutVector2D(a2.coord.x - a1.coord.x, a2.coord.y - a1.coord.y);
+      var v1 = new LayoutVector2D(a1.coord.x, a1.coord.y);
+      var v2 = new LayoutVector2D(a2.coord.x - a1.coord.x, a2.coord.y - a1.coord.y);
       v2.normalize();
 
       if (isNaN(v2.x)) v2.x = 0.01;

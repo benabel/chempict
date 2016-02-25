@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and limitations under the
  * License.
  */
- 'use strict';
+'use strict';
 
 goog.require('goog.array');
 
@@ -26,7 +26,7 @@ const ringPartitioner = function() {};
  *            arrays
  * @return {Array.<Array.<kemia.ring.Ring>>} array of arrays of Rings
  */
-ringPartitioner.getPartitionedRings = function(rings) {
+ringPartitioner.GetPartitionedRings = function(rings) {
   var partitions = [];
   var done = new Array(rings.length);
   for (var x = 0, x2 = rings.length; x < x2; x++) {
@@ -100,7 +100,7 @@ ringPartitioner.directConnectedRings = function(ring, rings) {
  * @return {Array.<Array.<kemia.ring.Ring>>} array of arrays of Rings
  */
 
-ringPartitioner.getPartitionedRings = function(rings) {
+ringPartitioner.GetPartitionedRings = function(rings) {
   var partitions = [];
   var search = rings;
   goog.array.forEach(rings, function(ring) {

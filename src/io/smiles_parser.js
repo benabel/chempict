@@ -16,9 +16,9 @@
 'use strict';
 
 const SmilesParser = {};
-const modelAtom = require('../model/atom');
-const modelBond = require('../model/bond');
-const modelMolecule = require('../model/molecule');
+const ModelAtom = require('../model/atom');
+const ModelBond = require('../model/bond');
+const ModelMolecule = require('../model/molecule');
 
 /**
  * enum for bond types
@@ -75,7 +75,7 @@ SmilesParser.aromaticAtoms = ['c', 'n', 'o', 's', 'as', 'se'];
 
 SmilesParser.parse = function(smi) {
   var items = smi.match(SmilesParser.smiPattern);
-  var mol = new modelMolecule(smi);
+  var mol = new ModelMolecule(smi);
   var natoms = 0;
   var previousAtom;
   var bondType = SmilesParser.BondType.NONE;
@@ -156,7 +156,7 @@ SmilesParser.parse = function(smi) {
       if (smiAtom.symbol) {
         natoms += 1;
         var atom =
-            new modelAtom(smiAtom.symbol, 0, 0, smiAtom.charge, smiAtom.aromatic, smiAtom.isotope);
+            new ModelAtom(smiAtom.symbol, 0, 0, smiAtom.charge, smiAtom.aromatic, smiAtom.isotope);
         if (previousAtom) {
           mol.addBond(SmilesParser.createBond(bondType, previousAtom, atom));
           bondType = SmilesParser.BondType.NONE;
@@ -264,10 +264,10 @@ SmilesParser.parseAtom = function(item) {
  * factory method for bonds
  *
  * @param {SmilesParser.BondType} type bond-type code.
- * @param {modelAtom} source atom at source end of bond.
- * @param {modelAtom} target atom at target end of bond.
+ * @param {ModelAtom} source atom at source end of bond.
+ * @param {ModelAtom} target atom at target end of bond.
  *
- * @return {modelBond}
+ * @return {ModelBond}
  */
 SmilesParser.createBond = function(type, source, target) {
   var atype = type;
@@ -280,13 +280,13 @@ SmilesParser.createBond = function(type, source, target) {
   }
   switch (atype) {
     case SmilesParser.BondType.SINGLE_BOND:
-      return new modelBond(source, target, modelBond.ORDER.SINGLE);
+      return new ModelBond(source, target, ModelBond.ORDER.SINGLE);
     case SmilesParser.BondType.DOUBLE_BOND:
-      return new modelBond(source, target, modelBond.ORDER.DOUBLE);
+      return new ModelBond(source, target, ModelBond.ORDER.DOUBLE);
     case SmilesParser.BondType.TRIPLE_BOND:
-      return new modelBond(source, target, modelBond.ORDER.TRIPLE);
+      return new ModelBond(source, target, ModelBond.ORDER.TRIPLE);
     case SmilesParser.BondType.AROMATIC_BOND:
-      var bond = new modelBond(source, target);
+      var bond = new ModelBond(source, target);
       bond.aromatic = true;
       return bond;
     case SmilesParser.BondType.ANY:
@@ -298,7 +298,7 @@ SmilesParser.createBond = function(type, source, target) {
 /**
  * Sets UP and DOWN bonds based on chiral center information
  *
- * @param {modelMolecule}
+ * @param {ModelMolecule}
  *            molecule currently being constructed by Smiles parser.
  * @param {Array.<number>} chiralCenters array of atoms flagged as chiral
  *            center in Smiles (plus extra overhead data).
@@ -333,9 +333,9 @@ SmilesParser.setChiralCenters = function(molecule, chiralCenters) {
         }
         bond = availableBonds[bondidx];
         if (direction === SmilesParser.BondStereo.CLOCKWISE) {
-          bond.stereo = modelBond.STEREO.UP;
+          bond.stereo = ModelBond.STEREO.UP;
         } else
-          bond.stereo = modelBond.STEREO.DOWN;
+          bond.stereo = ModelBond.STEREO.DOWN;
       }
       if (cntNeighb === 4 && numOfAvBonds > 1) {
         bondidx = 1;
@@ -345,9 +345,9 @@ SmilesParser.setChiralCenters = function(molecule, chiralCenters) {
           bondidx = 2;
         bond = availableBonds[bondidx];
         if (direction === SmilesParser.BondStereo.CLOCKWISE)
-          bond.stereo = modelBond.STEREO.DOWN;
+          bond.stereo = ModelBond.STEREO.DOWN;
         else
-          bond.stereo = modelBond.STEREO.UP;
+          bond.stereo = ModelBond.STEREO.UP;
       }
     }
   }

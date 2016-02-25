@@ -22,7 +22,8 @@
 'use strict';
 
 const config = {
-  bondLength: 1.5
+  bondLength: 1.5,
+  fontSize: 10
 };
 
 module.exports = config;

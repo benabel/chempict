@@ -16,7 +16,7 @@
 
 goog.require('goog.structs.Set');
 goog.require('goog.array');
-const ringRing = goog.require('./ring');
+const RingRing = goog.require('./ring');
 goog.require('goog.array');
 goog.require('goog.json');
 

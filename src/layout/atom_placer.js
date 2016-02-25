@@ -3,10 +3,10 @@
 goog.require('goog.math');
 
 const modelFlags = require('../model/flags.js');
-const modelMolecule = require('../model/molecule.js');
+const ModelMolecule = require('../model/molecule.js');
 
 const layoutConnectionMatrix = require('./connection_matrix');
-const layoutVector2D = require('./vector2d.js');
+const LayoutVector2D = require('./vector2d.js');
 
 /**
  * Javascript version of CDK's AtomPlacer class. Methods for generating
@@ -110,7 +110,7 @@ layoutAtomPlacer.getLongestUnplacedChain = function(molecule, startAtom) {
 
   for (var f = 0; f < atCount; f++) {
     molecule.getAtom(f).setFlag(modelFlags.VISITED, false);
-    paths[f] = new modelMolecule;
+    paths[f] = new ModelMolecule;
     paths[f].addAtom(startAtom);
   }
 
@@ -198,7 +198,7 @@ layoutAtomPlacer.breadthFirstSearch = function(mol, sphere, paths, bondCount) {
 };
 
 layoutAtomPlacer.copyPath = function(path) {
-  var pathCopy = new modelMolecule;
+  var pathCopy = new ModelMolecule;
   for (var pl = 0, pathLen = path.countAtoms(); pl < pathLen; pl++) {
     pathCopy.addAtom(path.getAtom(pl));
   }
@@ -307,12 +307,12 @@ layoutAtomPlacer.getNextBondVector = function(atom, previousAtom, distanceMeasur
   if (!trans) addAngle = Math.PI * (60 / 180);
 
   angle += addAngle;
-  var vec1 = new layoutVector2D(Math.cos(angle), Math.sin(angle));
+  var vec1 = new LayoutVector2D(Math.cos(angle), Math.sin(angle));
   var point1 = new goog.math.Coordinate(atom.coord.x + vec1.x, atom.coord.y + vec1.y);
   var distance1 = goog.math.Coordinate.distance(point1, distanceMeasure);
   angle += addAngle;
 
-  var vec2 = new layoutVector2D(Math.cos(angle), Math.sin(angle));
+  var vec2 = new LayoutVector2D(Math.cos(angle), Math.sin(angle));
   var point2 = new goog.math.Coordinate(atom.coord.x + vec2.x, atom.coord.y + vec2.y);
   var distance2 = goog.math.Coordinate.distance(point2, distanceMeasure);
 
@@ -343,10 +343,10 @@ layoutAtomPlacer.distributePartners = function(
   var remainingAngle = 0.0;
 
   // Calculate the direction away from the already placed partners of atom
-  var sharedAtomsCenterVector = new layoutVector2D(sharedAtomsCenter.x, sharedAtomsCenter.y);
-  var newDirection = new layoutVector2D(atom.coord.x, atom.coord.y);
+  var sharedAtomsCenterVector = new LayoutVector2D(sharedAtomsCenter.x, sharedAtomsCenter.y);
+  var newDirection = new LayoutVector2D(atom.coord.x, atom.coord.y);
 
-  var occupiedDirection = new layoutVector2D(sharedAtomsCenter.x, sharedAtomsCenter.y);
+  var occupiedDirection = new LayoutVector2D(sharedAtomsCenter.x, sharedAtomsCenter.y);
   occupiedDirection.sub(newDirection);
   var atomsToDraw = new Array();
 
@@ -398,10 +398,10 @@ layoutAtomPlacer.distributePartners = function(
     sortedAtoms.push(placedNeighbours.getAtom(f1));
   }
   layoutAtomPlacer.sortBy2DDistance(sortedAtoms, distanceMeasure);
-  var closestPoint1 = new layoutVector2D(sortedAtoms[0].coord.x, sortedAtoms[0].coord.y);
-  var closestPoint2 = new layoutVector2D(sortedAtoms[1].coord.x, sortedAtoms[1].coord.y);
-  closestPoint1.sub(new layoutVector2D(atom.coord.x, atom.coord.y));
-  closestPoint2.sub(new layoutVector2D(atom.coord.x, atom.coord.y));
+  var closestPoint1 = new LayoutVector2D(sortedAtoms[0].coord.x, sortedAtoms[0].coord.y);
+  var closestPoint2 = new LayoutVector2D(sortedAtoms[1].coord.x, sortedAtoms[1].coord.y);
+  closestPoint1.sub(new LayoutVector2D(atom.coord.x, atom.coord.y));
+  closestPoint2.sub(new LayoutVector2D(atom.coord.x, atom.coord.y));
   occupiedAngle = closestPoint1.angle(occupiedDirection);
   occupiedAngle += closestPoint2.angle(occupiedDirection);
 
@@ -505,7 +505,7 @@ layoutAtomPlacer.populatePolygonCorners = function(
 /**
  * Partition the bonding partners of a given atom into placed and not placed.
  * @param molecule
- *            {modelMolecule} The molecule getting laid.
+ *            {ModelMolecule} The molecule getting laid.
  * @param atom
  *            {kemia.model.Atom} The atom whose bonding partners are to be
  *            partitioned.

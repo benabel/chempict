@@ -12,13 +12,13 @@
 'use strict';
 
 const modelFlags = require('../model/flags');
-const modelMolecule = require('../model/molecule');
+const ModelMolecule = require('../model/molecule');
 const ringPartitioner = require('../ring/partitioner');
 
 const config = require('./config');
 const layoutAtomPlacer = require('./atom_placer');
 const layoutOverlapResolver = require('./overlap_resolver');
-const layoutVector2D = require('./vector2d');
+const LayoutVector2D = require('./vector2d');
 
 /**
  * Generates 2D coordinates for a molecule for which only connectivity is known
@@ -35,7 +35,7 @@ layoutCoordinateGenerator.bondLength = 1.5;
 layoutCoordinateGenerator.generate = function(molecule) {
 
   var safetyCounter = 0;
-  var firstBondVector = new layoutVector2D(0, 1);
+  var firstBondVector = new LayoutVector2D(0, 1);
 
   var atCount = molecule.countAtoms();
   for (var f = 0; f < atCount; f++) {
@@ -67,7 +67,7 @@ layoutCoordinateGenerator.generate = function(molecule) {
   var sssr = molecule.getRings();
 
   // partition sssr into connected sets of rings
-  var ringsets = new ringPartitioner.getPartitionedRings(sssr);
+  var ringsets = new ringPartitioner.GetPartitionedRings(sssr);
 
   if (expectedRingCount > 0) {
     // flag all atoms in sssr as ISINRING
@@ -145,7 +145,7 @@ layoutCoordinateGenerator.generate = function(molecule) {
  *
  * @param {kemia.model.Bond}
  *            bond, subject bond to be placed
- * @param {layoutVector2D}
+ * @param {LayoutVector2D}
  *            vector, where to put the bond.target
  * @return {Array.<kemia.model.Atom>} array of the atoms placed
  */
@@ -186,7 +186,7 @@ layoutCoordinateGenerator.getNextAtomWithAliphaticUnplacedNeigbors = function(mo
 };
 
 layoutCoordinateGenerator.getAtoms = function(atom, molecule, bondCount, placed) {
-  var atoms = new modelMolecule;
+  var atoms = new ModelMolecule;
   var bonds = molecule.getConnectedBondsList(atom);
   for (var ga = 0, bLen = bonds.length; ga < bLen; ga++) {
     var connectedAtom = bonds[ga].otherAtom(atom);
@@ -222,9 +222,9 @@ layoutCoordinateGenerator.handleAliphatics = function(molecule, bondCount, bondL
           layoutAtomPlacer.distributePartners(
               at, placedAtoms, layoutAtomPlacer.get2DCenter(placedAtoms), unplacedAtoms,
               bondLength);
-          direction = new layoutVector2D(
+          direction = new LayoutVector2D(
               longestUnplacedChain.getAtom(1).coord.x, longestUnplacedChain.getAtom(1).coord.y);
-          startVector = new layoutVector2D(at.coord.x, at.coord.y);
+          startVector = new LayoutVector2D(at.coord.x, at.coord.y);
           direction.sub(startVector);
         } else {
           direction = layoutAtomPlacer.getNextBondVector(
@@ -281,7 +281,7 @@ layoutCoordinateGenerator.getMostComplexRing = function(ringSet) {
 /**
  * Does a layout of all the rings in a connected ringset.
  *
- * @param {layoutVector2D}
+ * @param {LayoutVector2D}
  *            bondVector A vector for placement for the first bond
  * @param {Array.<kemia.ring.Ring>} ringset
  * The connected RingSet to be layed out
@@ -301,7 +301,7 @@ layoutCoordinateGenerator.ringSet = function(bondVector, ringset) {
     var sharedFragSum = goog.array.reduce(sharedFrag.atoms, function(r, atom) {
       return goog.math.Coordinate.sum(r, atom.coord);
     }, new goog.math.Coordinate(0, 0));
-    var sharedFragCenter = new layoutVector2D(
+    var sharedFragCenter = new LayoutVector2D(
         sharedFragSum.x / sharedFrag.atoms.length, sharedFragSum.y / sharedFrag.atoms.length);
 
     var ringCenterVector =
@@ -331,11 +331,11 @@ const layoutRingPlacer = function() {};
  *
  * @param {kemia.ring.Ring}
  *            ring, subject ring
- * @param {layoutVector2D}
+ * @param {LayoutVector2D}
  *            bondVector location of first bond
  * @param {number}
  *            bondLength
- * @return {layoutVector2D}
+ * @return {LayoutVector2D}
  */
 layoutRingPlacer.getRingCenterOfFirstRing = function(ring, bondVector, bondLength) {
 
@@ -345,7 +345,7 @@ layoutRingPlacer.getRingCenterOfFirstRing = function(ring, bondVector, bondLengt
   /* get the angle between the x axis and the bond vector */
   var rotangle = layoutAtomPlacer.getAngle(bondVector.x, bondVector.y);
   rotangle += Math.PI / 2;
-  return new layoutVector2D(
+  return new LayoutVector2D(
       Math.cos(rotangle) * newRingPerpendicular, Math.sin(rotangle) * newRingPerpendicular);
 };
 
@@ -381,12 +381,12 @@ layoutRingPlacer.placeRing = function(
 };
 
 layoutRingPlacer.placeRingSubstituents = function(molec, ringset, bondLength) {
-  var treatedAtoms = new modelMolecule();
+  var treatedAtoms = new ModelMolecule();
   var cntDbg = 0;
   goog.array.forEach(ringset, function(ring) {
     goog.array.forEach(ring.atoms, function(atom) {
-      var unplacedPartners = new modelMolecule();
-      var sharedAtoms = new modelMolecule();
+      var unplacedPartners = new ModelMolecule();
+      var sharedAtoms = new ModelMolecule();
       var rings =
           goog.array.filter(ringset, function(r) { return goog.array.contains(r.atoms, atom); });
       var ringsAtoms = goog.array.flatten(goog.array.map(rings, function(r) { return r.atoms; }));
@@ -433,8 +433,8 @@ layoutRingPlacer.placeBridgedRing = function(
   var bondAtom1 = bridgeAtoms[0];
   var bondAtom2 = bridgeAtoms[1];
 
-  var bondAtom1Vector = new layoutVector2D(bondAtom1.coord.x, bondAtom1.coord.y);
-  var bondAtom2Vector = new layoutVector2D(bondAtom2.coord.x, bondAtom2.coord.y);
+  var bondAtom1Vector = new LayoutVector2D(bondAtom1.coord.x, bondAtom1.coord.y);
+  var bondAtom2Vector = new LayoutVector2D(bondAtom2.coord.x, bondAtom2.coord.y);
 
   bondAtom1Vector.sub(ringCenterVector);
   bondAtom2Vector.sub(ringCenterVector);
@@ -471,7 +471,7 @@ layoutRingPlacer.atomsInPlacementOrder = function(atom, bond, bonds) {
 /**
  * determine direction
  *
- * @param {layoutVector2D}
+ * @param {LayoutVector2D}
  *            ringCenter
  * @param {kemia.model.Atom}
  *            atom1
@@ -565,10 +565,10 @@ layoutRingPlacer.placeFusedRing = function(
   var bondAtom1 = sharedAtoms.atoms[0];
   var bondAtom2 = sharedAtoms.atoms[1];
 
-  var bondAtom1Vector = new layoutVector2D(bondAtom1.coord.x, bondAtom1.coord.y);
-  var bondAtom2Vector = new layoutVector2D(bondAtom2.coord.x, bondAtom2.coord.y);
+  var bondAtom1Vector = new LayoutVector2D(bondAtom1.coord.x, bondAtom1.coord.y);
+  var bondAtom2Vector = new LayoutVector2D(bondAtom2.coord.x, bondAtom2.coord.y);
 
-  var originRingCenterVector = new layoutVector2D(ringCenter.x, ringCenter.y);
+  var originRingCenterVector = new LayoutVector2D(ringCenter.x, ringCenter.y);
 
   bondAtom1Vector.sub(originRingCenterVector);
   bondAtom2Vector.sub(originRingCenterVector);
@@ -743,10 +743,10 @@ layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondL
                sharedFrag.atoms[qw].flags[modelFlags.ISPLACED]);
         var sharedAtomsCenter = layoutAtomPlacer.getAtoms2DCenter(sharedFrag.atoms);
         var oldRingCenter = layoutAtomPlacer.getAtoms2DCenter(ring.atoms);
-        var tempVector = new layoutVector2D(sharedAtomsCenter.x, sharedAtomsCenter.y);
-        var newRingCenterVector = new layoutVector2D(tempVector.x, tempVector.y);
-        newRingCenterVector.sub(new layoutVector2D(oldRingCenter.x, oldRingCenter.y));
-        var oldRingCenterVector = new layoutVector2D(newRingCenterVector.x, newRingCenterVector.y);
+        var tempVector = new LayoutVector2D(sharedAtomsCenter.x, sharedAtomsCenter.y);
+        var newRingCenterVector = new LayoutVector2D(tempVector.x, tempVector.y);
+        newRingCenterVector.sub(new LayoutVector2D(oldRingCenter.x, oldRingCenter.y));
+        var oldRingCenterVector = new LayoutVector2D(newRingCenterVector.x, newRingCenterVector.y);
         var tempPoint = new goog.math.Coordinate(
             sharedAtomsCenter.x + newRingCenterVector.x,
             sharedAtomsCenter.y + newRingCenterVector.y);
@@ -827,8 +827,8 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
     var newAngle = layoutAtomPlacer.getAngle(newPoint2.x - newPoint1.x, newPoint2.y - newPoint1.y);
     var angleDiff = oldAngle - newAngle;
 
-    var translationVector = new layoutVector2D(oldPoint1.x, oldPoint1.y);
-    translationVector.sub(new layoutVector2D(newPoint1.x, newPoint1.y));
+    var translationVector = new LayoutVector2D(oldPoint1.x, oldPoint1.y);
+    translationVector.sub(new LayoutVector2D(newPoint1.x, newPoint1.y));
 
     goog.array.forEach(placedAtoms, function(atom) {
       atom.coord.x += translationVector.x;
@@ -848,6 +848,5 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
     goog.array.forEach(nextRingSet, function(ring) { ring.isPlaced = true; });
   }
 };
-
 
 module.exports = layoutCoordinateGenerator;

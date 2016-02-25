@@ -14,7 +14,7 @@
  *  See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 'use strict';
+'use strict';
 
 const modelFlags = require('./flags');
 const resourceCovalence = require('../resource/covalence');
@@ -32,7 +32,7 @@ goog.require('goog.math.Coordinate');
  * @param {number=} optIsotope, isotope, defaults to 0
  * @constructor
  */
-const modelAtom = function(optSymbol, optX, optY, optCharge, optAromatic, optIsotope) {
+const ModelAtom = function(optSymbol, optX, optY, optCharge, optAromatic, optIsotope) {
   /**
    * Atom symbol
    *
@@ -87,16 +87,16 @@ const modelAtom = function(optSymbol, optX, optY, optCharge, optAromatic, optIso
 };
 
 /** @return {string} atomic symbol */
-modelAtom.prototype.getSymbol = function() {
+ModelAtom.prototype.getSymbol = function() {
   return this.symbol;
 };
 
 /** @return {number} atomic charge */
-modelAtom.prototype.getCharge = function() {
+ModelAtom.prototype.getCharge = function() {
   return this.charge;
 };
 
-modelAtom.prototype.countBonds = function() {
+ModelAtom.prototype.countBonds = function() {
   return this.bonds.getCount();
 };
 /**
@@ -104,7 +104,7 @@ modelAtom.prototype.countBonds = function() {
  *
  * @return {number}
  */
-modelAtom.prototype.hydrogenCount = function() {
+ModelAtom.prototype.hydrogenCount = function() {
   /** @type {number} */
   var cov = resourceCovalence[this.symbol];
 
@@ -122,9 +122,9 @@ modelAtom.prototype.hydrogenCount = function() {
 /**
  * Get an array with the neighbor atoms.
  *
- * @return {Array.<modelAtom>}
+ * @return {Array.<ModelAtom>}
  */
-modelAtom.prototype.getNeighbors = function() {
+ModelAtom.prototype.getNeighbors = function() {
   var bonds = this.bonds.getValues();
   var nbrs = [];
   for (var i = 0, li = bonds.length; i < li; i++) {
@@ -133,10 +133,10 @@ modelAtom.prototype.getNeighbors = function() {
   return nbrs;
 };
 /**
- * @param {modelAtom} atom
+ * @param {ModelAtom} atom
  * @return {number} the next angle
  */
-modelAtom.nextBondAngle = function(atom) {
+ModelAtom.nextBondAngle = function(atom) {
   var bonds = atom.bonds.getValues();
 
   var newAngle;
@@ -205,10 +205,10 @@ modelAtom.nextBondAngle = function(atom) {
 /**
  * clones this atom
  *
- * @return {modelAtom}
+ * @return {ModelAtom}
  */
-modelAtom.prototype.clone = function() {
-  return new modelAtom(
+ModelAtom.prototype.clone = function() {
+  return new ModelAtom(
       this.symbol, this.coord.x, this.coord.y, this.charge, this.aromatic, this.isotope);
 };
 
@@ -217,7 +217,7 @@ modelAtom.prototype.clone = function() {
  *
  * @enum {number}
  */
-modelAtom.Hybridizations = {
+ModelAtom.Hybridizations = {
   S: 0,
   SP1: 1,      // linear
   SP2: 2,      // trigonal planar (single pi-electron in pz)
@@ -239,14 +239,14 @@ modelAtom.Hybridizations = {
  * @param {Object}
  *            flagValue true or false
  */
-modelAtom.prototype.setFlag = function(flagType, flagValue) {
+ModelAtom.prototype.setFlag = function(flagType, flagValue) {
   this.flags[flagType] = flagValue;
 };
 /**
  * @return {string}
  */
-modelAtom.prototype.toString = function() {
-  return 'modelAtom [' + this.symbol + '] ' + this.coord.toString();
+ModelAtom.prototype.toString = function() {
+  return 'ModelAtom [' + this.symbol + '] ' + this.coord.toString();
 };
 
-module.exports = modelAtom;
+module.exports = ModelAtom;

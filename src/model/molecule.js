@@ -21,7 +21,7 @@ goog.require('goog.debug.Logger');
 goog.require('goog.math.Vec2');
 goog.require('goog.math.Box');
 
-const modelAtom = require('../model/atom');
+const ModelAtom = require('../model/atom');
 const ringFinder = require('../ring/finder');
 /**
  * Class representing a Molecule
@@ -30,7 +30,7 @@ const ringFinder = require('../ring/finder');
  *            optName, Name of molecule, defaults to empty string.
  * @constructor
  */
-const modelMolecule = function(optName) {
+const ModelMolecule = function(optName) {
   /**
    * bonds belonging to this molecule
    *
@@ -42,7 +42,7 @@ const modelMolecule = function(optName) {
   /**
    * atoms belonging to this molecule
    *
-   * @type {Array.<modelAtom>}
+   * @type {Array.<ModelAtom>}
    */
   this.atoms = [];
 
@@ -76,7 +76,7 @@ const modelMolecule = function(optName) {
 
 };
 
-modelMolecule.prototype.resetRingCenters = function() {
+ModelMolecule.prototype.resetRingCenters = function() {
   goog.array.forEach(this.getRings(), function(ring) { ring.resetRingCenter(); });
 };
 /**
@@ -86,7 +86,7 @@ modelMolecule.prototype.resetRingCenters = function() {
  *            bond The bond to add.
  */
 
-modelMolecule.prototype.addBond = function(bond) {
+ModelMolecule.prototype.addBond = function(bond) {
   var sourceIndex = this.indexOfAtom(bond.source);
   var targetIndex = this.indexOfAtom(bond.target);
   // check if the bond connects two previously unconnected fragments
@@ -121,10 +121,10 @@ modelMolecule.prototype.addBond = function(bond) {
  *
  * @param {number}
  *            id The atom id.
- * @return {modelAtom}
+ * @return {ModelAtom}
  */
 
-modelMolecule.prototype.getAtom = function(id) {
+ModelMolecule.prototype.getAtom = function(id) {
   return this.atoms[id];
 };
 
@@ -136,11 +136,11 @@ modelMolecule.prototype.getAtom = function(id) {
  * @return {kemia.model.Bond}
  */
 
-modelMolecule.prototype.getBond = function(id) {
+ModelMolecule.prototype.getBond = function(id) {
   return this.bonds[id];
 };
 
-modelMolecule.prototype.getAverageBondLength = function() {
+ModelMolecule.prototype.getAverageBondLength = function() {
   var average = 1.25;
   if (this.bonds.length) {
     var sum = goog.array.reduce(this.bonds, function(r, b) { return r + b.getLength(); }, 0);
@@ -158,7 +158,7 @@ modelMolecule.prototype.getAverageBondLength = function() {
  *            atom2
  * @return{kemia.model.Bond}
  */
-modelMolecule.prototype.findBond = function(atom1, atom2) {
+ModelMolecule.prototype.findBond = function(atom1, atom2) {
   var bonds = atom1.bonds.getValues();
   for (var i = 0, li = bonds.length; i < li; i++) {
     var bond = bonds[i];
@@ -172,11 +172,11 @@ modelMolecule.prototype.findBond = function(atom1, atom2) {
 /**
  * Return id of given atom. If not found, return -1;
  *
- * @param {modelAtom}
+ * @param {ModelAtom}
  *            atom The atom to lookup.
  * @return{number}
  */
-modelMolecule.prototype.indexOfAtom = function(atom) {
+ModelMolecule.prototype.indexOfAtom = function(atom) {
   return goog.array.indexOf(this.atoms, atom);
 };
 
@@ -187,22 +187,22 @@ modelMolecule.prototype.indexOfAtom = function(atom) {
  *            bond The bond to lookup.
  * @return{number}
  */
-modelMolecule.prototype.indexOfBond = function(bond) {
+ModelMolecule.prototype.indexOfBond = function(bond) {
   return goog.array.indexOf(this.bonds, bond);
 };
 
 /**
  * Remove a atom from molecule.
  *
- * @param {number|modelAtom}
+ * @param {number|ModelAtom}
  *            atomOrId Instance or id of the atom to remove.
  */
 
-modelMolecule.prototype.removeAtom = function(atomOrId) {
+ModelMolecule.prototype.removeAtom = function(atomOrId) {
   var atom;
   if (atomOrId.constructor === Number) {
     atom = this.atoms[atomOrId];
-  } else if (atomOrId.constructor === modelAtom) {
+  } else if (atomOrId.constructor === ModelAtom) {
     atom = atomOrId;
   }
   var neighborBonds = atom.bonds.getValues();
@@ -222,7 +222,7 @@ modelMolecule.prototype.removeAtom = function(atomOrId) {
  *            bondOrId Instance or id of the bond to remove.
  */
 
-modelMolecule.prototype.removeBond = function(bondOrId) {
+ModelMolecule.prototype.removeBond = function(bondOrId) {
   var bond;
   if (bondOrId.constructor === Number) {
     bond = this.bonds[bondOrId];
@@ -250,24 +250,24 @@ modelMolecule.prototype.removeBond = function(bondOrId) {
  *
  * @return{number}
  */
-modelMolecule.prototype.countAtoms = function() {
+ModelMolecule.prototype.countAtoms = function() {
   return this.atoms.length;
 };
 
 /**
  * Count bonds.
  */
-modelMolecule.prototype.countBonds = function() {
+ModelMolecule.prototype.countBonds = function() {
   return this.bonds.length;
 };
 
 /**
  * Add an atom to molecule. Does nothing if atom already part of molecule
  *
- * @param {modelAtom}
+ * @param {ModelAtom}
  *            atom The atom to add.
  */
-modelMolecule.prototype.addAtom = function(atom) {
+ModelMolecule.prototype.addAtom = function(atom) {
   if (!goog.array.contains(this.atoms, atom)) {
     var index = this.atoms.length;
     // a new atom is always a new fragment
@@ -283,7 +283,7 @@ modelMolecule.prototype.addAtom = function(atom) {
  *
  * @return{Array.<kemia.ring.Ring>}
  */
-modelMolecule.prototype.getRings = function() {
+ModelMolecule.prototype.getRings = function() {
 
   if (this.mustRecalcSSSR) {
     this.sssr = ringFinder.findRings(this);
@@ -297,7 +297,7 @@ modelMolecule.prototype.getRings = function() {
  *
  * @return{boolean}
  */
-modelMolecule.prototype.isAtomInRing = function(atom_) {
+ModelMolecule.prototype.isAtomInRing = function(atom_) {
   var rings = this.getRings();
   for (var r = 0, ringCount = rings.length; r < ringCount; r++) {
     for (var a = 0, atomCount = rings[r].atoms.length; a < atomCount; a++) {
@@ -314,7 +314,7 @@ modelMolecule.prototype.isAtomInRing = function(atom_) {
  *
  * @return{boolean}
  */
-modelMolecule.prototype.isBondInRing = function(bond_) {
+ModelMolecule.prototype.isBondInRing = function(bond_) {
   var rings = this.getRings();
   for (var r = 0, ringCount = rings.length; r < ringCount; r++) {
     for (var b = 0, bondCount = rings[r].bonds.length; b < bondCount; b++) {
@@ -329,10 +329,10 @@ modelMolecule.prototype.isBondInRing = function(bond_) {
 /**
  * clone (shallow) this molecule
  *
- * @return{modelMolecule}
+ * @return{ModelMolecule}
  */
-modelMolecule.prototype.clone = function() {
-  var mol = new modelMolecule(this.name);
+ModelMolecule.prototype.clone = function() {
+  var mol = new ModelMolecule(this.name);
   goog.array.forEach(this.atoms, function(atom) { mol.addAtom(atom); });
   goog.array.forEach(this.bonds, function(bond) { mol.addBond(bond); });
   return mol;
@@ -341,9 +341,9 @@ modelMolecule.prototype.clone = function() {
 /**
  * returns fragments as array of molecules
  *
- * @return{Array.<modelMolecule>}
+ * @return{Array.<ModelMolecule>}
  */
-modelMolecule.prototype.getFragments = function() {
+ModelMolecule.prototype.getFragments = function() {
   var mol = this.clone();
   if (mol.fragmentCount === 1) {
     return [mol];
@@ -352,7 +352,7 @@ modelMolecule.prototype.getFragments = function() {
   goog.array.forEach(mol.atoms, function(atom) {
     var frag = mol.fragments[mol.indexOfAtom(atom)];
     if (fragments.containsKey(frag) === false) {
-      fragments.set(frag, new modelMolecule());
+      fragments.set(frag, new ModelMolecule());
     }
     fragments.get(frag).addAtom(atom);
   });
@@ -368,7 +368,7 @@ modelMolecule.prototype.getFragments = function() {
  * Returns all bonds connected to the given atom.
  *
  */
-modelMolecule.prototype.getConnectedBondsList = function(atom) {
+ModelMolecule.prototype.getConnectedBondsList = function(atom) {
   var bondsList = new Array();
   var bondCount = this.bonds.length;
   for (var i = 0; i < bondCount; i++) {
@@ -383,8 +383,8 @@ modelMolecule.prototype.getConnectedBondsList = function(atom) {
  *
  * @return {string}
  */
-modelMolecule.prototype.toString = function() {
-  return 'modelMolecule - name: ' + this.name + '\n\t' +
+ModelMolecule.prototype.toString = function() {
+  return 'ModelMolecule - name: ' + this.name + '\n\t' +
       goog.array
           .map(
               this.atoms,
@@ -409,7 +409,7 @@ modelMolecule.prototype.toString = function() {
  *
  * @return {goog.math.Coordinate}
  */
-modelMolecule.prototype.getCenter = function() {
+ModelMolecule.prototype.getCenter = function() {
   var box = this.getBoundingBox();
   return new goog.math.Coordinate((box.left + box.right) / 2, (box.top + box.bottom) / 2);
 };
@@ -419,7 +419,7 @@ modelMolecule.prototype.getCenter = function() {
  *
  * @return {goog.math.Box}
  */
-modelMolecule.prototype.getBoundingBox = function() {
+ModelMolecule.prototype.getBoundingBox = function() {
   return goog.math.Box.boundingBox.apply(
       null, goog.array.map(this.atoms, function(a) { return a.coord; }));
 };
@@ -431,7 +431,7 @@ modelMolecule.prototype.getBoundingBox = function() {
  *            vector, x and y change amounts
  *
  */
-modelMolecule.prototype.translate = function(vector) {
+ModelMolecule.prototype.translate = function(vector) {
   goog.array.forEach(
       this.atoms, function(a) { a.coord = goog.math.Coordinate.sum(a.coord, vector); });
 };
@@ -440,18 +440,18 @@ modelMolecule.prototype.translate = function(vector) {
  * merge with a molecule fragment targetBond replaces fragBond and targetAtom
  * replaces fragAtom
  *
- * @param {modelMolecule}
+ * @param {ModelMolecule}
  *            fragment
  * @param {kemia.model.Bond}
  *            fragBond bond in fragment to be replaced by target bond
  * @param {kemia.model.Bond}
  *            targetBond bond in this molecule to replace fragBond
- * @param {modelAtom}
+ * @param {ModelAtom}
  *            fragAtom atom in fragBond to be replaced by targetAtom
- * @param {modelAtom}
+ * @param {ModelAtom}
  *            targetAtom atom in this molecule to replace fragAtom
  */
-modelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAtom, targetAtom) {
+ModelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAtom, targetAtom) {
   goog.asserts.assert(goog.array.contains(fragment.bonds, fragBond));
   goog.asserts.assert(goog.array.contains(this.bonds, targetBond));
   goog.asserts.assert(goog.array.contains(fragAtom.bonds.getValues(), fragBond));
@@ -518,12 +518,12 @@ modelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
 ///**
 // * merge two molecules at a single atom
 // *
-// * @param{modelAtom} source_atom, the atom that will be kept
-// * @param{modelAtom} targetAtom, the atom that will be replaced
+// * @param{ModelAtom} source_atom, the atom that will be kept
+// * @param{ModelAtom} targetAtom, the atom that will be replaced
 // *
-// * @return{modelMolecule} resulting merged molecule
+// * @return{ModelMolecule} resulting merged molecule
 // */
-// modelMolecule.mergeMolecules = function(source_atom, targetAtom) {
+// ModelMolecule.mergeMolecules = function(source_atom, targetAtom) {
 //	// replace target atom with source atom
 //
 //	// clone and connect target atom bonds to source atom
@@ -568,18 +568,18 @@ modelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
  * fragAtom is atom of fragment that will be replaced by attachmentAtom of
  * this molecule when the two are merged
  *
- * @param {modelAtom}
+ * @param {ModelAtom}
  *            attachmentAtom
- * @param {modelAtom}
+ * @param {ModelAtom}
  *            fragement_atom
  * @return {kemia.model.Bond} sprout bond
  */
-modelMolecule.prototype.sproutFragment = function(attachmentAtom, fragAtom) {
+ModelMolecule.prototype.sproutFragment = function(attachmentAtom, fragAtom) {
   goog.asserts.assert(
       goog.array.contains(this.atoms, attachmentAtom),
       'attachmentAtom must belong to this molecule');
   goog.asserts.assertObject(fragAtom.molecule, 'fragAtom must belong to a molecule');
-  var newAngle = modelAtom.nextBondAngle(attachmentAtom);
+  var newAngle = ModelAtom.nextBondAngle(attachmentAtom);
   // this.logger.info('newAngle ' + newAngle);
   if (newAngle !== undefined) {
     // translate fragment
@@ -588,14 +588,14 @@ modelMolecule.prototype.sproutFragment = function(attachmentAtom, fragAtom) {
     var angleDiff = goog.math.angle();
     fragAtom.molecule.rotate(newAngle, fragAtom.coord);
     fragAtom.molecule.translate(positionDiff);
-    modelMolecule.mergeMolecules(fragAtom, attachmentAtom);
+    ModelMolecule.mergeMolecules(fragAtom, attachmentAtom);
   }
 };
 
 /**
  * sprouts a new bond at the atom
  *
- * @param {modelAtom}
+ * @param {ModelAtom}
  *            atom
  * @param {kemia.model.Bond.ORDER}
  *            optOrder
@@ -605,7 +605,7 @@ modelMolecule.prototype.sproutFragment = function(attachmentAtom, fragAtom) {
  *            optSymbol
  * @return {kemia.model.Bond}
  */
-modelMolecule.prototype.sproutBond = function(atom, optOrder, optStereo, optSymbol) {
+ModelMolecule.prototype.sproutBond = function(atom, optOrder, optStereo, optSymbol) {
   var bondLength = 1.25;  // default
   var bonds = atom.bonds.getValues();
   if (bonds.length) {
@@ -614,11 +614,11 @@ modelMolecule.prototype.sproutBond = function(atom, optOrder, optStereo, optSymb
     }, 0) / bonds.length;
   }  // average of other bonds
 
-  var newAngle = modelAtom.nextBondAngle(atom);
+  var newAngle = ModelAtom.nextBondAngle(atom);
   if (newAngle !== undefined) {
     var symb = 'C';
     if (optSymbol) symb = optSymbol;
-    var newAtom = new modelAtom(
+    var newAtom = new ModelAtom(
         symb, atom.coord.x + goog.math.angleDx(newAngle, bondLength),
         atom.coord.y + goog.math.angleDy(newAngle, bondLength));
 
@@ -636,6 +636,6 @@ modelMolecule.prototype.sproutBond = function(atom, optOrder, optStereo, optSymb
  * @type {goog.debug.Logger}
  * @protected
  */
-modelMolecule.prototype.logger = goog.debug.Logger.getLogger('modelMolecule');
+ModelMolecule.prototype.logger = goog.debug.Logger.getLogger('ModelMolecule');
 
-module.exports = modelMolecule;
+module.exports = ModelMolecule;

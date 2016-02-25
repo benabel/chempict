@@ -14,13 +14,13 @@
  *  See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 'use strict';
+'use strict';
 
 /**
  * @param {Array.<kemia.model.Atom>} _atoms
  * @constructor
  */
-const ringPathEdge = function(_atoms) {
+const RingPathEdge = function(_atoms) {
   /** @type {Array.<kemia.model.Atom>} */
   this.atoms = _atoms;
 };
@@ -28,16 +28,16 @@ const ringPathEdge = function(_atoms) {
 /**
  * @return {boolean}
  */
-ringPathEdge.prototype.isCycle = function() {
+RingPathEdge.prototype.isCycle = function() {
   var lastAtomPos = this.atoms.length - 1;
   return (this.atoms.length > 2 && this.atoms[0] === this.atoms[lastAtomPos]);
 };
 
 /**
- * @param {ringPathEdge} other
- * @return {ringPathEdge}
+ * @param {RingPathEdge} other
+ * @return {RingPathEdge}
  */
-ringPathEdge.prototype.splice = function(other) {
+RingPathEdge.prototype.splice = function(other) {
 
   /** @type {kemia.model.Atom} */
   var intersection = this.getIntersection(other.atoms);
@@ -67,14 +67,14 @@ ringPathEdge.prototype.splice = function(other) {
     return null;
   }
 
-  return new ringPathEdge(newAtoms);
+  return new RingPathEdge(newAtoms);
 };
 
 /**
  * @param {Array.<kemia.model.Atom>} atoms
  * @return {boolean}
  */
-ringPathEdge.prototype.isRealPath = function(atoms) {
+RingPathEdge.prototype.isRealPath = function(atoms) {
   for (var i = 1, il = atoms.length - 1; i < il; i++) {
     for (var j = 1; j < il; j++) {
       if (i === j) {
@@ -92,7 +92,7 @@ ringPathEdge.prototype.isRealPath = function(atoms) {
  * @param {Array.<kemia.model.Atom>} others
  * @return {kemia.model.Atom}
  */
-ringPathEdge.prototype.getIntersection = function(others) {
+RingPathEdge.prototype.getIntersection = function(others) {
   var lastAtomPos = this.atoms.length - 1;
   var lastOtherPos = others.length - 1;
   if (this.atoms[lastAtomPos] === others[0] || this.atoms[lastAtomPos] === others[lastOtherPos]) {
@@ -104,4 +104,4 @@ ringPathEdge.prototype.getIntersection = function(others) {
   throw 'Couldn\'t splice - no intersection';
 };
 
-module.exports = ringPathEdge;
+module.exports = RingPathEdge;

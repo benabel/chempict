@@ -17,11 +17,11 @@
 goog.require('goog.structs.Set');
 goog.require('goog.structs.Set');
 goog.require('goog.array');
-const ringRing = require('./ring');
+const RingRing = require('./ring');
 const ringHanser = require('./hanser');
 const ringSSSR = require('./sssr');
-const modelAtom = require('../model/atom');
-const modelBond = require('../model/bond');
+const ModelAtom = require('../model/atom');
+const ModelBond = require('../model/bond');
 
 const ringFinder = function() {};
 /**
@@ -32,7 +32,7 @@ const ringFinder = function() {};
  * @param {Array.<number>} atomIndexes
  * @param {kemia.model.Molecule}
  *            molecule
- * @return {ringRing}
+ * @return {RingRing}
  */
 ringFinder.createRing = function(atomIndexes, molecule) {
   // Translate atom indexes to atom objects.
@@ -57,14 +57,14 @@ ringFinder.createRing = function(atomIndexes, molecule) {
     bonds.push(bond);
   }
   // Create the ring.
-  return new ringRing(atoms, bonds);
+  return new RingRing(atoms, bonds);
 };
 
 /**
  * Check if a candidate ring is already in the SSSR ring set.
  *
- * @param {Array.<ringRing>} C
- * @param {Array.<Array.<ringRing>>} Csssr
+ * @param {Array.<RingRing>} C
+ * @param {Array.<Array.<RingRing>>} Csssr
  * @param {Array.<number>} valences
  * @param {Array.<number>} ringCount
  * @return {boolean}
@@ -116,7 +116,7 @@ ringFinder.isCandidateInSet = function(C, Csssr, valences, ringCount) {
  * @param {number} nsssr
  * @param {kemia.model.Molecule}
  *            molecule
- * @return {Array.<ringRing>}
+ * @return {Array.<RingRing>}
  */
 ringFinder.verifySSSR = function(sssr, nsssr, molecule) {
   // The final SSSR set
@@ -296,7 +296,7 @@ ringFinder.detectRingAtoms = function(molecule) {
  *
  * @param {kemia.model.Molecule}
  *            molecule
- * @return {Array.<ringRing>}
+ * @return {Array.<RingRing>}
  */
 ringFinder.createRingSystems = function(molecule) {
 
@@ -325,7 +325,7 @@ ringFinder.createRingSystems = function(molecule) {
 
     queue.push(startAtom);
     visitedAtoms[0] = true;
-    var newAtom = new modelAtom();
+    var newAtom = new ModelAtom();
     newAtom.index2 = startAtom.index;
     indexMap[startAtom.index] = 0;
     ringSystem.addAtom(newAtom);
@@ -361,7 +361,7 @@ ringFinder.createRingSystems = function(molecule) {
         if (visitedAtoms[neighborIndex]) {
           // create the ring closure bond
           var closureBond = molecule.findBond(atom, neighbor);
-          var newBond = new modelBond(
+          var newBond = new ModelBond(
               ringSystem.atoms[indexMap[atom.index]], ringSystem.atoms[indexMap[neighbor.index]]);
           newBond.index2 = closureBond.index;
           ringSystem.addBond(newBond);
@@ -369,13 +369,13 @@ ringFinder.createRingSystems = function(molecule) {
           visitedAtoms[neighborIndex] = true;
           queue.push(neighbor);
           // create the new atom
-          newAtom = new modelAtom();
+          newAtom = new ModelAtom();
           newAtom.index2 = neighbor.index;
           indexMap[neighbor.index] = ringSystem.atoms.length;
           ringSystem.addAtom(newAtom);
           // create the new bond
           var bond = molecule.findBond(atom, neighbor);
-          var newBond = new modelBond(ringSystem.atoms[indexMap[atom.index]], newAtom);
+          var newBond = new ModelBond(ringSystem.atoms[indexMap[atom.index]], newAtom);
           newBond.index2 = bond.index;
           ringSystem.addBond(newBond);
         }
@@ -430,7 +430,7 @@ ringFinder.createRingSystems = function(molecule) {
 /**
  * @param {kemia.model.Molecule}
  *            molecule
- * @return {Array.<ringRing>}
+ * @return {Array.<RingRing>}
  */
 ringFinder.findRings = function(molecule) {
 

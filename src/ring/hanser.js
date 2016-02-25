@@ -17,14 +17,14 @@
  * http://github.com/rapodaca/mx/tree/master/src/com/metamolecular/mx/ring/
  * http://metamolecular.com/mx
  */
- 'use strict';
+'use strict';
 
 goog.require('goog.structs.Set');
 goog.require('goog.structs.Set');
 goog.require('goog.array');
-const ringRing = require('./ring');
-const ringPathEdge = require('./path_edge');
-const ringPathGraph = require('./path_graph');
+const RingRing = require('./ring');
+const RingPathEdge = require('./path_edge');
+const RingPathGraph = require('./path_graph');
 
 /**
  * Hanser ring finder.
@@ -46,14 +46,14 @@ ringHanser.findRings = function(molecule, maxLen) {
   /** @type {Array.<kemia.model.Atom>} */
   var atomOnlyRings = [];
 
-  /** @type {ringPathGraph} */
-  var graph = new ringPathGraph(molecule);
+  /** @type {RingPathGraph} */
+  var graph = new RingPathGraph(molecule);
 
   for (var i = 0, il = molecule.countAtoms(); i < il; i++) {
-    /** @type {Array.<ringPathEdge>} */
+    /** @type {Array.<RingPathEdge>} */
     var edges = graph.remove(molecule.getAtom(i), maxLen);
     for (var j = 0; j < edges.length; j++) {
-      /** @type {ringPathEdge} */
+      /** @type {RingPathEdge} */
       var edge = edges[j];
       /** @type {Array.<kemia.model.Atom>} */
       var atomRing = edge.atoms;
@@ -77,7 +77,7 @@ ringHanser.findRings = function(molecule, maxLen) {
  *
  * @param {Array.<kemia.model.Atom>} atoms
  * @param {kemia.model.Molecule}  molecule
- * @return {ringRing}
+ * @return {RingRing}
  */
 ringHanser.createRing = function(atoms, molecule) {
 
@@ -91,7 +91,7 @@ ringHanser.createRing = function(atoms, molecule) {
   // Hanser last atom is same as first atom, remove it..
   goog.array.removeAt(atoms, atoms.length - 1);
 
-  var ring = new ringRing(atoms, bonds);
+  var ring = new RingRing(atoms, bonds);
   return ring;
 };
 

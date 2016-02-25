@@ -15,7 +15,7 @@
  * the License.
  *
  */
- 'use strict';
+'use strict';
 
 goog.require('goog.array');
 goog.require('goog.structs.Map');
@@ -30,7 +30,7 @@ const modelFlags = require('../model/flags');
  * @param {Array.<kemia.model.Bond>} bonds
  * @constructor
  */
-const ringRing = function(atoms, bonds) {
+const RingRing = function(atoms, bonds) {
   /** @type {Array.<kemia.model.Atom>} */
   this.atoms = atoms;
   /** @type {Array.<kemia.model.Bond>} */
@@ -58,7 +58,7 @@ const ringRing = function(atoms, bonds) {
  * @param {boolean}
  *            flagValue true or false
  */
-ringRing.prototype.setFlag = function(flagType, flagValue) {
+RingRing.prototype.setFlag = function(flagType, flagValue) {
   this.flags[flagType] = flagValue;
 };
 
@@ -67,7 +67,7 @@ ringRing.prototype.setFlag = function(flagType, flagValue) {
  *
  * @return {goog.math.Coordinate}
  */
-ringRing.prototype.getCenter = function() {
+RingRing.prototype.getCenter = function() {
 
   if (!this._center) {
     var avgX = 0;
@@ -84,12 +84,12 @@ ringRing.prototype.getCenter = function() {
 /**
  * force recalc of ring center
  */
-ringRing.prototype.resetRingCenter = function() {
+RingRing.prototype.resetRingCenter = function() {
   this._center = undefined;
 };
 
-ringRing.prototype.toString = function() {
-  return 'ringRing ' +
+RingRing.prototype.toString = function() {
+  return 'RingRing ' +
       '\n\t' +
       goog.array.map(this.atoms, function(atom) { return ' ' + atom.toString(); }, this)
           .join('\n\t') +
@@ -98,4 +98,4 @@ ringRing.prototype.toString = function() {
                          }, this).join('\n\t') + '\n\t';
 };
 
-module.exports = ringRing;
+module.exports = RingRing;
