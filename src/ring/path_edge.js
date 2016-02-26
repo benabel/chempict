@@ -43,7 +43,7 @@ RingPathEdge.prototype.splice = function(other) {
   var intersection = this.getIntersection(other.atoms);
 
   /** @type {Array.<kemia.model.Atom>} */
-  var newAtoms = new Array();
+  var newAtoms = [];
 
   for (var i = 0, il = this.atoms.length; i < il; i++) {
     newAtoms.push(this.atoms[i]);

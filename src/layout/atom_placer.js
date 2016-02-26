@@ -104,7 +104,7 @@ layoutAtomPlacer.getLongestUnplacedChain = function(molecule, startAtom) {
   var longestPathLength = 0;
   var maxDegreeSum = 0;
   var degreeSum = 0;
-  var paths = new Array();  // of molecules
+  var paths = [];  // of molecules
   var atCount = molecule.countAtoms();
   var bondCount = molecule.countBonds();
 
@@ -114,7 +114,7 @@ layoutAtomPlacer.getLongestUnplacedChain = function(molecule, startAtom) {
     paths[f].addAtom(startAtom);
   }
 
-  var startSphere = new Array();
+  var startSphere = [];
   startSphere.push(startAtom);
   startAtom.flags[modelFlags.VISITED] = true;
 
@@ -166,7 +166,7 @@ layoutAtomPlacer.getConnectedBondsCount = function(atom, molecule, bondCount) {
  * attachment of the ring system.
  */
 layoutAtomPlacer.breadthFirstSearch = function(mol, sphere, paths, bondCount) {
-  var newSphere = new Array();
+  var newSphere = [];
   var sphereLen = sphere.length;
   for (var f = 0; f < sphereLen; f++) {
     var atom = sphere[f];
@@ -348,7 +348,7 @@ layoutAtomPlacer.distributePartners = function(
 
   var occupiedDirection = new LayoutVector2D(sharedAtomsCenter.x, sharedAtomsCenter.y);
   occupiedDirection.sub(newDirection);
-  var atomsToDraw = new Array();
+  var atomsToDraw = [];
 
   var placedNeighboursCountAtoms = placedNeighbours.countAtoms();
   var unPlacedNeighboursCountAtoms = unplacedNeighbours.countAtoms();
@@ -378,7 +378,7 @@ layoutAtomPlacer.distributePartners = function(
         bondLength);
     return;
   }
-  var sortedAtoms = new Array();
+  var sortedAtoms = [];
   // if the least hindered side of the atom is clearly defined (bondLength /
   // 10 is an arbitrary value that seemed reasonable) */
   sharedAtomsCenterVector.sub(newDirection);
@@ -476,7 +476,7 @@ layoutAtomPlacer.sortBy2DDistance = function(atoms, point) {
 layoutAtomPlacer.populatePolygonCorners = function(
     atomsToDraw, rotationCenter, startAngle, addAngle, radius) {
 
-  var points = new Array();
+  var points = [];
   var angle = startAngle;
   for (var ad = 0, ads = atomsToDraw.length; ad < ads; ad++) {
     angle = angle + addAngle;

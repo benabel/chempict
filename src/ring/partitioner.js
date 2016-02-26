@@ -34,7 +34,7 @@ ringPartitioner.GetPartitionedRings = function(rings) {
   }
   for (var i = 0, j = rings.length; i < j; i++) {
     if (!done[i]) {
-      var partition = new Array();
+      var partition = [];
       partition.push(rings[i]);
       done[i] = true;
       var atomCount = rings[i].atoms.length;

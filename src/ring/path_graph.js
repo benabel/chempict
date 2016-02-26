@@ -25,10 +25,10 @@ const RingPathEdge = require('./path_edge');
 const RingPathGraph = function(molecule) {
 
   /** @type{Array.<RingPathEdge>} */
-  this.edges = new Array();
+  this.edges = [];
 
   /** @type{Array.<kemia.model.Atom>} */
-  this.atoms = new Array();
+  this.atoms = [];
 
   // load edges
   for (var i = 0, il = molecule.countBonds(); i < il; i++) {
@@ -51,7 +51,7 @@ RingPathGraph.prototype.remove = function(atom, maxLen) {
   /** @type {Array.<RingPathEdge>} */
   var oldEdges = this.getEdges(atom);
   /** @type {Array.<RingPathEdge>} */
-  var result = new Array();
+  var result = [];
   for (var i = 0, il = oldEdges.length; i < il; i++) {
     if (oldEdges[i].isCycle()) {
       result.push(oldEdges[i]);
@@ -97,7 +97,7 @@ RingPathGraph.prototype.remove = function(atom, maxLen) {
 RingPathGraph.prototype.getEdges = function(atom) {
 
   /** @type {Array.<RingPathEdge>} */
-  var result = new Array();
+  var result = [];
 
   for (var i = 0, il = this.edges.length; i < il; i++) {
     /** @type {RingPathEdge} */
@@ -123,7 +123,7 @@ RingPathGraph.prototype.getEdges = function(atom) {
  */
 
 RingPathGraph.prototype.spliceEdges = function(_edges) {
-  var result = new Array();
+  var result = [];
 
   for (var i = 0, il = _edges.length; i < il; i++) {
     for (var j = i + 1; j < il; j++) {

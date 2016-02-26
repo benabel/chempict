@@ -619,7 +619,7 @@ layoutRingPlacer.placeFusedRing = function(
   var currentAtom = startAtom;
   var currentBond = sharedAtoms.bonds[0];
 
-  var atomsToDraw = new Array();
+  var atomsToDraw = [];
   for (var x1 = 0, x2 = ring.bonds.length - 2; x1 < x2; x1++) {
     currentBond = layoutRingPlacer.getNextBond(ring, currentBond, currentAtom);
     currentAtom = currentBond.otherAtom(currentAtom);

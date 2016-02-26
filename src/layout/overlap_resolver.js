@@ -27,7 +27,7 @@ const layoutOverlapResolver = function() {};
 
 layoutOverlapResolver.resolveOverlap = function(molecule, sssr) {
 
-  var overlappingAtoms = new Array();
+  var overlappingAtoms = [];
   var overlapScore = layoutOverlapResolver.getOverlapScore(molecule, overlappingAtoms);
   if (overlapScore > 0) overlapScore = layoutOverlapResolver.displace(molecule, overlappingAtoms);
   return overlapScore;

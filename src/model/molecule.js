@@ -369,7 +369,7 @@ ModelMolecule.prototype.getFragments = function() {
  *
  */
 ModelMolecule.prototype.getConnectedBondsList = function(atom) {
-  var bondsList = new Array();
+  var bondsList = [];
   var bondCount = this.bonds.length;
   for (var i = 0; i < bondCount; i++) {
     if (this.bonds[i].source === atom || this.bonds[i].target === atom)

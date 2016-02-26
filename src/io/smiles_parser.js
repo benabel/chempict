@@ -79,12 +79,12 @@ SmilesParser.parse = function(smi) {
   var natoms = 0;
   var previousAtom;
   var bondType = SmilesParser.BondType.NONE;
-  var branch = new Array();
-  var ring = new Array();
-  var ringClosureOrder = new Array();
+  var branch = [];
+  var ring = [];
+  var ringClosureOrder = [];
 
   var errstr = '';
-  var chiralCenters = new Array();
+  var chiralCenters = [];
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
     // alert("item "+item)
@@ -311,7 +311,7 @@ SmilesParser.setChiralCenters = function(molecule, chiralCenters) {
       var direction = chiralCenters[++c];
       var chiralHydrogenNeighbour = chiralCenters[++c];
       var cnt = 0;
-      var availableBonds = new Array();
+      var availableBonds = [];
       var cntNeighb = 0;
       var bond = null;
       goog.array.forEach(molecule.atoms, function(atom) {

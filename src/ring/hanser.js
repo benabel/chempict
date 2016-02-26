@@ -81,7 +81,7 @@ ringHanser.findRings = function(molecule, maxLen) {
  */
 ringHanser.createRing = function(atoms, molecule) {
 
-  var bonds = new Array();
+  var bonds = [];
   for (var i = 0, il = atoms.length - 1; i < il; i++) {
     var bond = molecule.findBond(atoms[i], atoms[i + 1]);
     if (bond !== null) {
