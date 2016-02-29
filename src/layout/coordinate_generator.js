@@ -15,7 +15,7 @@ const modelFlags = require('../model/flags');
 const ModelMolecule = require('../model/molecule');
 const ringPartitioner = require('../ring/partitioner');
 
-const config = require('./config');
+const layoutConfig = require('./config');
 const layoutAtomPlacer = require('./atom_placer');
 const layoutOverlapResolver = require('./overlap_resolver');
 const LayoutVector2D = require('./vector2d');
@@ -30,7 +30,7 @@ const LayoutVector2D = require('./vector2d');
  */
 const layoutCoordinateGenerator = function() {};
 
-layoutCoordinateGenerator.bondLength = 1.5;
+layoutCoordinateGenerator.bondLength = layoutConfig.bondLength;
 
 layoutCoordinateGenerator.generate = function(molecule) {
 
@@ -289,7 +289,7 @@ layoutCoordinateGenerator.getMostComplexRing = function(ringSet) {
 layoutCoordinateGenerator.ringSet = function(bondVector, ringset) {
   // TODO apply templates to layout pre-fab rings
 
-  const bl = config.bondLength;
+  const bl = layoutConfig.bondLength;
 
   var mostComplexRing = layoutCoordinateGenerator.getMostComplexRing(ringset);
 
@@ -811,7 +811,7 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
     // Place all the substituents of next ring system
     layoutAtomPlacer.markNotPlaced(placedAtoms);
     var substituents =
-        layoutRingPlacer.placeRingSubstituents(molecule, nextRingSet, config.bondLength);
+        layoutRingPlacer.placeRingSubstituents(molecule, nextRingSet, layoutConfig.bondLength);
     layoutAtomPlacer.markPlaced(placedAtoms);
 
     var placedAtoms = goog.array.concat(
