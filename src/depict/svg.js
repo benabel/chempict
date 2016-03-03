@@ -57,7 +57,10 @@ class SvgDepict {
         fill="black">${txt}</text>\n`;
   }
 
-  drawAtoms() { this.mol.atoms.forEach(this._drawAtom, this); }
+  drawAtoms() {
+    let atoms = this.mol.atoms.filter(atom => atom);
+    atoms.forEach(this._drawAtom, this);
+  }
 
   _drawBond(bond) {
     let x1 = bond.source.coord.x * this.scale - this.dx;
