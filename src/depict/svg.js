@@ -6,16 +6,17 @@ const svgConfig = require('./config');
 let sb = '';
 
 class SvgDepict {
-  constructor(mol, config = svgConfig) {
+  constructor(mol) {
+    // TODO: Use es6 default parameter when available in node
     this.mol = mol;
-    this.config = config;
+    this.config = svgConfig;
     this.sizeCalculator();
   }
 
   sizeCalculator() {
-    let margin = this.config.marginWidth;
+    const margin = this.config.marginWidth;
     this.scale = this.config.bondLength / this.mol.getAverageBondLength();
-    let box = this.mol.getBoundingBox();  // getters: top bottom left right
+    const box = this.mol.getBoundingBox();  // getters: top bottom left right
     // translations
     this.dx = margin + this.scale * box.left;
     this.dy = margin + this.scale * box.top;
@@ -31,21 +32,32 @@ class SvgDepict {
        width="${this.w}" height="${this.h}"
        xmlns="http://www.w3.org/2000/svg">
   `;
-  };
-
-  _drawAtom(element) {
-    let symb = element.symbol;
-    let coord = element.coord;
-    let fontSize = this.config.fontSize;
-    let x = coord.x * this.scale - this.dx;
-    let y = coord.y * this.scale - this.dy;
-    y += 3 * fontSize / 8;  // vertical alignment
-    sb += `<text x="${x}" y="${y}" font-family="Arial"
-        font-size="${fontSize}"
-        text-anchor="middle" fill="black">${symb}</text>\n`;
   }
 
-  drawAtoms() { this.mol.atoms.forEach(this._drawAtom, this); };
+  _drawAtom(element) {
+    const fontSize = this.config.fontSize;
+    const symb = element.symbol;
+    const coord = element.coord;
+    const hydrogen = element.hydrogenCount();
+    const dy = fontSize / 2;
+    let txt = `${symb}`;
+    if (hydrogen > 1) {
+      txt += `<tspan>H<tspan dy="${dy}">${hydrogen}</tspan></tspan>`;
+    } else if (hydrogen === 1) {
+      txt += '<tspan>H</tspan>';
+    }
+    let x = coord.x * this.scale - this.dx;
+    let y = coord.y * this.scale - this.dy;
+    // Text alignments
+    // TODO: needs to be more general
+    x -= fontSize / 2;
+    y += 3 * fontSize / 8;
+    sb += `<text x="${x}" y="${y}" font-family="Arial"
+        font-size="${fontSize}"
+        fill="black">${txt}</text>\n`;
+  }
+
+  drawAtoms() { this.mol.atoms.forEach(this._drawAtom, this); }
 
   _drawBond(bond) {
     let x1 = bond.source.coord.x * this.scale - this.dx;
@@ -55,18 +67,17 @@ class SvgDepict {
 
     sb += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black"
     stroke-width="${this.config.lineWidth}"/>\n`;
-  };
+  }
 
-  drawBonds() { this.mol.bonds.forEach(this._drawBond, this); };
+  drawBonds() { this.mol.bonds.forEach(this._drawBond, this); }
 
   toSvg() {
-    // console.log(this.config);
     this.writeHeader();
     sb += '<rect width="100%" height="100%" fill="white"/>\n';
     this.drawAtoms();
     this.drawBonds();
     return sb + '</svg>';
-  };
+  }
 }
 
 module.exports = SvgDepict;

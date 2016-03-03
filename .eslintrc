@@ -7,5 +7,6 @@
 }
 
 "rules": {
-        "max-len": [2, 120, 4]
+  "max-len": [2, 120, 4],
+  "brace-style": [2, "1tbs", { "allowSingleLine": true }]
 }
