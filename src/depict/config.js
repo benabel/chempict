@@ -28,6 +28,7 @@ const ptToPx = 4 / 3;
 const config = {
   fontSize: 10,
   bondLength: 14.4,
+  bondSpacing: 0.18 * 14.4,
   lineWidth: 0.6,
   marginWidth: ptToPx * 1.6
 };

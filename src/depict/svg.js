@@ -35,11 +35,11 @@ class SvgDepict {
   }
 
   _drawAtom(element) {
-    debugger;
     const fontSize = this.config.fontSize;
     const symb = element.symbol;
     const coord = element.coord;
     const hydrogen = element.hydrogenCount();
+    // used for subscript numbers
     const dy = fontSize / 2;
     let txt = `${symb}`;
     if (hydrogen > 1) {
@@ -59,18 +59,33 @@ class SvgDepict {
   }
 
   drawAtoms() {
-    let atoms = this.mol.atoms.filter(atom => atom.symbol !== 'C' ? atom : false);
+    // depict only heteroatoms
+    let atoms = this.mol.atoms.filter(atom => atom.symbol === 'C' ? false : atom);
     atoms.forEach(this._drawAtom, this);
   }
 
   _drawBond(bond) {
+    debugger;
+    const lineWidth = this.config.lineWidth;
+    const bondSpacing = this.config.bondSpacing;
     let x1 = bond.source.coord.x * this.scale - this.dx;
     let y1 = bond.source.coord.y * this.scale - this.dy;
     let x2 = bond.target.coord.x * this.scale - this.dx;
     let y2 = bond.target.coord.y * this.scale - this.dy;
 
-    sb += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black"
-    stroke-width="${this.config.lineWidth}"/>\n`;
+    if (bond.order === 1) {
+      sb += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black"
+      stroke-width="${lineWidth}"/>\n`;
+    } else if (bond.order === 2) {
+      y1 += bondSpacing / 2;
+      y2 += bondSpacing / 2;
+      sb += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black"
+      stroke-width="${lineWidth}"/>\n`;
+      y1 -= bondSpacing;
+      y2 -= bondSpacing;
+      sb += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black"
+      stroke-width="${lineWidth}"/>\n`;
+    }
   }
 
   drawBonds() { this.mol.bonds.forEach(this._drawBond, this); }
