@@ -9,13 +9,15 @@
     "eslint": "^2.2.0",
     "eslint-config-google": "^0.4.0",
     "google-closure-library": "^20151015.0.0",
-    "jscs": "^2.10.1"
+    "jscs": "^2.10.1",
+    "mocha": "^2.4.5"
   },
   "scripts": {
     "fix": "jscs --fix src/**/*.js",
     "format": "clang-format -i src/**/*.js",
     "lint": "eslint src/**/*.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "test:watch": "mocha --watch"
   },
   "repository": {
     "type": "git",
