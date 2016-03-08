@@ -1,9 +1,9 @@
-// require('./node_modules/google-closure-library/closure/goog/bootstrap/nodejs');
+require('../node_modules/google-closure-library/closure/goog/bootstrap/nodejs');
 
-// const fs = require('fs');
-const SmilesParser = require('./src/io/smiles_parser');
-const CoordinateGenerator = require('./src/layout/coordinate_generator');
-const SvgDepict = require('./src/depict/svg');
+const fs = require('fs');
+const SmilesParser = require('../src/io/smiles_parser');
+const CoordinateGenerator = require('../src/layout/coordinate_generator');
+const SvgDepict = require('../src/depict/svg');
 
 // console.log(SmilesParser);
 // const smiles =
@@ -27,10 +27,10 @@ const o = new SvgDepict(mol);
 const svg = o.toSvg();
 
 // write svg file
-// fs.writeFile('/home/ben/Bureau/mol.svg', svg, function(err) {
-//   if (err) {
-//     return console.log(err);
-//   }
-//
-//   console.log('Le svg est enregistré sur le Bureau');
-// });
+fs.writeFile('/home/ben/Bureau/mol.svg', svg, function(err) {
+  if (err) {
+    return console.log(err);
+  }
+
+  console.log('Le svg est enregistré sur le Bureau');
+});

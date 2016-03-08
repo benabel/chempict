@@ -16,10 +16,9 @@
 
 goog.require('goog.structs.Set');
 goog.require('goog.array');
-const RingRing = goog.require('./ring');
-goog.require('goog.array');
 goog.require('goog.json');
 
+const RingRing = require('./ring');
 /**
  * Smallest Set of Smallest rings.
  *

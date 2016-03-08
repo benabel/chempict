@@ -110,8 +110,7 @@ ModelAtom.prototype.hydrogenCount = function() {
 
   var bondArray = this.bonds.getValues();
 
-  var totalBondOrder = /** @type {number} */ (
-      goog.array.reduce(bondArray, function(r, v) { return r + v.order; }, 0));
+  var totalBondOrder = bondArray.reduce((r, v) => { return r + v.order; }, 0);
   var hydrogenCount = 0;
   if (cov) {
     hydrogenCount = cov - totalBondOrder + this.charge;
