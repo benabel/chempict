@@ -6,7 +6,7 @@ class ChemJsonWriter {
    *
    * @param  {modelMolecule} mol - Molecule model to convert
    */
-  constructor(mol) { this.mol = mol; }
+  constructor(mol) { this.molObj = this.processMolecule(mol); }
 
   processAtom(atom) {
     /**
@@ -54,6 +54,7 @@ class ChemJsonWriter {
     obj.s = [];
     return obj;
   }
+  toJson() { return JSON.stringify(this.molObj); }
 }
 
 module.exports = ChemJsonWriter;
