@@ -16,7 +16,6 @@
 
 goog.require('goog.structs.Set');
 goog.require('goog.structs.Set');
-goog.require('goog.array');
 const RingRing = require('./ring');
 const ringHanser = require('./hanser');
 const ringSSSR = require('./sssr');

@@ -16,7 +16,6 @@
  */
 'use strict';
 
-goog.require('goog.array');
 goog.require('goog.debug.Logger');
 goog.require('goog.math.Vec2');
 goog.require('goog.math.Box');

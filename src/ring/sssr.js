@@ -15,7 +15,6 @@
 'use strict';
 
 goog.require('goog.structs.Set');
-goog.require('goog.array');
 goog.require('goog.json');
 
 const RingRing = require('./ring');

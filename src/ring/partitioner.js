@@ -14,7 +14,6 @@
  */
 'use strict';
 
-goog.require('goog.array');
 
 const ringPartitioner = function() {};
 

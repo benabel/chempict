@@ -17,7 +17,6 @@
  */
 'use strict';
 
-goog.require('goog.array');
 goog.require('goog.structs.Map');
 goog.require('goog.memoize');
 
