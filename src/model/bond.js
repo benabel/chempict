@@ -1,23 +1,14 @@
 'use strict';
 
-var ModelAtom = require('./atom');
-
 /**
  * Base class representing a Bond
  *
- * @param {ModelAtom}
- *            source, Atom at one end of bond.
- * @param {ModelAtom}
- *            target, Atom at other end of bond.
- * @param {ModelBond.ORDER=}
- *            optOrder, order of bond
- *
- * @param {ModelBond.STEREO=}
- *            optStereo, stereochemistry of bond
- *
- * @param {boolean=}
- *            optAromatic, true if aromatic
- * @param {kemia.model.Molecule=} optMolecule, parent molecule
+ * @param {ModelAtom} source - Atom at one end of bond.
+ * @param {ModelAtom} target - Atom at other end of bond.
+ * @param {ModelBond.ORDER} optOrder - Order of bond
+ * @param {ModelBond.STEREO} optStereo - Stereochemistry of bond
+ * @param {boolean} optAromatic - True if aromatic
+ * @param {modelMolecule} optMolecule - Parent molecule
  *
  * @constructor
  */

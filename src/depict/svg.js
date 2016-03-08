@@ -7,9 +7,9 @@ let sb = '';
 
 class SvgDepict {
   constructor(mol) {
-    // TODO: Use es6 default parameter when available in node
-    this.mol = mol;
+    // TODO: Use es6 default parameter for config when available in node
     this.config = svgConfig;
+    this.mol = mol;
     this.sizeCalculator();
   }
 

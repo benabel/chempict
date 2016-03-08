@@ -6,6 +6,8 @@ Create chemical pictures for the web.
 This is a node app which provide:
 
 - a SMILES parser
+- a coordinate generator
+- a [chemdoodle json](https://web.chemdoodle.com/docs/chemdoodle-json-format/) writer
 
 ## Dependencies
 
@@ -26,3 +28,5 @@ clang-format: format js code
 ## Credits
 
 This project is a fork of the [kemia](http://kemia.github.io/) project, which is a reaction editor written in javascript and compiled using the google closure compiler.
+
+The chemdoodle writer is inspired by this blog [post](http://zachcp.org/blog/2015/browserchemistry/) written by [zach charlop-powers](http://zachcp.org/index.html)

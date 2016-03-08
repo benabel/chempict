@@ -21,9 +21,7 @@
  */
 'use strict';
 
-
 const ptToPx = 4 / 3;
-
 
 const config = {
   fontSize: 10,
