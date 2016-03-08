@@ -148,7 +148,7 @@ ModelAtom.nextBondAngle = function(atom) {
     var existingAngle =
         goog.math.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
 
-    var otherAnglesDiff = goog.array.map(otherAtom.bonds.getValues(), function(b) {
+    var otherAnglesDiff = otherAtom.bonds.getValues().map(function(b) {
       var notOther = b.otherAtom(otherAtom);
       if (notOther !== atom) {
         return goog.math.angleDifference(
@@ -157,7 +157,7 @@ ModelAtom.nextBondAngle = function(atom) {
                 otherAtom.coord.x, otherAtom.coord.y, notOther.coord.x, notOther.coord.y));
       }
     });
-    goog.array.sort(otherAnglesDiff);
+    otherAnglesDiff.sort();
 
     var minAngle = otherAnglesDiff[0];
 
@@ -170,7 +170,7 @@ ModelAtom.nextBondAngle = function(atom) {
     // otherAnglesDiff ' + otherAnglesDiff.toString() + ' newAngle ' +
     // newAngle);
   } else if (bonds.length === 2) {
-    var angles = goog.array.map(bonds, function(bond) {
+    var angles = bonds.map(function(bond) {
       var otherAtom = bond.otherAtom(atom);
       return goog.math.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
     });
@@ -184,13 +184,13 @@ ModelAtom.nextBondAngle = function(atom) {
   } else if (bonds.length === 3) {
     // find two bonds with least number of bonds on other end to insert
     // between
-    goog.array.sort(bonds, function(b1, b2) {
+    bonds.sort(function(b1, b2) {
       return goog.array.defaultCompare(
           b1.otherAtom(atom).bonds.getValues().length, b2.otherAtom(atom).bonds.getValues().length);
     });
     var insertBetween = goog.array.slice(bonds, 0, 2);
 
-    var angles = goog.array.map(insertBetween, function(b) {
+    var angles = insertBetween.map(function(b) {
       var otherAtom = b.otherAtom(atom);
       return goog.math.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
     });

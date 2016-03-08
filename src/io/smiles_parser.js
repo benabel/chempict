@@ -314,7 +314,7 @@ SmilesParser.setChiralCenters = function(molecule, chiralCenters) {
       var availableBonds = [];
       var cntNeighb = 0;
       var bond = null;
-      goog.array.forEach(molecule.atoms, function(atom) {
+      molecule.atoms.forEach(function(atom) {
         var bond_ = molecule.findBond(chiralAtom, atom);
         if (bond_ !== null && bond_ !== undefined) {
           if (bond_.source !== chiralAtom) {

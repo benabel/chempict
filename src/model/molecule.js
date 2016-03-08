@@ -76,7 +76,7 @@ const ModelMolecule = function(optName) {
 };
 
 ModelMolecule.prototype.resetRingCenters = function() {
-  goog.array.forEach(this.getRings(), function(ring) { ring.resetRingCenter(); });
+  this.getRings().forEach(function(ring) { ring.resetRingCenter(); });
 };
 /**
  * Add a bond to molecule.
@@ -332,8 +332,8 @@ ModelMolecule.prototype.isBondInRing = function(bond_) {
  */
 ModelMolecule.prototype.clone = function() {
   var mol = new ModelMolecule(this.name);
-  goog.array.forEach(this.atoms, function(atom) { mol.addAtom(atom); });
-  goog.array.forEach(this.bonds, function(bond) { mol.addBond(bond); });
+  this.atoms.forEach(function(atom) { mol.addAtom(atom); });
+  this.bonds.forEach(function(bond) { mol.addBond(bond); });
   return mol;
 };
 
@@ -348,14 +348,14 @@ ModelMolecule.prototype.getFragments = function() {
     return [mol];
   }
   var fragments = new goog.structs.Map();
-  goog.array.forEach(mol.atoms, function(atom) {
+  mol.atoms.forEach(function(atom) {
     var frag = mol.fragments[mol.indexOfAtom(atom)];
     if (fragments.containsKey(frag) === false) {
       fragments.set(frag, new ModelMolecule());
     }
     fragments.get(frag).addAtom(atom);
   });
-  goog.array.forEach(mol.bonds, function(bond) {
+  mol.bonds.forEach(function(bond) {
     var frag = mol.fragments[mol.indexOfAtom(bond.source)];
     fragments.get(frag).addBond(bond);
   });
@@ -384,24 +384,21 @@ ModelMolecule.prototype.getConnectedBondsList = function(atom) {
  */
 ModelMolecule.prototype.toString = function() {
   return 'ModelMolecule - name: ' + this.name + '\n\t' +
-      goog.array
+      this.atoms
           .map(
-              this.atoms,
               function(atom) { return ' ' + this.indexOfAtom(atom) + ': ' + atom.toString(); },
               this)
           .join('\n\t') +
       '\n\t' +
-      goog.array
+      this.bonds
           .map(
-              this.bonds,
               function(bond) {
                 return ' ' + this.indexOfAtom(bond.source) + ', ' + this.indexOfAtom(bond.target) +
                     ':  ' + bond.toString();
               },
               this)
           .join('\n\t') +
-      '\n\t' +
-      goog.array.map(this.getRings(), function(ring) { return ring.toString(); }).join('\n\t');
+      '\n\t' + this.getRings().map(function(ring) { return ring.toString(); }).join('\n\t');
 };
 /**
  * returns center coordinates of molecule's atoms
@@ -419,8 +416,7 @@ ModelMolecule.prototype.getCenter = function() {
  * @return {goog.math.Box}
  */
 ModelMolecule.prototype.getBoundingBox = function() {
-  return goog.math.Box.boundingBox.apply(
-      null, goog.array.map(this.atoms, function(a) { return a.coord; }));
+  return goog.math.Box.boundingBox.apply(null, this.atoms.map(function(a) { return a.coord; }));
 };
 
 /**
@@ -476,7 +472,7 @@ ModelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
   // transfer bonds attached to fragAtom (except fragBond, which will be discarded) to
   // targetAtom
   var processed = [fragBond];
-  goog.array.forEach(fragAtom.bonds.getValues(), function(bond) {
+  fragAtom.bonds.getValues().forEach(function(bond) {
     if (!goog.array.contains(processed, bond)) {
       fragAtom === bond.source ? bond.source = targetAtom : bond.target = targetAtom;
       processed.push(bond);
@@ -488,7 +484,7 @@ ModelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
 
   // transfer bonds attached to other end of fragBond to atom at
   // other end of targetBond (except fragBond)
-  goog.array.forEach(otherFragAtom.bonds.getValues(), function(bond) {
+  otherFragAtom.bonds.getValues().forEach(function(bond) {
     if (!goog.array.contains(processed, bond)) {
       otherFragAtom === bond.source ? bond.source = otherTargetAtom : bond.target = otherTargetAtom;
       this.addBond(bond);
@@ -501,7 +497,7 @@ ModelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
 
   // clone and replace fragment atoms and bonds parent molecule with this
   // parent molecule
-  goog.array.forEach(yesCopy, function(bond) { this.addBond(bond); }, this);
+  yesCopy, function(bond) { this.addBond(bond); }.forEach(this);
   fragment.bonds.length = 0;
   fragment.atoms.length = 0;
 
@@ -529,7 +525,7 @@ ModelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
 //	var source_molecule = source_atom.molecule;
 //	var target_molecule = targetAtom.molecule;
 //
-//	goog.array.forEach(targetAtom.bonds.getValues(), function(bond) {
+//	targetAtom.bonds.getValues().forEach(function(bond) {
 //		var newBond = bond.clone();
 //		targetAtom === newBond.source ? newBond.source = source_atom
 //				: newBond.target = source_atom;
@@ -538,20 +534,20 @@ ModelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
 //	});
 //	target_molecule.removeAtom(targetAtom);
 //
-//	goog.array.forEach(source_molecule.atoms, function(atom) {
+//	source_molecule.atoms.forEach(function(atom) {
 //		target_molecule.addAtom(atom);
 //	});
 //
 //	// replace source atom and bonds parent molecule with target parent molecule
-//	goog.array.forEach(source_molecule.bonds, function(bond) {
+//	source_molecule.bonds.forEach(function(bond) {
 //		var newBond = bond.clone();
 //		newBond.molecule = undefined;
 //		target_molecule.addBond(newBond);
 //	});
-//	goog.array.forEach(source_molecule.atoms, function(atom) {
+//	source_molecule.atoms.forEach(function(atom) {
 //		source_molecule.removeAtom(atom);
 //	});
-//	goog.array.forEach(source_molecule.bonds, function(bond) {
+//	source_molecule.bonds.forEach(function(bond) {
 //		source_molecule.removeBond(bond);
 //	});
 //

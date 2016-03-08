@@ -90,9 +90,9 @@ RingRing.prototype.resetRingCenter = function() {
 RingRing.prototype.toString = function() {
   return 'RingRing ' +
       '\n\t' +
-      goog.array.map(this.atoms, function(atom) { return ' ' + atom.toString(); }, this)
+      this.atoms, function(atom) { return ' ' + atom.toString(); }.map(this)
           .join('\n\t') +
-      '\n\t' + goog.array.map(this.bonds, function(bond) {
+      '\n\t' + this.bonds.map(function(bond) {
                            return ' ' + bond.toString();
                          }, this).join('\n\t') + '\n\t';
 };

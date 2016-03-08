@@ -65,7 +65,7 @@ ringHanser.findRings = function(molecule, maxLen) {
     }
   }
   // xtra: sort array according to ring size
-  goog.array.sort(atomOnlyRings);
+  atomOnlyRings.sort();
   return atomOnlyRings;
 };
 

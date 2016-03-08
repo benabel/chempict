@@ -235,7 +235,7 @@ layoutAtomPlacer.has2DCoordinatesNew = function(chain) {
 
   var no2d = false;
   var with2d = false;
-  goog.array.forEach(chain.atoms, function(atom) {
+  chain.atoms.forEach(function(atom) {
     if (atom.coord === null || (atom.coord.x === 0 && atom.coord.y === 0)) {
       no2d = true;
     } else {
@@ -516,7 +516,7 @@ layoutAtomPlacer.populatePolygonCorners = function(
  */
 layoutAtomPlacer.partitionPartners = function(molec, atom, unplacedPartners, placedPartners) {
   var cntLoop = 0;
-  goog.array.forEach(atom.bonds.getValues(), function(bond) {
+  atom.bonds.getValues().forEach(function(bond) {
     cntLoop++;
     var otherAtom = bond.otherAtom(atom);
     if (!otherAtom.flags[modelFlags.ISPLACED]) {
@@ -529,11 +529,12 @@ layoutAtomPlacer.partitionPartners = function(molec, atom, unplacedPartners, pla
 };
 
 layoutAtomPlacer.markNotPlaced = function(atoms) {
-  goog.array.forEach(atoms, function(atom) { atom.setFlag(modelFlags.ISPLACED, false); });
+  atoms.forEach(atom => { atom.setFlag(modelFlags.ISPLACED, false); });
 };
 
+
 layoutAtomPlacer.markPlaced = function(atoms) {
-  goog.array.forEach(atoms, function(atom) { atom.setFlag(modelFlags.ISPLACED, true); });
+  atoms.forEach(atom => { atom.setFlag(modelFlags.ISPLACED, true); });
 };
 
 module.exports = layoutAtomPlacer;

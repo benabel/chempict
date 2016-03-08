@@ -71,12 +71,11 @@ layoutCoordinateGenerator.generate = function(molecule) {
 
   if (expectedRingCount > 0) {
     // flag all atoms in sssr as ISINRING
-    goog.array.forEach(sssr, function(ring) {
-      goog.array.forEach(ring.atoms, function(atom) { atom.setFlag(modelFlags.ISINRING, true); });
+    sssr.forEach(function(ring) {
+      ring.atoms.forEach, function(atom) { atom.setFlag(modelFlags.ISINRING, true); };
     });
 
-    goog.array.sort(
-        ringsets, function(a, b) { return goog.array.defaultCompare(a.length, b.length); });
+    ringsets.sort(function(a, b) { return goog.array.defaultCompare(a.length, b.length); });
     var largestRingset = goog.array.peek(ringsets);
     // alert("ringsets length"+ ringsets.length+" largestRingset is "+ largestRingset.length)
 
@@ -87,7 +86,7 @@ layoutCoordinateGenerator.generate = function(molecule) {
     layoutRingPlacer.placeRingSubstituents(
         molecule, largestRingset, layoutCoordinateGenerator.bondLength);
 
-    goog.array.forEach(largestRingset, function(ring) { ring.isPlaced = true; });
+    largestRingset.forEach(function(ring) { ring.isPlaced = true; });
   } else {
     /*
      * We are here because there are no rings in the molecule so we get the
@@ -383,18 +382,17 @@ layoutRingPlacer.placeRing = function(
 layoutRingPlacer.placeRingSubstituents = function(molec, ringset, bondLength) {
   var treatedAtoms = new ModelMolecule();
   var cntDbg = 0;
-  goog.array.forEach(ringset, function(ring) {
-    goog.array.forEach(ring.atoms, function(atom) {
+  ringset.forEach(function(ring) {
+    ring.atoms.forEach(function(atom) {
       var unplacedPartners = new ModelMolecule();
       var sharedAtoms = new ModelMolecule();
-      var rings =
-          goog.array.filter(ringset, function(r) { return goog.array.contains(r.atoms, atom); });
-      var ringsAtoms = goog.array.flatten(goog.array.map(rings, function(r) { return r.atoms; }));
+      var rings = ringset.filter(function(r) { return goog.array.contains(r.atoms, atom); });
+      var ringsAtoms = goog.array.flatten(rings.map(function(r) { return r.atoms; }));
       var centerOfRingGravity = layoutRingPlacer.center(ringsAtoms);
       cntDbg += layoutAtomPlacer.partitionPartners(molec, atom, unplacedPartners, sharedAtoms);
 
       layoutAtomPlacer.markNotPlaced(unplacedPartners.atoms);
-      goog.array.forEach(unplacedPartners.atoms, function(atom) { treatedAtoms.addAtom(atom); });
+      unplacedPartners.atoms.forEach(function(atom) { treatedAtoms.addAtom(atom); });
       if (unplacedPartners.atoms.length > 0) {
         layoutAtomPlacer.distributePartners(
             atom, sharedAtoms, centerOfRingGravity, unplacedPartners, bondLength);
@@ -459,7 +457,7 @@ layoutRingPlacer.placeBridgedRing = function(
 layoutRingPlacer.atomsInPlacementOrder = function(atom, bond, bonds) {
   var nextBond = goog.array.find(bonds, function(b) { return b.otherAtom(atom); });
 
-  var remainingBonds = goog.array.filter(bonds, function(b) { return b !== nextBond; });
+  var remainingBonds = bonds.filter(function(b) { return b !== nextBond; });
   if (remainingBonds.length > 0) {
     var nextAtom = nextBond.otherAtom(atom);
     return goog.array.concat(
@@ -527,8 +525,8 @@ layoutRingPlacer.findStartAtom = function(ringCenter, atom1, atom2) {
  */
 layoutRingPlacer.getBridgeAtoms = function(sharedFrag) {
   var bridgeAtoms = [];
-  goog.array.forEach(sharedFrag.atoms, function(atom) {
-    goog.array.forEach(atom.bonds.getValues(), function(bond) {
+  sharedFrag.atoms.forEach(function(atom) {
+    atom.bonds.getValues().forEach(function(bond) {
       if (goog.array.contains(sharedFrag.bonds, bond)) {
         bridgeAtoms.push(bond.otherAtom(atom));
       }
@@ -691,7 +689,7 @@ layoutRingPlacer.getNativeRingRadius = function(size, bondLength) {
 
 layoutRingPlacer.getIntersectingAtoms = function(ring1, ring2) {
   var atoms = [];
-  goog.array.forEach(ring2.atoms, function(atom) {
+  ring2.atoms.forEach(function(atom) {
     if (goog.array.contains(ring1.atoms, atom)) {
       atoms.push(atom);
     }
@@ -701,7 +699,7 @@ layoutRingPlacer.getIntersectingAtoms = function(ring1, ring2) {
 
 layoutRingPlacer.getIntersectingBonds = function(ring1, ring2) {
   var bonds = [];
-  goog.array.forEach(ring2.bonds, function(bond) {
+  ring2.bonds.forEach(function(bond) {
     if (goog.array.contains(ring1.bonds, bond)) {
       bonds.push(bond);
     }
@@ -766,9 +764,9 @@ layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondL
  *            <Array.<kemia.ring.Ring>>} ringset
  */
 layoutRingPlacer.resetUnplacedRingAtoms = function(ringset) {
-  goog.array.forEach(ringset, function(ring) {
+  ringset.forEach(ring => {
     if (!ring.isPlaced) {
-      goog.array.forEach(ring.atoms, function(atom) { atom.setFlag(modelFlags.ISPLACED, false); });
+      ring.atoms.forEach(atom => {atom.setFlag(modelFlags.ISPLACED(false))});
     }
   });
 };
@@ -816,7 +814,7 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
 
     var placedAtoms = goog.array.concat(
         substituents.atoms,
-        goog.array.flatten(goog.array.map(nextRingSet, function(ring) { return ring.atoms; })));
+        goog.array.flatten(nextRingSet.map(function(ring) { return ring.atoms; })));
     goog.array.removeDuplicates(placedAtoms);
 
     var oldPoint2 = oldRingAtomCoord;
@@ -830,14 +828,14 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
     var translationVector = new LayoutVector2D(oldPoint1.x, oldPoint1.y);
     translationVector.sub(new LayoutVector2D(newPoint1.x, newPoint1.y));
 
-    goog.array.forEach(placedAtoms, function(atom) {
+    placedAtoms.forEach(function(atom) {
       atom.coord.x += translationVector.x;
       atom.coord.y += translationVector.y;
     });
 
     var costheta = Math.cos(angleDiff);
     var sintheta = Math.sin(angleDiff);
-    goog.array.forEach(placedAtoms, function(atom) {
+    placedAtoms.forEach(function(atom) {
       var point = atom.coord;
       var relativex = point.x - oldPoint1.x;
       var relativey = point.y - oldPoint1.y;
@@ -845,7 +843,7 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
       point.y = relativex * sintheta + relativey * costheta + oldPoint1.y;
     });
 
-    goog.array.forEach(nextRingSet, function(ring) { ring.isPlaced = true; });
+    nextRingSet.forEach(function(ring) { ring.isPlaced = true; });
   }
 };
 
