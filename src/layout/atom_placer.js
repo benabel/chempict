@@ -516,7 +516,7 @@ layoutAtomPlacer.populatePolygonCorners = function(
  */
 layoutAtomPlacer.partitionPartners = function(molec, atom, unplacedPartners, placedPartners) {
   var cntLoop = 0;
-  atom.bonds.getValues().forEach(function(bond) {
+  Array.from(atom.bonds).forEach(function(bond) {
     cntLoop++;
     var otherAtom = bond.otherAtom(atom);
     if (!otherAtom.flags[modelFlags.ISPLACED]) {

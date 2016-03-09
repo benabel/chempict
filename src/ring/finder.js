@@ -14,8 +14,6 @@
  */
 'use strict';
 
-goog.require('goog.structs.Set');
-goog.require('goog.structs.Set');
 const RingRing = require('./ring');
 const ringHanser = require('./hanser');
 const ringSSSR = require('./sssr');
@@ -212,7 +210,7 @@ ringFinder.detectRingAtoms = function(molecule) {
     var atom = queue[0];
     goog.array.removeAt(queue, 0);
 
-    var bonds = atom.bonds.getValues();
+    var bonds = Array.from(atom.bonds);
     for (var i = 0, li = bonds.length; i < li; i++) {
       var bond = bonds[i];
       var bondIndex = bond.index;
@@ -337,7 +335,7 @@ ringFinder.createRingSystems = function(molecule) {
       var atom = queue[0];
       goog.array.removeAt(queue, 0);
 
-      var bonds = atom.bonds.getValues();
+      var bonds = Array.from(atom.bonds);
       for (var i = 0, li = bonds.length; i < li; i++) {
         var bond = bonds[i];
         var bondIndex = bond.index;

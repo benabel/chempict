@@ -19,8 +19,6 @@
  */
 'use strict';
 
-goog.require('goog.structs.Set');
-goog.require('goog.structs.Set');
 const RingRing = require('./ring');
 const RingPathEdge = require('./path_edge');
 const RingPathGraph = require('./path_graph');

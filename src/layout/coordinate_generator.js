@@ -526,7 +526,7 @@ layoutRingPlacer.findStartAtom = function(ringCenter, atom1, atom2) {
 layoutRingPlacer.getBridgeAtoms = function(sharedFrag) {
   var bridgeAtoms = [];
   sharedFrag.atoms.forEach(function(atom) {
-    atom.bonds.getValues().forEach(function(bond) {
+    Array.from(atom.bonds).forEach(function(bond) {
       if (goog.array.contains(sharedFrag.bonds, bond)) {
         bridgeAtoms.push(bond.otherAtom(atom));
       }

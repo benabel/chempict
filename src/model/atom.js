@@ -18,7 +18,6 @@
 
 const modelFlags = require('./flags');
 const resourceCovalence = require('../resource/covalence');
-goog.require('goog.structs.Set');
 goog.require('goog.math.Coordinate');
 
 /**
@@ -53,9 +52,9 @@ const ModelAtom = function(optSymbol, optX, optY, optCharge, optAromatic, optIso
   /**
    * Bonds belonging to this atom
    *
-   * @type{goog.structs.Set}
+   * @type{Set}
    */
-  this.bonds = new goog.structs.Set();
+  this.bonds = new Set();
   /**
    * charge
    *
@@ -97,7 +96,7 @@ ModelAtom.prototype.getCharge = function() {
 };
 
 ModelAtom.prototype.countBonds = function() {
-  return this.bonds.getCount();
+  return this.bonds.size;
 };
 /**
  * Implict hydrogen count
@@ -108,7 +107,7 @@ ModelAtom.prototype.hydrogenCount = function() {
   /** @type {number} */
   var cov = resourceCovalence[this.symbol];
 
-  var bondArray = this.bonds.getValues();
+  var bondArray = Array.from(this.bonds);
 
   var totalBondOrder = bondArray.reduce((r, v) => { return r + v.order; }, 0);
   var hydrogenCount = 0;
@@ -124,7 +123,7 @@ ModelAtom.prototype.hydrogenCount = function() {
  * @return {Array.<ModelAtom>}
  */
 ModelAtom.prototype.getNeighbors = function() {
-  var bonds = this.bonds.getValues();
+  var bonds = Array.from(this.bonds);
   var nbrs = [];
   for (var i = 0, li = bonds.length; i < li; i++) {
     nbrs.push(bonds[i].otherAtom(this));
@@ -136,7 +135,7 @@ ModelAtom.prototype.getNeighbors = function() {
  * @return {number} the next angle
  */
 ModelAtom.nextBondAngle = function(atom) {
-  var bonds = atom.bonds.getValues();
+  var bonds = Array.from(atom.bonds);
 
   var newAngle;
 
@@ -148,7 +147,7 @@ ModelAtom.nextBondAngle = function(atom) {
     var existingAngle =
         goog.math.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
 
-    var otherAnglesDiff = otherAtom.bonds.getValues().map(function(b) {
+    var otherAnglesDiff = otherArray.from(atom.bonds).map(function(b) {
       var notOther = b.otherAtom(otherAtom);
       if (notOther !== atom) {
         return goog.math.angleDifference(
@@ -186,7 +185,7 @@ ModelAtom.nextBondAngle = function(atom) {
     // between
     bonds.sort(function(b1, b2) {
       return goog.array.defaultCompare(
-          b1.otherAtom(atom).bonds.getValues().length, b2.otherAtom(atom).bonds.getValues().length);
+          b1.otherAtom(atom).Array.from(bonds).length, b2.otherAtom(atom).Array.from(bonds).length);
     });
     var insertBetween = goog.array.slice(bonds, 0, 2);
 

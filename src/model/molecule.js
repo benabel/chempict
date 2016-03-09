@@ -158,7 +158,7 @@ ModelMolecule.prototype.getAverageBondLength = function() {
  * @return{kemia.model.Bond}
  */
 ModelMolecule.prototype.findBond = function(atom1, atom2) {
-  var bonds = atom1.bonds.getValues();
+  var bonds = Array.from(atom1.bonds);
   for (var i = 0, li = bonds.length; i < li; i++) {
     var bond = bonds[i];
     if (bond.otherAtom(atom1) === atom2) {
@@ -204,7 +204,7 @@ ModelMolecule.prototype.removeAtom = function(atomOrId) {
   } else if (atomOrId.constructor === ModelAtom) {
     atom = atomOrId;
   }
-  var neighborBonds = atom.bonds.getValues();
+  var neighborBonds = Array.from(atom.bonds);
 
   goog.array.forEach(
       neighborBonds, function(element) { goog.array.remove(this.bonds, element); }, this);
@@ -230,11 +230,11 @@ ModelMolecule.prototype.removeBond = function(bondOrId) {
   }
   bond.source.bonds.remove(bond);
   bond.target.bonds.remove(bond);
-  if (bond.source.bonds.getValues().length === 0) {
+  if (bond.source.Array.from(bonds).length === 0) {
     goog.array.remove(this.atoms, bond.source);
     bond.source.molecule = undefined;
   }
-  if (bond.target.bonds.getValues().length === 0) {
+  if (bond.target.Array.from(bonds).length === 0) {
     goog.array.remove(this.atoms, bond.target);
     bond.target.molecule = undefined;
   }
@@ -449,8 +449,8 @@ ModelMolecule.prototype.translate = function(vector) {
 ModelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAtom, targetAtom) {
   goog.asserts.assert(goog.array.contains(fragment.bonds, fragBond));
   goog.asserts.assert(goog.array.contains(this.bonds, targetBond));
-  goog.asserts.assert(goog.array.contains(fragAtom.bonds.getValues(), fragBond));
-  goog.asserts.assert(goog.array.contains(targetAtom.bonds.getValues(), targetBond));
+  goog.asserts.assert(goog.array.contains(fragArray.from(atom.bonds), fragBond));
+  goog.asserts.assert(goog.array.contains(targetArray.from(atom.bonds), targetBond));
 
   // scale and translate and rotate fragment into position
   var scale = this.getAverageBondLength() / fragment.getAverageBondLength();
@@ -472,7 +472,7 @@ ModelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
   // transfer bonds attached to fragAtom (except fragBond, which will be discarded) to
   // targetAtom
   var processed = [fragBond];
-  fragAtom.bonds.getValues().forEach(function(bond) {
+  fragArray.from(atom.bonds).forEach(function(bond) {
     if (!goog.array.contains(processed, bond)) {
       fragAtom === bond.source ? bond.source = targetAtom : bond.target = targetAtom;
       processed.push(bond);
@@ -484,7 +484,7 @@ ModelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
 
   // transfer bonds attached to other end of fragBond to atom at
   // other end of targetBond (except fragBond)
-  otherFragAtom.bonds.getValues().forEach(function(bond) {
+  otherFragArray.from(atom.bonds).forEach(function(bond) {
     if (!goog.array.contains(processed, bond)) {
       otherFragAtom === bond.source ? bond.source = otherTargetAtom : bond.target = otherTargetAtom;
       this.addBond(bond);
@@ -525,7 +525,7 @@ ModelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
 //	var source_molecule = source_atom.molecule;
 //	var target_molecule = targetAtom.molecule;
 //
-//	targetAtom.bonds.getValues().forEach(function(bond) {
+//	targetArray.from(atom.bonds).forEach(function(bond) {
 //		var newBond = bond.clone();
 //		targetAtom === newBond.source ? newBond.source = source_atom
 //				: newBond.target = source_atom;
@@ -602,7 +602,7 @@ ModelMolecule.prototype.sproutFragment = function(attachmentAtom, fragAtom) {
  */
 ModelMolecule.prototype.sproutBond = function(atom, optOrder, optStereo, optSymbol) {
   var bondLength = 1.25;  // default
-  var bonds = atom.bonds.getValues();
+  var bonds = Array.from(atom.bonds);
   if (bonds.length) {
     bondLength = goog.array.reduce(bonds, function(r, b) {
       return r + goog.math.Coordinate.distance(b.source.coord, b.target.coord);
