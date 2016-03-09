@@ -16,7 +16,6 @@
  */
 'use strict';
 
-goog.require('goog.debug.Logger');
 goog.require('goog.math.Vec2');
 goog.require('goog.math.Box');
 
@@ -624,13 +623,5 @@ ModelMolecule.prototype.sproutBond = function(atom, optOrder, optStereo, optSymb
     return newBond;
   }
 };
-
-/**
- * The logger for this class.
- *
- * @type {goog.debug.Logger}
- * @protected
- */
-ModelMolecule.prototype.logger = goog.debug.Logger.getLogger('ModelMolecule');
 
 module.exports = ModelMolecule;
