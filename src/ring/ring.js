@@ -17,9 +17,6 @@
  */
 'use strict';
 
-goog.require('goog.structs.Map');
-goog.require('goog.memoize');
-
 const modelFlags = require('../model/flags');
 
 /**
@@ -89,12 +86,10 @@ RingRing.prototype.resetRingCenter = function() {
 
 RingRing.prototype.toString = function() {
   return 'RingRing ' +
-      '\n\t' +
-      this.atoms, function(atom) { return ' ' + atom.toString(); }.map(this)
-          .join('\n\t') +
-      '\n\t' + this.bonds.map(function(bond) {
-                           return ' ' + bond.toString();
-                         }, this).join('\n\t') + '\n\t';
+             '\n\t' + this.atoms,
+         function(atom) { return ' ' + atom.toString(); }.map(this).join('\n\t') + '\n\t' +
+             this.bonds.map(function(bond) { return ' ' + bond.toString(); }, this).join('\n\t') +
+             '\n\t';
 };
 
 module.exports = RingRing;

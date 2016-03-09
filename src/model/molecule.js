@@ -347,10 +347,10 @@ ModelMolecule.prototype.getFragments = function() {
   if (mol.fragmentCount === 1) {
     return [mol];
   }
-  var fragments = new goog.structs.Map();
+  var fragments = new Map();
   mol.atoms.forEach(function(atom) {
     var frag = mol.fragments[mol.indexOfAtom(atom)];
-    if (fragments.containsKey(frag) === false) {
+    if (fragments.has(frag) === false) {
       fragments.set(frag, new ModelMolecule());
     }
     fragments.get(frag).addAtom(atom);

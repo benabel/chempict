@@ -1,4 +1,4 @@
-// require('./node_modules/google-closure-library/closure/goog/bootstrap/nodejs');
+require('./node_modules/google-closure-library/closure/goog/bootstrap/nodejs');
 
 // const fs = require('fs');
 const SmilesParser = require('./src/io/smiles_parser');
