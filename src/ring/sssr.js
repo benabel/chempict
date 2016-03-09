@@ -15,7 +15,6 @@
 'use strict';
 
 goog.require('goog.structs.Set');
-goog.require('goog.json');
 
 const RingRing = require('./ring');
 /**
@@ -59,7 +58,7 @@ ringSSSR.matrixToHTML = function(matrix) {
   var n = matrix.length;
   for (var i = 0; i < n; i++) {
     for (var j = 0; j < n; j++) {
-      text += goog.json.serialize(matrix[i][j]) + ' ';
+      text += JSON.stringify(matrix[i][j]) + ' ';
     }
     text += '<br>';
   }
@@ -230,14 +229,14 @@ ringSSSR.makePIDMatrixes = function(molecule) {
   // debug("Pe =<br>" + matrixToHTML(Pe1));
   // debug("Pe' =<br>" + matrixToHTML(Pe2));
 
-  return {'D': D, 'Pe1': Pe1, 'Pe2': Pe2};
+  return {D: D, Pe1: Pe1, Pe2: Pe2};
 };
 
 /**
  * Sort function to sort the set of candidates by increasing Cnum (i.e. ring size).
  */
 ringSSSR.sortByCnum = function(a, b) {
-  return a['Cnum'] - b['Cnum'];
+  return a.Cnum - b.Cnum;
 };
 
 /**
@@ -264,7 +263,7 @@ ringSSSR.makeCandidateSet = function(D, Pe1, Pe2) {
         } else {
           Cnum = 2 * D[i][j];  // even ring candidate
         }
-        Cset.push({'Cnum': Cnum, 'Pe1': Pe1[i][j], 'Pe2': Pe2[i][j]});
+        Cset.push({Cnum: Cnum, Pe1: Pe1[i][j], Pe2: Pe2[i][j]});
       }
     }
   }
@@ -481,9 +480,9 @@ ringSSSR.findRings = function(molecule) {
   // Create the path-included distance matrices
   var matrices = ringSSSR.makePIDMatrixes(molecule);
   // Create the initial candidate set. This will be  sets with bond indexes.
-  var Cset = ringSSSR.makeCandidateSet(matrices['D'], matrices['Pe1'], matrices['Pe2']);
+  var Cset = ringSSSR.makeCandidateSet(matrices.D, matrices.Pe1, matrices.Pe2);
   // Select the SSSR from the candidates
-  var indexes = ringSSSR.candidateSearch(Cset, nsssr, molecule, matrices['D']);
+  var indexes = ringSSSR.candidateSearch(Cset, nsssr, molecule, matrices.D);
 
   for (var i = 0, li = indexes.length; i < li; i++) {
     indexes[i] = ringSSSR.sortByPath(indexes[i], molecule);
