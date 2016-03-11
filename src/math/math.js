@@ -301,11 +301,11 @@ goog.math.longestCommonSubsequence = function(array1, array2, opt_compareFn, opt
 
 /**
  * Returns the sum of the arguments.
- * @param {...number} var_args Numbers to add.
+ * @param {...number} varArgs Numbers to add.
  * @return {number} The sum of the arguments (0 if no arguments were provided,
  *     {@code NaN} if any of the arguments is not a valid number).
  */
-goog.math.sum = function(var_args) {
+goog.math.sum = function(varArgs) {
   return /** @type {number} */ (
       goog.array.reduce(arguments, function(sum, value) { return sum + value; }, 0));
 };
@@ -313,11 +313,11 @@ goog.math.sum = function(var_args) {
 
 /**
  * Returns the arithmetic mean of the arguments.
- * @param {...number} var_args Numbers to average.
+ * @param {...number} varArgs Numbers to average.
  * @return {number} The average of the arguments ({@code NaN} if no arguments
  *     were provided or any of the arguments is not a valid number).
  */
-goog.math.average = function(var_args) {
+goog.math.average = function(varArgs) {
   return goog.math.sum.apply(null, arguments) / arguments.length;
 };
 
@@ -325,12 +325,12 @@ goog.math.average = function(var_args) {
 /**
  * Returns the unbiased sample variance of the arguments. For a definition,
  * see e.g. http://en.wikipedia.org/wiki/Variance
- * @param {...number} var_args Number samples to analyze.
+ * @param {...number} varArgs Number samples to analyze.
  * @return {number} The unbiased sample variance of the arguments (0 if fewer
  *     than two samples were provided, or {@code NaN} if any of the samples is
  *     not a valid number).
  */
-goog.math.sampleVariance = function(var_args) {
+goog.math.sampleVariance = function(varArgs) {
   var sampleSize = arguments.length;
   if (sampleSize < 2) {
     return 0;
@@ -349,12 +349,12 @@ goog.math.sampleVariance = function(var_args) {
  * Returns the sample standard deviation of the arguments.  For a definition of
  * sample standard deviation, see e.g.
  * http://en.wikipedia.org/wiki/Standard_deviation
- * @param {...number} var_args Number samples to analyze.
+ * @param {...number} varArgs Number samples to analyze.
  * @return {number} The sample standard deviation of the arguments (0 if fewer
  *     than two samples were provided, or {@code NaN} if any of the samples is
  *     not a valid number).
  */
-goog.math.standardDeviation = function(var_args) {
+goog.math.standardDeviation = function(varArgs) {
   return Math.sqrt(goog.math.sampleVariance.apply(null, arguments));
 };
 

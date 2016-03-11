@@ -17,14 +17,14 @@
  */
 'use strict';
 
-/**
- * Class for representing coordinates and positions.
- * @param {number} optX Left, defaults to 0.
- * @param {number} optY Top, defaults to 0.
- * @struct
- * @constructor
- */
 class MathCoordinate {
+  /**
+   * Class for representing coordinates and positions.
+   * @param {number} optX Left, defaults to 0.
+   * @param {number} optY Top, defaults to 0.
+   * @struct
+   * @constructor
+   */
   constructor(optX, optY) {
     // TODO: use default parameters when available in node
     optX = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];

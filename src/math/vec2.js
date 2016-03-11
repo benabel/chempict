@@ -28,7 +28,7 @@
 goog.provide('goog.math.Vec2');
 
 goog.require('goog.math');
-MathCoordinate = require('./coordinate');
+const MathCoordinate = require('./coordinate');
 
 
 /**

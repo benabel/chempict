@@ -17,7 +17,7 @@
 'use strict';
 
 goog.require('goog.math.Vec2');
-goog.require('goog.math.Box');
+const MathBox = require('../math/box');
 
 const ModelAtom = require('../model/atom');
 const ringFinder = require('../ring/finder');
@@ -412,10 +412,10 @@ ModelMolecule.prototype.getCenter = function() {
 /**
  * returns bounding box of molecule's atoms
  *
- * @return {goog.math.Box}
+ * @return {MathBox}
  */
 ModelMolecule.prototype.getBoundingBox = function() {
-  return goog.math.Box.boundingBox.apply(null, this.atoms.map(function(a) { return a.coord; }));
+  return MathBox.boundingBox.apply(null, this.atoms.map(function(a) { return a.coord; }));
 };
 
 /**
@@ -426,8 +426,7 @@ ModelMolecule.prototype.getBoundingBox = function() {
  *
  */
 ModelMolecule.prototype.translate = function(vector) {
-  goog.array.forEach(
-      this.atoms, function(a) { a.coord = MathCoordinate.sum(a.coord, vector); });
+  goog.array.forEach(this.atoms, function(a) { a.coord = MathCoordinate.sum(a.coord, vector); });
 };
 
 /**
@@ -454,8 +453,8 @@ ModelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
   // scale and translate and rotate fragment into position
   var scale = this.getAverageBondLength() / fragment.getAverageBondLength();
   fragment.scale(scale);
-  var positionDiff = goog.math.Vec2.fromCoordinate(
-      MathCoordinate.difference(targetAtom.coord, fragAtom.coord));
+  var positionDiff =
+      goog.math.Vec2.fromCoordinate(MathCoordinate.difference(targetAtom.coord, fragAtom.coord));
   var otherTargetAtom = targetBond.otherAtom(targetAtom);
   var targetAngle = goog.math.angle(
       otherTargetAtom.coord.x, otherTargetAtom.coord.y, targetAtom.coord.x, targetAtom.coord.y);
