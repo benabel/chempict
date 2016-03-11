@@ -1,5 +1,7 @@
 'use strict';
 
+const MathCoordinate = require('../math/coordinate');
+
 /**
  * Base class representing a Bond
  *
@@ -75,7 +77,7 @@ ModelBond.prototype.otherAtom = function(atom) {
 };
 
 ModelBond.prototype.getLength = function() {
-  return goog.math.Coordinate.distance(this.source.coord, this.target.coord);
+  return MathCoordinate.distance(this.source.coord, this.target.coord);
 };
 
 /**

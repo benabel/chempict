@@ -2,6 +2,8 @@
 
 goog.require('goog.math');
 
+const MathCoordinate = require('../math/coordinate');
+
 const modelFlags = require('../model/flags.js');
 const ModelMolecule = require('../model/molecule.js');
 
@@ -216,7 +218,7 @@ layoutAtomPlacer.placeLinearChain = function(chain, initialBondVector, bondLengt
   for (var f = 0; f < chain.countAtoms() - 1; f++) {
     var atom = chain.getAtom(f);
     var nextAtom = chain.getAtom(f + 1);
-    var atomPoint = new goog.math.Coordinate(atom.coord.x, atom.coord.y);
+    var atomPoint = new MathCoordinate(atom.coord.x, atom.coord.y);
     bondVector.normalize();
     bondVector.scale(bondLength);
     atomPoint.x += bondVector.x;
@@ -264,7 +266,7 @@ layoutAtomPlacer.get2DCenter = function(molecule) {
       counter++;
     }
   }
-  var center = new goog.math.Coordinate(centerX / (counter), centerY / (counter));
+  var center = new MathCoordinate(centerX / (counter), centerY / (counter));
   return center;
 };
 
@@ -280,7 +282,7 @@ layoutAtomPlacer.getAtoms2DCenter = function(atoms) {
       counter++;
     }
   }
-  var center = new goog.math.Coordinate(centerX / (counter), centerY / (counter));
+  var center = new MathCoordinate(centerX / (counter), centerY / (counter));
   return center;
 };
 
@@ -308,13 +310,13 @@ layoutAtomPlacer.getNextBondVector = function(atom, previousAtom, distanceMeasur
 
   angle += addAngle;
   var vec1 = new LayoutVector2D(Math.cos(angle), Math.sin(angle));
-  var point1 = new goog.math.Coordinate(atom.coord.x + vec1.x, atom.coord.y + vec1.y);
-  var distance1 = goog.math.Coordinate.distance(point1, distanceMeasure);
+  var point1 = new MathCoordinate(atom.coord.x + vec1.x, atom.coord.y + vec1.y);
+  var distance1 = MathCoordinate.distance(point1, distanceMeasure);
   angle += addAngle;
 
   var vec2 = new LayoutVector2D(Math.cos(angle), Math.sin(angle));
-  var point2 = new goog.math.Coordinate(atom.coord.x + vec2.x, atom.coord.y + vec2.y);
-  var distance2 = goog.math.Coordinate.distance(point2, distanceMeasure);
+  var point2 = new MathCoordinate(atom.coord.x + vec2.x, atom.coord.y + vec2.y);
+  var distance2 = MathCoordinate.distance(point2, distanceMeasure);
 
   if (distance2 > distance1) {
     return vec2;
@@ -364,7 +366,7 @@ layoutAtomPlacer.distributePartners = function(
 
     startAngle = layoutAtomPlacer.getAngle(xDiff, yDiff);
     layoutAtomPlacer.populatePolygonCorners(
-        atomsToDraw, new goog.math.Coordinate(atom.coord.x, atom.coord.y), startAngle, addAngle,
+        atomsToDraw, new MathCoordinate(atom.coord.x, atom.coord.y), startAngle, addAngle,
         bondLength);
     return;
   } else if (placedNeighboursCountAtoms === 0) {
@@ -374,7 +376,7 @@ layoutAtomPlacer.distributePartners = function(
     addAngle = Math.PI * 2.0 / unPlacedNeighboursCountAtoms;
     startAngle = 0.0;
     layoutAtomPlacer.populatePolygonCorners(
-        atomsToDraw, new goog.math.Coordinate(atom.coord.x, atom.coord.y), startAngle, addAngle,
+        atomsToDraw, new MathCoordinate(atom.coord.x, atom.coord.y), startAngle, addAngle,
         bondLength);
     return;
   }
@@ -388,7 +390,7 @@ layoutAtomPlacer.distributePartners = function(
   newDirection.scale(bondLength);
   newDirection.negate();
 
-  var distanceMeasure = new goog.math.Coordinate(atom.coord.x, atom.coord.y);
+  var distanceMeasure = new MathCoordinate(atom.coord.x, atom.coord.y);
   distanceMeasure.x += newDirection.x;
   distanceMeasure.y += newDirection.y;
 
@@ -437,8 +439,7 @@ layoutAtomPlacer.distributePartners = function(
       layoutAtomPlacer.getAngle(startAtom.coord.x - atom.coord.x, startAtom.coord.y - atom.coord.y);
 
   layoutAtomPlacer.populatePolygonCorners(
-      atomsToDraw, new goog.math.Coordinate(atom.coord.x, atom.coord.y), startAngle, addAngle,
-      radius);
+      atomsToDraw, new MathCoordinate(atom.coord.x, atom.coord.y), startAngle, addAngle, radius);
 };
 
 /**
@@ -454,8 +455,8 @@ layoutAtomPlacer.sortBy2DDistance = function(atoms, point) {
     for (var atIdx = 0, atLen = atoms.length; atIdx < atLen - 1; atIdx++) {
       var atom1 = atoms[atIdx];
       var atom2 = atoms[atIdx + 1];
-      var distance1 = goog.math.Coordinate.distance(point, atom1.coord);
-      var distance2 = goog.math.Coordinate.distance(point, atom2.coord);
+      var distance1 = MathCoordinate.distance(point, atom1.coord);
+      var distance2 = MathCoordinate.distance(point, atom2.coord);
       if (distance2 < distance1) {
         atoms[atIdx] = atom2;
         atoms[atIdx + 1] = atom1;
@@ -493,7 +494,7 @@ layoutAtomPlacer.populatePolygonCorners = function(
     var y = Math.sin(angle) * radius;
     var newX = x + rotationCenter.x;
     var newY = y + rotationCenter.y;
-    points.push(new goog.math.Coordinate(newX, newY));
+    points.push(new MathCoordinate(newX, newY));
   }
   for (ad = 0, ads = atomsToDraw.length; ad < ads; ad++) {
     connectAtom = atomsToDraw[ad];

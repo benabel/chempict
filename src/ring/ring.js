@@ -40,7 +40,7 @@ const RingRing = function(atoms, bonds) {
   this.flags = new Array(modelFlags.MAX_FLAG_INDEX + 1);
 
   /**
-   * @type {goog.math.Coordinate}
+   * @type {MathCoordinate}
    * @private
    */
   this._center = null;
@@ -61,7 +61,7 @@ RingRing.prototype.setFlag = function(flagType, flagValue) {
 /**
  * get ring center
  *
- * @return {goog.math.Coordinate}
+ * @return {MathCoordinate}
  */
 RingRing.prototype.getCenter = function() {
 
@@ -72,7 +72,7 @@ RingRing.prototype.getCenter = function() {
       avgX += this.atoms[j].coord.x;
       avgY += this.atoms[j].coord.y;
     }
-    this._center = new goog.math.Coordinate(avgX / this.atoms.length, avgY / this.atoms.length);
+    this._center = new MathCoordinate(avgX / this.atoms.length, avgY / this.atoms.length);
   }
   return this._center;
 };

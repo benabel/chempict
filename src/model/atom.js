@@ -18,7 +18,7 @@
 
 const modelFlags = require('./flags');
 const resourceCovalence = require('../resource/covalence');
-goog.require('goog.math.Coordinate');
+const MathCoordinate = require('../math/coordinate');
 
 /**
  * Class representing an atom
@@ -46,9 +46,9 @@ const ModelAtom = function(optSymbol, optX, optY, optCharge, optAromatic, optIso
   /**
    * 2d coordinates
    *
-   * @type{goog.math.Coordinate}
+   * @type{MathCoordinate}
    */
-  this.coord = new goog.math.Coordinate(x, y);
+  this.coord = new MathCoordinate(x, y);
   /**
    * Bonds belonging to this atom
    *

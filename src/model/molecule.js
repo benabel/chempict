@@ -402,11 +402,11 @@ ModelMolecule.prototype.toString = function() {
 /**
  * returns center coordinates of molecule's atoms
  *
- * @return {goog.math.Coordinate}
+ * @return {MathCoordinate}
  */
 ModelMolecule.prototype.getCenter = function() {
   var box = this.getBoundingBox();
-  return new goog.math.Coordinate((box.left + box.right) / 2, (box.top + box.bottom) / 2);
+  return new MathCoordinate((box.left + box.right) / 2, (box.top + box.bottom) / 2);
 };
 
 /**
@@ -427,7 +427,7 @@ ModelMolecule.prototype.getBoundingBox = function() {
  */
 ModelMolecule.prototype.translate = function(vector) {
   goog.array.forEach(
-      this.atoms, function(a) { a.coord = goog.math.Coordinate.sum(a.coord, vector); });
+      this.atoms, function(a) { a.coord = MathCoordinate.sum(a.coord, vector); });
 };
 
 /**
@@ -455,7 +455,7 @@ ModelMolecule.prototype.merge = function(fragment, fragBond, targetBond, fragAto
   var scale = this.getAverageBondLength() / fragment.getAverageBondLength();
   fragment.scale(scale);
   var positionDiff = goog.math.Vec2.fromCoordinate(
-      goog.math.Coordinate.difference(targetAtom.coord, fragAtom.coord));
+      MathCoordinate.difference(targetAtom.coord, fragAtom.coord));
   var otherTargetAtom = targetBond.otherAtom(targetAtom);
   var targetAngle = goog.math.angle(
       otherTargetAtom.coord.x, otherTargetAtom.coord.y, targetAtom.coord.x, targetAtom.coord.y);
@@ -578,7 +578,7 @@ ModelMolecule.prototype.sproutFragment = function(attachmentAtom, fragAtom) {
   if (newAngle !== undefined) {
     // translate fragment
     var positionDiff = goog.math.Vec2.fromCoordinate(
-        goog.math.Coordinate.difference(attachmentAtom.coord, fragAtom.coord));
+        MathCoordinate.difference(attachmentAtom.coord, fragAtom.coord));
     var angleDiff = goog.math.angle();
     fragAtom.molecule.rotate(newAngle, fragAtom.coord);
     fragAtom.molecule.translate(positionDiff);
@@ -604,7 +604,7 @@ ModelMolecule.prototype.sproutBond = function(atom, optOrder, optStereo, optSymb
   var bonds = Array.from(atom.bonds);
   if (bonds.length) {
     bondLength = goog.array.reduce(bonds, function(r, b) {
-      return r + goog.math.Coordinate.distance(b.source.coord, b.target.coord);
+      return r + MathCoordinate.distance(b.source.coord, b.target.coord);
     }, 0) / bonds.length;
   }  // average of other bonds
 

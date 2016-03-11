@@ -11,6 +11,8 @@
  */
 'use strict';
 
+const MathCoordinate = require('../math/coordinate');
+
 const modelFlags = require('../model/flags');
 const ModelMolecule = require('../model/molecule');
 const ringPartitioner = require('../ring/partitioner');
@@ -51,7 +53,7 @@ layoutCoordinateGenerator.generate = function(molecule) {
          * simplest: 0,0
          */
   if (atCount === 1) {
-    molecule.getAtom(0).coords = new goog.math.Coordinate(0, 0);
+    molecule.getAtom(0).coords = new MathCoordinate(0, 0);
     return molecule;
   }
 
@@ -94,7 +96,7 @@ layoutCoordinateGenerator.generate = function(molecule) {
      */
     var longestChain = layoutAtomPlacer.getInitialLongestChain(molecule);
 
-    longestChain.getAtom(0).coord = new goog.math.Coordinate(0, 0);
+    longestChain.getAtom(0).coord = new MathCoordinate(0, 0);
     longestChain.getAtom(0).flags[modelFlags.ISPLACED] = true;
     angle = Math.PI * (-30 / 180);
     layoutAtomPlacer.placeLinearChain(
@@ -151,9 +153,9 @@ layoutCoordinateGenerator.generate = function(molecule) {
 layoutCoordinateGenerator.placeFirstBond = function(bond, vector) {
   vector.normalize();
   vector.scale(layoutCoordinateGenerator.bondLength);
-  bond.source.coord = new goog.math.Coordinate(0, 0);
+  bond.source.coord = new MathCoordinate(0, 0);
   bond.source.setFlag(modelFlags.ISPLACED, true);
-  bond.target.coord = new goog.math.Coordinate(vector.x, vector.y);
+  bond.target.coord = new MathCoordinate(vector.x, vector.y);
   bond.target.setFlag(modelFlags.ISPLACED, true);
   return [bond.source, bond.target];
 };
@@ -298,8 +300,8 @@ layoutCoordinateGenerator.ringSet = function(bondVector, ringset) {
       bonds: [mostComplexRing.bonds[0]]
     };
     var sharedFragSum = goog.array.reduce(sharedFrag.atoms, function(r, atom) {
-      return goog.math.Coordinate.sum(r, atom.coord);
-    }, new goog.math.Coordinate(0, 0));
+      return MathCoordinate.sum(r, atom.coord);
+    }, new MathCoordinate(0, 0));
     var sharedFragCenter = new LayoutVector2D(
         sharedFragSum.x / sharedFrag.atoms.length, sharedFragSum.y / sharedFrag.atoms.length);
 
@@ -423,7 +425,7 @@ layoutRingPlacer.placeBridgedRing = function(
   var radius = layoutRingPlacer.getNativeRingRadius(ring.atoms.length, bondLength);
   ringCenterVector.normalize();
   ringCenterVector.scale(radius);
-  var ringCenter = new goog.math.Coordinate(
+  var ringCenter = new MathCoordinate(
       sharedFragCenter.x + ringCenterVector.x, sharedFragCenter.y + ringCenterVector.y);
 
   var bridgeAtoms = layoutRingPlacer.getBridgeAtoms(sharedFrag);
@@ -480,7 +482,7 @@ layoutRingPlacer.atomsInPlacementOrder = function(atom, bond, bonds) {
  */
 layoutRingPlacer.findDirection = function(ringCenter, atom1, atom2) {
   var result = 1;
-  var diff = goog.math.Coordinate.difference(atom1.coord, atom2.coord);
+  var diff = MathCoordinate.difference(atom1.coord, atom2.coord);
 
   if (diff.x === 0) {
     // vertical bond
@@ -497,7 +499,7 @@ layoutRingPlacer.findDirection = function(ringCenter, atom1, atom2) {
 };
 
 layoutRingPlacer.findStartAtom = function(ringCenter, atom1, atom2) {
-  var diff = goog.math.Coordinate.difference(atom1.coord, atom2.coord);
+  var diff = MathCoordinate.difference(atom1.coord, atom2.coord);
   if (diff.x === 0) {
     // vertical bond
     // start with the lower Atom
@@ -557,7 +559,7 @@ layoutRingPlacer.placeFusedRing = function(
 
   ringCenterVector.normalize();
   ringCenterVector.scale(newRingPerpendicular);
-  var ringCenter = new goog.math.Coordinate(
+  var ringCenter = new MathCoordinate(
       sharedAtomsCenter.x + ringCenterVector.x, sharedAtomsCenter.y + ringCenterVector.y);
 
   var bondAtom1 = sharedAtoms.atoms[0];
@@ -657,7 +659,7 @@ layoutRingPlacer.placeSpiroRing = function(
   var radius = layoutRingPlacer.getNativeRingRadius(ring.atoms.length, bondLength);
   ringCenterVector.normalize();
   ringCenterVector.scale(radius);
-  var ringCenter = new goog.math.Coordinate(
+  var ringCenter = new MathCoordinate(
       sharedAtomsCenter.x + ringCenterVector.x, sharedAtomsCenter.y + ringCenterVector.y);
 
   var addAngle = 2 * Math.PI / ring.atoms.length;
@@ -712,14 +714,14 @@ layoutRingPlacer.getIntersectingBonds = function(ring1, ring2) {
  *
  * @param {Array.
  *            <kemia.model.Atom>} atoms list of atoms to find center of
- * @return {goog.math.Coordinate} coordinate of center of atoms
+ * @return {MathCoordinate} coordinate of center of atoms
  */
 layoutRingPlacer.center = function(atoms) {
   var sum = goog.array.reduce(atoms, function(rval, atom) {
-    return goog.math.Coordinate.sum(rval, atom.coord);
-  }, new goog.math.Coordinate(0, 0));
+    return MathCoordinate.sum(rval, atom.coord);
+  }, new MathCoordinate(0, 0));
 
-  return new goog.math.Coordinate(sum.x / atoms.length, sum.y / atoms.length);
+  return new MathCoordinate(sum.x / atoms.length, sum.y / atoms.length);
 };
 
 layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondLength) {
@@ -745,7 +747,7 @@ layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondL
         var newRingCenterVector = new LayoutVector2D(tempVector.x, tempVector.y);
         newRingCenterVector.sub(new LayoutVector2D(oldRingCenter.x, oldRingCenter.y));
         var oldRingCenterVector = new LayoutVector2D(newRingCenterVector.x, newRingCenterVector.y);
-        var tempPoint = new goog.math.Coordinate(
+        var tempPoint = new MathCoordinate(
             sharedAtomsCenter.x + newRingCenterVector.x,
             sharedAtomsCenter.y + newRingCenterVector.y);
         layoutRingPlacer.placeRing(
