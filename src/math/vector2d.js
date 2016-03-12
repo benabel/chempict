@@ -16,7 +16,7 @@
 *
 *****/
 
-const LayoutVector2D = function(x, y) {
+const MathVector2D = function(x, y) {
   if (arguments.length > 0) {
     this.x = x;
     this.y = y;
@@ -28,7 +28,7 @@ const LayoutVector2D = function(x, y) {
 *   length
 *
 *****/
-LayoutVector2D.prototype.length = function() {
+MathVector2D.prototype.length = function() {
   return Math.sqrt(this.x * this.x + this.y * this.y);
 };
 
@@ -37,7 +37,7 @@ LayoutVector2D.prototype.length = function() {
 *   dot
 *
 *****/
-LayoutVector2D.prototype.dot = function(that) {
+MathVector2D.prototype.dot = function(that) {
   return this.x * that.x + this.y * that.y;
 };
 
@@ -46,7 +46,7 @@ LayoutVector2D.prototype.dot = function(that) {
 *   cross
 *
 *****/
-LayoutVector2D.prototype.cross = function(that) {
+MathVector2D.prototype.cross = function(that) {
   return this.x * that.y - this.y * that.x;
 };
 
@@ -55,7 +55,7 @@ LayoutVector2D.prototype.cross = function(that) {
 *   unit
 *
 *****/
-LayoutVector2D.prototype.unit = function() {
+MathVector2D.prototype.unit = function() {
   return this.divide(this.length());
 };
 
@@ -64,7 +64,7 @@ LayoutVector2D.prototype.unit = function() {
 *   unitEquals
 *
 *****/
-LayoutVector2D.prototype.unitEquals = function() {
+MathVector2D.prototype.unitEquals = function() {
   this.divideEquals(this.length());
 
   return this;
@@ -75,8 +75,8 @@ LayoutVector2D.prototype.unitEquals = function() {
 *   add
 *
 *****/
-LayoutVector2D.prototype.add = function(that) {
-  return new LayoutVector2D(this.x + that.x, this.y + that.y);
+MathVector2D.prototype.add = function(that) {
+  return new MathVector2D(this.x + that.x, this.y + that.y);
 };
 
 /*****
@@ -84,7 +84,7 @@ LayoutVector2D.prototype.add = function(that) {
 *   addEquals
 *
 *****/
-LayoutVector2D.prototype.addEquals = function(that) {
+MathVector2D.prototype.addEquals = function(that) {
   this.x += that.x;
   this.y += that.y;
 
@@ -96,8 +96,8 @@ LayoutVector2D.prototype.addEquals = function(that) {
 *   subtract
 *
 *****/
-LayoutVector2D.prototype.subtract = function(that) {
-  return new LayoutVector2D(this.x - that.x, this.y - that.y);
+MathVector2D.prototype.subtract = function(that) {
+  return new MathVector2D(this.x - that.x, this.y - that.y);
 };
 
 /*****
@@ -105,7 +105,7 @@ LayoutVector2D.prototype.subtract = function(that) {
 *   subtractEquals
 *
 *****/
-LayoutVector2D.prototype.subtractEquals = function(that) {
+MathVector2D.prototype.subtractEquals = function(that) {
   this.x -= that.x;
   this.y -= that.y;
 
@@ -117,8 +117,8 @@ LayoutVector2D.prototype.subtractEquals = function(that) {
 *   multiply
 *
 *****/
-LayoutVector2D.prototype.multiply = function(scalar) {
-  return new LayoutVector2D(this.x * scalar, this.y * scalar);
+MathVector2D.prototype.multiply = function(scalar) {
+  return new MathVector2D(this.x * scalar, this.y * scalar);
 };
 
 /*****
@@ -126,7 +126,7 @@ LayoutVector2D.prototype.multiply = function(scalar) {
 *   multiplyEquals
 *
 *****/
-LayoutVector2D.prototype.multiplyEquals = function(scalar) {
+MathVector2D.prototype.multiplyEquals = function(scalar) {
   this.x *= scalar;
   this.y *= scalar;
 
@@ -138,8 +138,8 @@ LayoutVector2D.prototype.multiplyEquals = function(scalar) {
 *   divide
 *
 *****/
-LayoutVector2D.prototype.divide = function(scalar) {
-  return new LayoutVector2D(this.x / scalar, this.y / scalar);
+MathVector2D.prototype.divide = function(scalar) {
+  return new MathVector2D(this.x / scalar, this.y / scalar);
 };
 
 /*****
@@ -147,7 +147,7 @@ LayoutVector2D.prototype.divide = function(scalar) {
 *   divideEquals
 *
 *****/
-LayoutVector2D.prototype.divideEquals = function(scalar) {
+MathVector2D.prototype.divideEquals = function(scalar) {
   this.x /= scalar;
   this.y /= scalar;
 
@@ -159,8 +159,8 @@ LayoutVector2D.prototype.divideEquals = function(scalar) {
 *   perp
 *
 *****/
-LayoutVector2D.prototype.perp = function() {
-  return new LayoutVector2D(-this.y, this.x);
+MathVector2D.prototype.perp = function() {
+  return new MathVector2D(-this.y, this.x);
 };
 
 /*****
@@ -168,7 +168,7 @@ LayoutVector2D.prototype.perp = function() {
 *   perpendicular
 *
 *****/
-LayoutVector2D.prototype.perpendicular = function(that) {
+MathVector2D.prototype.perpendicular = function(that) {
   return this.subtract(this.project(that));
 };
 
@@ -177,7 +177,7 @@ LayoutVector2D.prototype.perpendicular = function(that) {
 *   project
 *
 *****/
-LayoutVector2D.prototype.project = function(that) {
+MathVector2D.prototype.project = function(that) {
   var percent = this.dot(that) / that.dot(that);
 
   return that.multiply(percent);
@@ -188,7 +188,7 @@ LayoutVector2D.prototype.project = function(that) {
 *   toString
 *
 *****/
-LayoutVector2D.prototype.toString = function() {
+MathVector2D.prototype.toString = function() {
   return this.x + ',' + this.y;
 };
 
@@ -197,8 +197,8 @@ LayoutVector2D.prototype.toString = function() {
 *   fromPoints
 *
 *****/
-LayoutVector2D.fromPoints = function(p1, p2) {
-  return new LayoutVector2D(p2.x - p1.x, p2.y - p1.y);
+MathVector2D.fromPoints = function(p1, p2) {
+  return new MathVector2D(p2.x - p1.x, p2.y - p1.y);
 };
 
 /**
@@ -206,7 +206,7 @@ LayoutVector2D.fromPoints = function(p1, p2) {
  * of itself.
  * @param s the scalar value
  */
-LayoutVector2D.prototype.scale = function(s) {
+MathVector2D.prototype.scale = function(s) {
   this.x *= s;
   this.y *= s;
 };
@@ -214,7 +214,7 @@ LayoutVector2D.prototype.scale = function(s) {
 /**
  * Normalizes this vector in place.
  */
-LayoutVector2D.prototype.normalize = function() {
+MathVector2D.prototype.normalize = function() {
   var norm = (1.0 / Math.sqrt(this.x * this.x + this.y * this.y));
   this.x *= norm;
   this.y *= norm;
@@ -225,7 +225,7 @@ LayoutVector2D.prototype.normalize = function() {
  * itself and tuple t1 (this = this - t1).
  * @param t1 the other vector
  */
-LayoutVector2D.prototype.sub = function(t1) {
+MathVector2D.prototype.sub = function(t1) {
   this.x -= t1.x;
   this.y -= t1.y;
 };
@@ -234,14 +234,14 @@ LayoutVector2D.prototype.sub = function(t1) {
  * Sets the value of this tuple to the negation of tuple t1.
  * @param t1 the source vector
  */
-LayoutVector2D.prototype.negate = function(t1) {
+MathVector2D.prototype.negate = function(t1) {
   this.x = -t1.x;
   this.y = -t1.y;
 };
 /**
  * Negates the value of this vector in place.
  */
-LayoutVector2D.prototype.negate = function() {
+MathVector2D.prototype.negate = function() {
   this.x = -this.x;
   this.y = -this.y;
 };
@@ -252,7 +252,7 @@ LayoutVector2D.prototype.negate = function() {
 *   @param v1    the other vector
 *   @return   the angle in radians in the range [0,PI]
 */
-LayoutVector2D.prototype.angle = function(v1) {
+MathVector2D.prototype.angle = function(v1) {
   var vDot = this.dot(v1) / (this.length() * v1.length());
   if (vDot < -1.0) vDot = -1.0;
   if (vDot > 1.0) vDot = 1.0;
@@ -260,4 +260,4 @@ LayoutVector2D.prototype.angle = function(v1) {
 
 };
 
-module.exports = LayoutVector2D;
+module.exports = MathVector2D;

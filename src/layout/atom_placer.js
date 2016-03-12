@@ -8,7 +8,7 @@ const modelFlags = require('../model/flags.js');
 const ModelMolecule = require('../model/molecule.js');
 
 const layoutConnectionMatrix = require('./connection_matrix');
-const LayoutVector2D = require('./vector2d.js');
+const MathVector2D = require('../math/vector2d.js');
 
 /**
  * Javascript version of CDK's AtomPlacer class. Methods for generating
@@ -309,12 +309,12 @@ layoutAtomPlacer.getNextBondVector = function(atom, previousAtom, distanceMeasur
   if (!trans) addAngle = Math.PI * (60 / 180);
 
   angle += addAngle;
-  var vec1 = new LayoutVector2D(Math.cos(angle), Math.sin(angle));
+  var vec1 = new MathVector2D(Math.cos(angle), Math.sin(angle));
   var point1 = new MathCoordinate(atom.coord.x + vec1.x, atom.coord.y + vec1.y);
   var distance1 = MathCoordinate.distance(point1, distanceMeasure);
   angle += addAngle;
 
-  var vec2 = new LayoutVector2D(Math.cos(angle), Math.sin(angle));
+  var vec2 = new MathVector2D(Math.cos(angle), Math.sin(angle));
   var point2 = new MathCoordinate(atom.coord.x + vec2.x, atom.coord.y + vec2.y);
   var distance2 = MathCoordinate.distance(point2, distanceMeasure);
 
@@ -345,10 +345,10 @@ layoutAtomPlacer.distributePartners = function(
   var remainingAngle = 0.0;
 
   // Calculate the direction away from the already placed partners of atom
-  var sharedAtomsCenterVector = new LayoutVector2D(sharedAtomsCenter.x, sharedAtomsCenter.y);
-  var newDirection = new LayoutVector2D(atom.coord.x, atom.coord.y);
+  var sharedAtomsCenterVector = new MathVector2D(sharedAtomsCenter.x, sharedAtomsCenter.y);
+  var newDirection = new MathVector2D(atom.coord.x, atom.coord.y);
 
-  var occupiedDirection = new LayoutVector2D(sharedAtomsCenter.x, sharedAtomsCenter.y);
+  var occupiedDirection = new MathVector2D(sharedAtomsCenter.x, sharedAtomsCenter.y);
   occupiedDirection.sub(newDirection);
   var atomsToDraw = [];
 
@@ -400,10 +400,10 @@ layoutAtomPlacer.distributePartners = function(
     sortedAtoms.push(placedNeighbours.getAtom(f1));
   }
   layoutAtomPlacer.sortBy2DDistance(sortedAtoms, distanceMeasure);
-  var closestPoint1 = new LayoutVector2D(sortedAtoms[0].coord.x, sortedAtoms[0].coord.y);
-  var closestPoint2 = new LayoutVector2D(sortedAtoms[1].coord.x, sortedAtoms[1].coord.y);
-  closestPoint1.sub(new LayoutVector2D(atom.coord.x, atom.coord.y));
-  closestPoint2.sub(new LayoutVector2D(atom.coord.x, atom.coord.y));
+  var closestPoint1 = new MathVector2D(sortedAtoms[0].coord.x, sortedAtoms[0].coord.y);
+  var closestPoint2 = new MathVector2D(sortedAtoms[1].coord.x, sortedAtoms[1].coord.y);
+  closestPoint1.sub(new MathVector2D(atom.coord.x, atom.coord.y));
+  closestPoint2.sub(new MathVector2D(atom.coord.x, atom.coord.y));
   occupiedAngle = closestPoint1.angle(occupiedDirection);
   occupiedAngle += closestPoint2.angle(occupiedDirection);
 
