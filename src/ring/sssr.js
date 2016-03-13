@@ -302,7 +302,7 @@ ringSSSR.isCandidateInSet = function(C, Csssr, valences, ringCount) {
     if (C.length >= sssr.length) {
       var candidateContainsRing = true;
       for (var j = 0, lj = sssr.length; j < lj; j++) {
-        if (!goog.array.contains(C, sssr[j])) {
+        if (!C.includes(sssr[j])) {
           candidateContainsRing = false;
         }
       }
@@ -310,7 +310,7 @@ ringSSSR.isCandidateInSet = function(C, Csssr, valences, ringCount) {
     }
     // updated part
     for (j = 0, lj = C.length; j < lj; j++) {
-      if (goog.array.contains(sssr, C[j])) {
+      if (sssr.includes(C[j])) {
         ringCount[j]++;
       }
     }
@@ -347,10 +347,10 @@ ringSSSR.bondRingToAtomRing = function(ring, molecule) {
     var bond = molecule.getBond(ring[i]);
     var sourceIndex = molecule.indexOfAtom(bond.source);
     var targetIndex = molecule.indexOfAtom(bond.target);
-    if (!goog.array.contains(atoms, sourceIndex)) {
+    if (!atoms.includes(sourceIndex)) {
       atoms.push(sourceIndex);
     }
-    if (!goog.array.contains(atoms, targetIndex)) {
+    if (!atoms.includes(targetIndex)) {
       atoms.push(targetIndex);
     }
   }
@@ -446,7 +446,7 @@ ringSSSR.sortByPath = function(atomIndexes, molecule) {
     for (var i = 1, li = atomIndexes.length; i < li; i++) {
       var iAtom = molecule.getAtom(pathAtomIndexes[pathAtomIndexes.length - 1]);
       var jAtom = molecule.getAtom(atomIndexes[i]);
-      if (goog.array.contains(pathAtomIndexes, atomIndexes[i])) {
+      if (pathAtomIndexes.includes(atomIndexes[i])) {
         continue;
       }
       if (molecule.findBond(iAtom, jAtom)) {

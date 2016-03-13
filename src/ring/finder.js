@@ -14,11 +14,13 @@
  */
 'use strict';
 
+const ModelAtom = require('../model/atom');
+const ModelBond = require('../model/bond');
+const utilsArray = require('../utils/array');
+
 const RingRing = require('./ring');
 const ringHanser = require('./hanser');
 const ringSSSR = require('./sssr');
-const ModelAtom = require('../model/atom');
-const ModelBond = require('../model/bond');
 
 const ringFinder = function() {};
 /**
@@ -73,7 +75,7 @@ ringFinder.isCandidateInSet = function(C, Csssr, valences, ringCount) {
     if (C.length >= sssr.length) {
       var candidateContainsRing = true;
       for (var j = 0, lj = sssr.length; j < lj; j++) {
-        if (!goog.array.contains(C, sssr[j])) {
+        if (!C.includes(sssr[j])) {
           candidateContainsRing = false;
         }
       }
@@ -81,7 +83,7 @@ ringFinder.isCandidateInSet = function(C, Csssr, valences, ringCount) {
     }
     // updated part
     for (j = 0, lj = C.length; j < lj; j++) {
-      if (goog.array.contains(sssr, C[j])) {
+      if (sssr.includes(C[j])) {
         ringCount[j]++;
       }
     }
@@ -124,7 +126,7 @@ ringFinder.verifySSSR = function(sssr, nsssr, molecule) {
     valences.push(molecule.getAtom(i).countBonds());
   }
 
-  var ringCount = goog.array.repeat(0, molecule.countAtoms());
+  var ringCount = ay.zeros(molecule.countAtoms());
   for (var i = 0, li = sssr.length; i < li; i++) {
     var ring = sssr[i];
     if (!ringSSSR.isCandidateInSet(ring, Csssr, valences, ringCount)) {
@@ -183,39 +185,36 @@ ringFinder.verifySSSR = function(sssr, nsssr, molecule) {
  * last (depth) atom. For odd rings, the closure bond connects two atoms of the
  * same depth. This function is has an O(n) runtime.
  *
- * @param {kemia.model.Molecule}
- *            molecule
+ * @param {modelMolecule} molecule -
  */
 ringFinder.detectRingAtoms = function(molecule) {
   var n = molecule.countAtoms();
   if (!n) {
     return;
   }
-  var visitedAtoms = goog.array.repeat(false, n);
-  var visitedBonds = goog.array.repeat(false, n);
+  let visitedBonds = utilsArray.full(n, false);
 
-  /** @type{Array.<kemia.model.Atom>} */
+  /** @type{Array.<modelAtom>} */
   var queue = [];
 
   var startAtom = molecule.atoms[0];
   startAtom.depth = 0;
   queue.push(startAtom);
-  // visitedAtoms.push(0);
-  visitedAtoms[0] = true;
+  let visitedAtoms = [true];
 
   while (true) {
     if (!queue.length) {
       break;
     }
     var atom = queue[0];
-    goog.array.removeAt(queue, 0);
+    queue.shift();
 
     var bonds = Array.from(atom.bonds);
     for (var i = 0, li = bonds.length; i < li; i++) {
       var bond = bonds[i];
       var bondIndex = bond.index;
       // skip the path we're comming from
-      // if (goog.array.contains(visitedBonds, bondIndex)) {
+      // if (visitedBonds.includes(bondIndex)) {
       if (visitedBonds[bondIndex]) {
         continue;
       }
@@ -300,9 +299,9 @@ ringFinder.createRingSystems = function(molecule) {
   var rings = [];
 
   var n = molecule.countAtoms();
-  var visitedAtoms = goog.array.repeat(false, n);
-  var visitedBonds = goog.array.repeat(false, n);
-  var indexMap = goog.array.repeat(-1, n);  // molecule -> ringSystem
+  var visitedAtoms = utilsArray.full(n, false);
+  var visitedBonds = utilsArray.full(n, false);
+  var indexMap = utilsArray.full(n, -1);  // molecule -> ringSystem
 
   for (var k = 0, lk = molecule.countAtoms(); k < lk; k++) {
     var startAtom = molecule.atoms[k];
@@ -333,7 +332,7 @@ ringFinder.createRingSystems = function(molecule) {
       }
 
       var atom = queue[0];
-      goog.array.removeAt(queue, 0);
+      queue.shift();
 
       var bonds = Array.from(atom.bonds);
       for (var i = 0, li = bonds.length; i < li; i++) {

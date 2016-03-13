@@ -388,7 +388,7 @@ layoutRingPlacer.placeRingSubstituents = function(molec, ringset, bondLength) {
     ring.atoms.forEach(function(atom) {
       var unplacedPartners = new ModelMolecule();
       var sharedAtoms = new ModelMolecule();
-      var rings = ringset.filter(function(r) { return goog.array.contains(r.atoms, atom); });
+      var rings = ringset.filter(function(r) { return r.atoms.includes(atom); });
       var ringsAtoms = goog.array.flatten(rings.map(function(r) { return r.atoms; }));
       var centerOfRingGravity = layoutRingPlacer.center(ringsAtoms);
       cntDbg += layoutAtomPlacer.partitionPartners(molec, atom, unplacedPartners, sharedAtoms);
@@ -462,7 +462,7 @@ layoutRingPlacer.atomsInPlacementOrder = function(atom, bond, bonds) {
   var remainingBonds = bonds.filter(function(b) { return b !== nextBond; });
   if (remainingBonds.length > 0) {
     var nextAtom = nextBond.otherAtom(atom);
-    return goog.array.concat(
+    return [].concat.call(
         nextAtom, layoutRingPlacer.atomsInPlacementOrder(nextAtom, nextBond, remainingBonds));
   } else {
     return [];
@@ -529,7 +529,7 @@ layoutRingPlacer.getBridgeAtoms = function(sharedFrag) {
   var bridgeAtoms = [];
   sharedFrag.atoms.forEach(function(atom) {
     Array.from(atom.bonds).forEach(function(bond) {
-      if (goog.array.contains(sharedFrag.bonds, bond)) {
+      if (sharedFrag.bonds.includes(bond)) {
         bridgeAtoms.push(bond.otherAtom(atom));
       }
     });
@@ -692,7 +692,7 @@ layoutRingPlacer.getNativeRingRadius = function(size, bondLength) {
 layoutRingPlacer.getIntersectingAtoms = function(ring1, ring2) {
   var atoms = [];
   ring2.atoms.forEach(function(atom) {
-    if (goog.array.contains(ring1.atoms, atom)) {
+    if (ring1.atoms.includes(atom)) {
       atoms.push(atom);
     }
   });
@@ -702,7 +702,7 @@ layoutRingPlacer.getIntersectingAtoms = function(ring1, ring2) {
 layoutRingPlacer.getIntersectingBonds = function(ring1, ring2) {
   var bonds = [];
   ring2.bonds.forEach(function(bond) {
-    if (goog.array.contains(ring1.bonds, bond)) {
+    if (ring1.bonds.includes(bond)) {
       bonds.push(bond);
     }
   });
@@ -773,9 +773,9 @@ layoutRingPlacer.resetUnplacedRingAtoms = function(ringset) {
   });
 };
 
-layoutRingPlacer.findNextRingBondWithUnplacedRingAtom = function(bonds) {
-  return goog.array.find(bonds, function(bond) {
-    return goog.array.some([bond.source, bond.target], function(atom) {
+layoutRingPlacer.findNextRingBondWithUnplacedRingAtom = bonds => {
+  bonds.find(bond => {
+    [bond.source, bond.target].some(atom => {
       return atom.flags[modelFlags.ISINRING] && !atom.flags[modelFlags.ISPLACED] &&
           bond.otherAtom(atom).flags[modelFlags.ISPLACED];
     });
@@ -783,10 +783,8 @@ layoutRingPlacer.findNextRingBondWithUnplacedRingAtom = function(bonds) {
 };
 
 layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr, ringsets) {
-
   layoutRingPlacer.resetUnplacedRingAtoms(sssr);
-  var placedAtoms =
-      goog.array.filter(molecule.atoms, function(atom) { return atom.flags[modelFlags.ISPLACED]; });
+  let placedAtoms = molecule.atoms.filter(atom => atom.flags[modelFlags.ISPLACED]);
 
   var nextBond = layoutRingPlacer.findNextRingBondWithUnplacedRingAtom(molecule.bonds);
 
@@ -799,8 +797,7 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
 
     // ringset containing ringAtom
     var nextRingSet = goog.array.find(ringsets, function(ringset) {
-      return goog.array.find(
-          ringset, function(ring) { return goog.array.contains(ring.atoms, ringAtom); });
+      return goog.array.find(ringset, function(ring) { return ring.atoms.includes(ringAtom); });
     });
 
     var oldRingAtomCoord = ringAtom.coord.clone();
@@ -814,7 +811,7 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
         layoutRingPlacer.placeRingSubstituents(molecule, nextRingSet, layoutConfig.bondLength);
     layoutAtomPlacer.markPlaced(placedAtoms);
 
-    var placedAtoms = goog.array.concat(
+    placedAtoms = [].concat.call(
         substituents.atoms,
         goog.array.flatten(nextRingSet.map(function(ring) { return ring.atoms; })));
     goog.array.removeDuplicates(placedAtoms);

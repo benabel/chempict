@@ -1,14 +1,12 @@
 'use strict';
 
-goog.require('goog.math');
-
 const MathCoordinate = require('../math/coordinate');
+const MathVector2D = require('../math/vector2d.js');
 
 const modelFlags = require('../model/flags.js');
 const ModelMolecule = require('../model/molecule.js');
 
 const layoutConnectionMatrix = require('./connection_matrix');
-const MathVector2D = require('../math/vector2d.js');
 
 /**
  * Javascript version of CDK's AtomPlacer class. Methods for generating

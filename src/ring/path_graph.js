@@ -18,16 +18,14 @@
 const RingPathEdge = require('./path_edge');
 
 /**
- * @param {kemia.model.Molecule}
- *            molecule
+ * @param {modelMolecule} molecule -
  * @constructor
  */
 const RingPathGraph = function(molecule) {
-
   /** @type{Array.<RingPathEdge>} */
   this.edges = [];
 
-  /** @type{Array.<kemia.model.Atom>} */
+  /** @type{Array.<modelAtom>} */
   this.atoms = [];
 
   // load edges
@@ -43,26 +41,27 @@ const RingPathGraph = function(molecule) {
 };
 
 /**
- * @param {kemia.model.Atom} atom
- * @param {number} maxLen
- * @return {Array.<RingPathEdge>}
+ * @param {modelAtom} atom -
+ * @param {number} maxLen -
+ * @return {Array.<RingPathEdge>} -
  */
 RingPathGraph.prototype.remove = function(atom, maxLen) {
   /** @type {Array.<RingPathEdge>} */
-  var oldEdges = this.getEdges(atom);
+  let oldEdges = this.getEdges(atom);
   /** @type {Array.<RingPathEdge>} */
-  var result = [];
-  for (var i = 0, il = oldEdges.length; i < il; i++) {
+  let result = [];
+  for (let i = 0, il = oldEdges.length; i < il; i++) {
     if (oldEdges[i].isCycle()) {
       result.push(oldEdges[i]);
     }
   }
 
-  for (var i = 0, il = result.length; i < il; i++) {
-    if (goog.array.contains(oldEdges, result[i])) {
+  for (let i = 0, il = result.length; i < il; i++) {
+    if (oldEdges.includes(result[i])) {
       goog.array.remove(oldEdges, result[i]);
     }
-    if (goog.array.contains(this.edges, result[i])) {
+
+    if (this.edges.includes(result[i])) {
       goog.array.remove(this.edges, result[i]);
     }
   }
@@ -70,8 +69,8 @@ RingPathGraph.prototype.remove = function(atom, maxLen) {
   /** @type {Array.<RingPathEdge>} */
   var newEdges = this.spliceEdges(oldEdges);
 
-  for (var i = 0, il = oldEdges.length; i < il; i++) {
-    if (goog.array.contains(this.edges, oldEdges[i])) {
+  for (let i = 0, il = oldEdges.length; i < il; i++) {
+    if (this.edges.includes(oldEdges[i])) {
       goog.array.remove(this.edges, oldEdges[i]);
     }
   }
@@ -82,7 +81,7 @@ RingPathGraph.prototype.remove = function(atom, maxLen) {
    */
 
   for (var i = 0, il = newEdges.length; i < il; i++) {
-    if (!goog.array.contains(this.edges, newEdges[i]) && (newEdges[i].atoms.length <= maxLen + 1)) {
+    if (!this.edges.includes(newEdges[i]) && (newEdges[i].atoms.length <= maxLen + 1)) {
       this.edges.push(newEdges[i]);
     }
   }
@@ -104,7 +103,7 @@ RingPathGraph.prototype.getEdges = function(atom) {
     var edge = this.edges[i];
 
     if (edge.isCycle()) {
-      if (goog.array.contains(edge.atoms, atom)) {
+      if (edge.atoms.includes(atom)) {
         result.push(edge);
       }
     } else {

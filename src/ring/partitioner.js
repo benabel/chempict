@@ -105,14 +105,14 @@ ringPartitioner.GetPartitionedRings = function(rings) {
   rings.forEach(function(ring) {
     if (!goog.array.contains(goog.array.flatten(partitions), ring)) {
       var connections =
-          goog.array.find(partitions, function(rings) { return goog.array.contains(rings, ring); });
+          goog.array.find(partitions, function(rings) { return rings.includes(ring); });
       if (connections === null) {
         connections = [ring];  // start a new group of rings
         search = search.filter(function(r) { return r !== ring; });
       }
       var connected = ringPartitioner.directConnectedRings(ring, search);
-      connections = goog.array.concat(connections, connected);
-      search = search.filter(function(r) { goog.array.contains(connected, r); });
+      connections = [].concat.call(connections, connected);
+      search = search.filter(function(r) { connected.includes(r); });
       partitions.push(connections);
     };
   });
@@ -134,7 +134,7 @@ ringPartitioner.directConnectedRings = function(ring, rings) {
       if (r === ring) {
         return false;
       } else {
-        return goog.array.contains(ring.atoms, atom);
+        return ring.atoms.includes(atom);
       }
     });
     if (isConnected) {

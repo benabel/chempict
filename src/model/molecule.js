@@ -140,7 +140,7 @@ ModelMolecule.prototype.getBond = function(id) {
 ModelMolecule.prototype.getAverageBondLength = function() {
   var average = 1.25;
   if (this.bonds.length) {
-    var sum = goog.array.reduce(this.bonds, function(r, b) { return r + b.getLength(); }, 0);
+    var sum = this.bonds.reduce((r, b) => { r + b.getLength(); }, 0);
     average = sum / this.bonds.length;
   }
   return average;
@@ -149,11 +149,9 @@ ModelMolecule.prototype.getAverageBondLength = function() {
 /**
  * Find the bond between two given atoms if it exists. Otherwise return null.
  *
- * @param {Object}
- *            atom1
- * @param {Object}
- *            atom2
- * @return{kemia.model.Bond}
+ * @param {Object} atom1 - first atom
+ * @param {Object} atom2 - second atom
+ * @return{modelBond} - bond finded
  */
 ModelMolecule.prototype.findBond = function(atom1, atom2) {
   var bonds = Array.from(atom1.bonds);
@@ -430,8 +428,7 @@ ModelMolecule.prototype.getBoundingBox = function() {
  */
 ModelMolecule.prototype.sproutFragment = function(attachmentAtom, fragAtom) {
   goog.asserts.assert(
-      goog.array.contains(this.atoms, attachmentAtom),
-      'attachmentAtom must belong to this molecule');
+      this.atoms.includes(attachmentAtom), 'attachmentAtom must belong to this molecule');
   goog.asserts.assertObject(fragAtom.molecule, 'fragAtom must belong to a molecule');
   var newAngle = ModelAtom.nextBondAngle(attachmentAtom);
   // this.logger.info('newAngle ' + newAngle);

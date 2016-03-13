@@ -15,10 +15,12 @@
 
 'use strict';
 
-const SmilesParser = {};
+const utilsString = require('../utils/string');
 const ModelAtom = require('../model/atom');
 const ModelBond = require('../model/bond');
 const ModelMolecule = require('../model/molecule');
+
+const SmilesParser = {};
 
 /**
  * enum for bond types
@@ -134,9 +136,9 @@ SmilesParser.parse = function(smi) {
       // Example: alternatives for cyclohexene (there is only one double bond here): C1=CCCCC1 <=>
       // C=1CCCCC1 <=> C1CCCCC=1 <=> C=1CCCCC=1
     } else if (
-        item.length > 1 && (goog.string.startsWith(item, SmilesParser.BondType.DOUBLE_BOND) ||
-                            goog.string.startsWith(item, SmilesParser.BondType.TRIPLE_BOND) ||
-                            goog.string.startsWith(item, SmilesParser.BondType.QUAD_BOND)) &&
+        item.length > 1 && (utilsString.startsWith(item, SmilesParser.BondType.DOUBLE_BOND) ||
+                            utilsString.startsWith(item, SmilesParser.BondType.TRIPLE_BOND) ||
+                            utilsString.startsWith(item, SmilesParser.BondType.QUAD_BOND)) &&
         !isNaN(ringid = parseInt(item.substr(1), 10))) {
       ringAtom = ring[ringid];
       if (!ringAtom) {
@@ -245,11 +247,11 @@ SmilesParser.parseAtom = function(item) {
     }
 
   } else {
-    if (goog.array.contains(SmilesParser.specialAtoms, item)) {
+    if (SmilesParser.specialAtoms.includes(item)) {
       atom.symbol = item;
     }
   }
-  if (goog.array.contains(SmilesParser.aromaticAtoms, atom.symbol)) {
+  if (SmilesParser.aromaticAtoms.includes(atom.symbol)) {
     atom.aromatic = true;
     if (atom.symbol.length === 1) {
       atom.symbol = atom.symbol.toUpperCase();
