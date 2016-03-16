@@ -14,8 +14,6 @@
  */
 'use strict';
 
-
-const RingRing = require('./ring');
 /**
  * Smallest Set of Smallest rings.
  *
@@ -31,8 +29,8 @@ const ringSSSR = function() {};
 
 /**
  * Make a deep copy of an array
- * @param {Array} arr
- * @return {Array}
+ * @param {Array} arr -
+ * @return {Array} -
  */
 ringSSSR.deepCopy = function(arr) {
   var newArray = [];
@@ -49,8 +47,8 @@ ringSSSR.deepCopy = function(arr) {
 
 /**
  * Debug helper function
- * @param {Array.<Array.<number>>} matrix
- * @return {string}
+ * @param {Array.<Array.<number>>} matrix -
+ * @return {string} -
  */
 ringSSSR.matrixToHTML = function(matrix) {
   var text = '';
@@ -66,8 +64,8 @@ ringSSSR.matrixToHTML = function(matrix) {
 
 /**
  * Create a n x n matrix with all elements set to 0.
- * @param {number} n dimension
- * @return {Array.<Array.<number>>}
+ * @param {number} n dimension -
+ * @return {Array.<Array.<number>>} - n x n matrix with all elements set to 0.
  */
 ringSSSR.createEmptyMatrix = function(n) {
   var matrix = [];
@@ -320,7 +318,7 @@ ringSSSR.isCandidateInSet = function(C, Csssr, valences, ringCount) {
   // valence minus one, the candidate is a new ring. You can work this out
   // on paper for tetrahedron, cube, ...
   var isNewRing = false;
-  for (j = 0, lj = C.length; j < lj; j++) {
+  for (let j = 0; j < C.length; j++) {
     if (ringCount[C[j]] < valences[C[j]] - 1) {
       isNewRing = true;
     }
@@ -439,11 +437,13 @@ ringSSSR.candidateSearch = function(Cset, nsssr, molecule, D) {
 ringSSSR.sortByPath = function(atomIndexes, molecule) {
   var pathAtomIndexes = [atomIndexes[0]];
   var beginAtom = molecule.getAtom(atomIndexes[0]);
-  var l = 0;
+  let l = 0;
   while (atomIndexes.length !== pathAtomIndexes.length) {
     l++;
-    if (l > 1000) break;
-    for (var i = 1, li = atomIndexes.length; i < li; i++) {
+    if (l > 1000) {
+      break;
+    }
+    for (let i = 1, li = atomIndexes.length; i < li; i++) {
       var iAtom = molecule.getAtom(pathAtomIndexes[pathAtomIndexes.length - 1]);
       var jAtom = molecule.getAtom(atomIndexes[i]);
       if (pathAtomIndexes.includes(atomIndexes[i])) {
@@ -452,7 +452,7 @@ ringSSSR.sortByPath = function(atomIndexes, molecule) {
       if (molecule.findBond(iAtom, jAtom)) {
         pathAtomIndexes.push(atomIndexes[i]);
       } else if (molecule.findBond(beginAtom, jAtom)) {
-        goog.array.insertAt(pathAtomIndexes, atomIndexes[i], 0);
+        pathAtomIndexes.splice(0, 0, atomIndexes[i]);
       }
     }
   }

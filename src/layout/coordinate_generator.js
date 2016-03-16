@@ -12,12 +12,13 @@
 'use strict';
 
 const MathCoordinate = require('../math/coordinate');
+const MathVector2D = require('../math/vector2d.js');
 
 const modelFlags = require('../model/flags');
 const ModelMolecule = require('../model/molecule');
 const ringPartitioner = require('../ring/partitioner');
-const MathVector2D = require('../math/vector2d.js');
 
+const utilsArray = require('../utils/array');
 const layoutConfig = require('./config');
 const layoutAtomPlacer = require('./atom_placer');
 const layoutOverlapResolver = require('./overlap_resolver');
@@ -35,7 +36,6 @@ const layoutCoordinateGenerator = function() {};
 layoutCoordinateGenerator.bondLength = layoutConfig.bondLength;
 
 layoutCoordinateGenerator.generate = function(molecule) {
-
   var safetyCounter = 0;
   var firstBondVector = new MathVector2D(0, 1);
 
@@ -77,9 +77,8 @@ layoutCoordinateGenerator.generate = function(molecule) {
       ring.atoms.forEach, function(atom) { atom.setFlag(modelFlags.ISINRING, true); };
     });
 
-    ringsets.sort(function(a, b) { return goog.array.defaultCompare(a.length, b.length); });
-    var largestRingset = goog.array.peek(ringsets);
-    // alert("ringsets length"+ ringsets.length+" largestRingset is "+ largestRingset.length)
+    ringsets.sort(function(a, b) { return utilsArray.defaultCompare(a.length, b.length); });
+    var largestRingset = utilsArray.last(ringsets);
 
     // place largest ringset
     this.ringSet(firstBondVector, largestRingset);
@@ -299,7 +298,7 @@ layoutCoordinateGenerator.ringSet = function(bondVector, ringset) {
       atoms: layoutCoordinateGenerator.placeFirstBond(mostComplexRing.bonds[0], bondVector),
       bonds: [mostComplexRing.bonds[0]]
     };
-    var sharedFragSum = goog.array.reduce(sharedFrag.atoms, function(r, atom) {
+    var sharedFragSum = sharedFrag.atoms.reduce(function(r, atom) {
       return MathCoordinate.sum(r, atom.coord);
     }, new MathCoordinate(0, 0));
     var sharedFragCenter = new MathVector2D(
@@ -389,7 +388,7 @@ layoutRingPlacer.placeRingSubstituents = function(molec, ringset, bondLength) {
       var unplacedPartners = new ModelMolecule();
       var sharedAtoms = new ModelMolecule();
       var rings = ringset.filter(function(r) { return r.atoms.includes(atom); });
-      var ringsAtoms = goog.array.flatten(rings.map(function(r) { return r.atoms; }));
+      var ringsAtoms = utilsArray.flatten(rings.map(function(r) { return r.atoms; }));
       var centerOfRingGravity = layoutRingPlacer.center(ringsAtoms);
       cntDbg += layoutAtomPlacer.partitionPartners(molec, atom, unplacedPartners, sharedAtoms);
 
@@ -457,7 +456,7 @@ layoutRingPlacer.placeBridgedRing = function(
 };
 
 layoutRingPlacer.atomsInPlacementOrder = function(atom, bond, bonds) {
-  var nextBond = goog.array.find(bonds, function(b) { return b.otherAtom(atom); });
+  var nextBond = bonds.find(function(b) { return b.otherAtom(atom); });
 
   var remainingBonds = bonds.filter(function(b) { return b !== nextBond; });
   if (remainingBonds.length > 0) {
@@ -717,7 +716,7 @@ layoutRingPlacer.getIntersectingBonds = function(ring1, ring2) {
  * @return {MathCoordinate} coordinate of center of atoms
  */
 layoutRingPlacer.center = function(atoms) {
-  var sum = goog.array.reduce(atoms, function(rval, atom) {
+  var sum = atoms.reduce(function(rval, atom) {
     return MathCoordinate.sum(rval, atom.coord);
   }, new MathCoordinate(0, 0));
 
@@ -763,12 +762,12 @@ layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondL
  * flag all atoms in rings as unplaced atoms
  *
  * @param {Array.
- *            <Array.<kemia.ring.Ring>>} ringset
+ *            <Array.<ringRing>>} ringset
  */
 layoutRingPlacer.resetUnplacedRingAtoms = function(ringset) {
   ringset.forEach(ring => {
     if (!ring.isPlaced) {
-      ring.atoms.forEach(atom => { atom.setFlag(modelFlags.ISPLACED, false); });
+      ring.atoms.forEach(atom => atom.setFlag(modelFlags.ISPLACED, false));
     }
   });
 };
@@ -776,7 +775,7 @@ layoutRingPlacer.resetUnplacedRingAtoms = function(ringset) {
 layoutRingPlacer.findNextRingBondWithUnplacedRingAtom = bonds => {
   bonds.find(bond => {
     [bond.source, bond.target].some(atom => {
-      return atom.flags[modelFlags.ISINRING] && !atom.flags[modelFlags.ISPLACED] &&
+      atom.flags[modelFlags.ISINRING] && !atom.flags[modelFlags.ISPLACED] &&
           bond.otherAtom(atom).flags[modelFlags.ISPLACED];
     });
   });
@@ -789,15 +788,15 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
   var nextBond = layoutRingPlacer.findNextRingBondWithUnplacedRingAtom(molecule.bonds);
 
   if (nextBond) {
-    var ringAtom = goog.array.find([nextBond.source, nextBond.target], function(atom) {
+    var ringAtom = [nextBond.source, nextBond.target].find(function(atom) {
       return atom.flags[modelFlags.ISINRING] && !atom.flags[modelFlags.ISPLACED];
     });
 
     var chainAtom = nextBond.otherAtom(ringAtom);
 
     // ringset containing ringAtom
-    var nextRingSet = goog.array.find(ringsets, function(ringset) {
-      return goog.array.find(ringset, function(ring) { return ring.atoms.includes(ringAtom); });
+    var nextRingSet = ringsets.find(function(ringset) {
+      return ringset.find(function(ring) { return ring.atoms.includes(ringAtom); });
     });
 
     var oldRingAtomCoord = ringAtom.coord.clone();
@@ -813,8 +812,8 @@ layoutRingPlacer.layoutNextRingSystem = function(firstBondVector, molecule, sssr
 
     placedAtoms = [].concat.call(
         substituents.atoms,
-        goog.array.flatten(nextRingSet.map(function(ring) { return ring.atoms; })));
-    goog.array.removeDuplicates(placedAtoms);
+        utilsArray.flatten(nextRingSet.map(function(ring) { return ring.atoms; })));
+    utilsArray.removeDuplicates(placedAtoms);
 
     var oldPoint2 = oldRingAtomCoord;
     var oldPoint1 = oldChainAtomCoord;

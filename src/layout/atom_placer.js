@@ -528,12 +528,12 @@ layoutAtomPlacer.partitionPartners = function(molec, atom, unplacedPartners, pla
 };
 
 layoutAtomPlacer.markNotPlaced = function(atoms) {
-  atoms.forEach(atom => { atom.setFlag(modelFlags.ISPLACED, false); });
+  atoms.forEach(atom => atom.setFlag(modelFlags.ISPLACED, false));
 };
 
 
 layoutAtomPlacer.markPlaced = function(atoms) {
-  atoms.forEach(atom => { atom.setFlag(modelFlags.ISPLACED, true); });
+  atoms.forEach(atom => atom.setFlag(modelFlags.ISPLACED, true));
 };
 
 module.exports = layoutAtomPlacer;

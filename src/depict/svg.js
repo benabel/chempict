@@ -65,7 +65,6 @@ class SvgDepict {
   }
 
   _drawBond(bond) {
-    debugger;
     const lineWidth = this.config.lineWidth;
     const bondSpacing = this.config.bondSpacing;
     let x1 = bond.source.coord.x * this.scale - this.dx;

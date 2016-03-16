@@ -19,6 +19,8 @@
  */
 'use strict';
 
+const utilsArray = require('../utils/array');
+
 const RingRing = require('./ring');
 const RingPathEdge = require('./path_edge');
 const RingPathGraph = require('./path_graph');
@@ -54,8 +56,8 @@ ringHanser.findRings = function(molecule, maxLen) {
       var edge = edges[j];
       /** @type {Array.<kemia.model.Atom>} */
       var atomRing = edge.atoms;
-      // Hanser last atom is same as first atom, remove it..
-      goog.array.removeAt(atomRing, atomRing.length - 1);
+      // Hanser last atom is same as first atom, remove it
+      atomRing.pop();
       for (var k = 0, lk = atomRing.length; k < lk; k++) {
         atomRing[k] = molecule.indexOfAtom(atomRing[k]);
       }
@@ -86,7 +88,7 @@ ringHanser.createRing = function(atoms, molecule) {
     }
   }
   // Hanser last atom is same as first atom, remove it..
-  goog.array.removeAt(atoms, atoms.length - 1);
+  utilsArray.removeAt(atoms, atoms.length - 1);
 
   var ring = new RingRing(atoms, bonds);
   return ring;

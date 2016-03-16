@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 'use strict';
+const utilsArray = require('../utils/array');
 const RingPathEdge = require('./path_edge');
 
 /**
@@ -46,46 +47,35 @@ const RingPathGraph = function(molecule) {
  * @return {Array.<RingPathEdge>} -
  */
 RingPathGraph.prototype.remove = function(atom, maxLen) {
-  /** @type {Array.<RingPathEdge>} */
-  let oldEdges = this.getEdges(atom);
-  /** @type {Array.<RingPathEdge>} */
-  let result = [];
-  for (let i = 0, il = oldEdges.length; i < il; i++) {
+  /** @type {Array.<ringPathEdge>} */
+  var oldEdges = this.getEdges(atom);
+  /** @type {Array.<kemia.ring.PathEdge>} */
+  var result = new Array();
+  for (var i = 0, il = oldEdges.length; i < il; i++) {
     if (oldEdges[i].isCycle()) {
       result.push(oldEdges[i]);
     }
   }
 
-  for (let i = 0, il = result.length; i < il; i++) {
-    if (oldEdges.includes(result[i])) {
-      goog.array.remove(oldEdges, result[i]);
-    }
+  oldEdges = utilsArray.diff(oldEdges, result);
+  this.edges = utilsArray.diff(this.edges, result);
 
-    if (this.edges.includes(result[i])) {
-      goog.array.remove(this.edges, result[i]);
-    }
-  }
-
-  /** @type {Array.<RingPathEdge>} */
+  /** @type {Array.<ringPathEdge>} */
   var newEdges = this.spliceEdges(oldEdges);
 
-  for (let i = 0, il = oldEdges.length; i < il; i++) {
-    if (this.edges.includes(oldEdges[i])) {
-      goog.array.remove(this.edges, oldEdges[i]);
-    }
-  }
+  this.edges = utilsArray.diff(this.edges, oldEdges);
 
   /*
-   * for (Path newPath : newPaths) { if (maxPathLen === null || newPath.size() <=
+   * for (Path newPath : newPaths) { if (maxPathLen == null || newPath.size() <=
    * (maxPathLen+1)) { paths.add(newPath); } }
    */
 
-  for (var i = 0, il = newEdges.length; i < il; i++) {
+  for (let i = 0; i < newEdges.length; i++) {
     if (!this.edges.includes(newEdges[i]) && (newEdges[i].atoms.length <= maxLen + 1)) {
       this.edges.push(newEdges[i]);
     }
   }
-  goog.array.remove(this.atoms, atom);
+  utilsArray.remove(this.atoms, atom);
   return result;
 };
 

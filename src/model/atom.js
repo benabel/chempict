@@ -16,10 +16,11 @@
  */
 'use strict';
 
-const modelFlags = require('./flags');
+const utilsArray = require('../utils/array');
 const resourceCovalence = require('../resource/covalence');
 const MathCoordinate = require('../math/coordinate');
 
+const modelFlags = require('./flags');
 /**
  * Class representing an atom
  *
@@ -109,7 +110,7 @@ ModelAtom.prototype.hydrogenCount = function() {
 
   var bondArray = Array.from(this.bonds);
 
-  var totalBondOrder = bondArray.reduce((r, v) => { return r + v.order; }, 0);
+  var totalBondOrder = bondArray.reduce((r, v) => r + v.order, 0);
   var hydrogenCount = 0;
   if (cov) {
     hydrogenCount = cov - totalBondOrder + this.charge;
@@ -184,10 +185,10 @@ ModelAtom.nextBondAngle = function(atom) {
     // find two bonds with least number of bonds on other end to insert
     // between
     bonds.sort(function(b1, b2) {
-      return goog.array.defaultCompare(
+      return utilsArray.defaultCompare(
           b1.otherAtom(atom).Array.from(bonds).length, b2.otherAtom(atom).Array.from(bonds).length);
     });
-    var insertBetween = goog.array.slice(bonds, 0, 2);
+    var insertBetween = bonds.slice(0, 2);
 
     var angles = insertBetween.map(function(b) {
       var otherAtom = b.otherAtom(atom);

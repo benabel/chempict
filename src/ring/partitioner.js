@@ -14,16 +14,15 @@
  */
 'use strict';
 
-
 const ringPartitioner = function() {};
 
 /**
  * partitions array of rings into connected lists
  *
  * @param {Array.
- *            <kemia.ring.Ring>} rings list of rings to group into connected
+ *            <ringRing>} rings list of rings to group into connected
  *            arrays
- * @return {Array.<Array.<kemia.ring.Ring>>} array of arrays of Rings
+ * @return {Array.<Array.<ringRing>>} array of arrays of Rings
  */
 ringPartitioner.GetPartitionedRings = function(rings) {
   var partitions = [];
@@ -64,11 +63,11 @@ ringPartitioner.GetPartitionedRings = function(rings) {
 /**
  * finds rings directly connected to the subject ring
  *
- * @param{kemia.ring.Ring} ring, the ring which we want to find direct
+ * @param{ringRing} ring, the ring which we want to find direct
  *                         connections to
- * @param{Array.<kemia.ring.Ring>} rings, the rings we want to search for
+ * @param{Array.<ringRing>} rings, the rings we want to search for
  *               connections
- * @return{Array.<kemia.ring.Ring>} array of directly connected rings, which
+ * @return{Array.<ringRing>} array of directly connected rings, which
  *                does *not* include the subject ring
  */
 ringPartitioner.directConnectedRings = function(ring, rings) {
@@ -90,58 +89,61 @@ ringPartitioner.directConnectedRings = function(ring, rings) {
   return result;
 };
 
-/**
- * partitions array of rings into connected lists
- *
- * @param {Array.
- *            <kemia.ring.Ring>} rings list of rings to group into connected
- *            arrays
- * @return {Array.<Array.<kemia.ring.Ring>>} array of arrays of Rings
- */
-
-ringPartitioner.GetPartitionedRings = function(rings) {
-  var partitions = [];
-  var search = rings;
-  rings.forEach(function(ring) {
-    if (!goog.array.contains(goog.array.flatten(partitions), ring)) {
-      var connections =
-          goog.array.find(partitions, function(rings) { return rings.includes(ring); });
-      if (connections === null) {
-        connections = [ring];  // start a new group of rings
-        search = search.filter(function(r) { return r !== ring; });
-      }
-      var connected = ringPartitioner.directConnectedRings(ring, search);
-      connections = [].concat.call(connections, connected);
-      search = search.filter(function(r) { connected.includes(r); });
-      partitions.push(connections);
-    };
-  });
-  return partitions;
-};
-
-/**
- * finds rings directly connected to the subject ring
- *
- * @param{kemia.ring.Ring} ring the ring which we want to find direct
- *                         connections to
- * @param{Array.<kemia.ring.Ring>} rings to search for connections
- * @return{Array.<kemia.ring.Ring>}
- */
-ringPartitioner.directConnectedRings = function(ring, rings) {
-  var result = [];
-  rings.forEach(function(r) {
-    var isConnected = goog.array.some(r.atoms, function(atom) {
-      if (r === ring) {
-        return false;
-      } else {
-        return ring.atoms.includes(atom);
-      }
-    });
-    if (isConnected) {
-      result.push(r);
-    }
-  });
-  return result;
-};
+// TODO: use these less verbose rewrite of methods
+// Avoid loops in a more functionnal way
+// /**
+//  * partitions array of rings into connected lists
+//  *
+//  * @param {Array.
+//  *            <ringRing>} rings list of rings to group into connected
+//  *            arrays
+//  * @return {Array.<Array.<ringRing>>} array of arrays of Rings
+//  */
+//
+// ringPartitioner.GetPartitionedRings = function(rings) {
+//   var partitions = [];
+//   var search = rings;
+//   rings.forEach(function(ring) {
+//     // first flatten partitions
+//     partitions = utilsArray.flatten(partitions);
+//     if (!partitions.includes(ring)) {
+//       var connections = partitions.find(rings => { rings.includes(ring); });
+//       if (connections === null) {
+//         connections = [ring];  // start a new group of rings
+//         search = search.filter(function(r) { return r !== ring; });
+//       }
+//       var connected = ringPartitioner.directConnectedRings(ring, search);
+//       connections = [].concat.call(connections, connected);
+//       search = search.filter(function(r) { return connected.includes(r); });
+//       partitions.push(connections);
+//     }
+//   });
+//   return partitions;
+// };
+//
+// /**
+//  * finds rings directly connected to the subject ring
+//  *
+//  * @param{ringRing} ring the ring which we want to find direct
+//  *                         connections to
+//  * @param{Array.<ringRing>} rings to search for connections
+//  * @return{Array.<ringRing>} - rings connected to the ring parameter
+//  */
+// ringPartitioner.directConnectedRings = function(ring, rings) {
+//   var result = [];
+//   rings.forEach(function(r) {
+//     var isConnected = r.atoms.some(function(atom) {
+//       if (r === ring) {
+//         return false;
+//       } else {
+//         return ring.atoms.includes(atom);
+//       }
+//     });
+//     if (isConnected) {
+//       result.push(r);
+//     }
+//   });
+//   return result;
+// };
 
 module.exports = ringPartitioner;

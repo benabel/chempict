@@ -126,7 +126,7 @@ ringFinder.verifySSSR = function(sssr, nsssr, molecule) {
     valences.push(molecule.getAtom(i).countBonds());
   }
 
-  var ringCount = ay.zeros(molecule.countAtoms());
+  const ringCount = utilsArray.zeros(molecule.countAtoms());
   for (var i = 0, li = sssr.length; i < li; i++) {
     var ring = sssr[i];
     if (!ringSSSR.isCandidateInSet(ring, Csssr, valences, ringCount)) {

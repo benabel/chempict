@@ -140,7 +140,7 @@ ModelMolecule.prototype.getBond = function(id) {
 ModelMolecule.prototype.getAverageBondLength = function() {
   var average = 1.25;
   if (this.bonds.length) {
-    var sum = this.bonds.reduce((r, b) => { r + b.getLength(); }, 0);
+    var sum = this.bonds.reduce((r, b) => r + b.getLength(), 0);
     average = sum / this.bonds.length;
   }
   return average;
@@ -183,7 +183,7 @@ ModelMolecule.prototype.indexOfAtom = function(atom) {
  * @return{number}
  */
 ModelMolecule.prototype.indexOfBond = function(bond) {
-  return goog.array.indexOf(this.bonds, bond);
+  return this.bonds.indexOf(bond);
 };
 
 /**
@@ -202,10 +202,9 @@ ModelMolecule.prototype.removeAtom = function(atomOrId) {
   }
   var neighborBonds = Array.from(atom.bonds);
 
-  goog.array.forEach(
-      neighborBonds, function(element) { goog.array.remove(this.bonds, element); }, this);
+  neighborBonds.forEach(function(element) { utilsArray.remove(this.bonds, element); }, this);
   atom.bonds.clear();
-  goog.array.remove(this.atoms, atom);
+  utilsArray.remove(this.atoms, atom);
   atom.molecule = undefined;
 
 };
@@ -227,14 +226,14 @@ ModelMolecule.prototype.removeBond = function(bondOrId) {
   bond.source.bonds.remove(bond);
   bond.target.bonds.remove(bond);
   if (bond.source.Array.from(bonds).length === 0) {
-    goog.array.remove(this.atoms, bond.source);
+    utilsArray.remove(this.atoms, bond.source);
     bond.source.molecule = undefined;
   }
   if (bond.target.Array.from(bonds).length === 0) {
-    goog.array.remove(this.atoms, bond.target);
+    utilsArray.remove(this.atoms, bond.target);
     bond.target.molecule = undefined;
   }
-  goog.array.remove(this.bonds, bond);
+  utilsArray.remove(this.bonds, bond);
   bond.molecule = undefined;
   bond.source = undefined;
   bond.target = undefined;
@@ -460,7 +459,7 @@ ModelMolecule.prototype.sproutBond = function(atom, optOrder, optStereo, optSymb
   var bondLength = 1.25;  // default
   var bonds = Array.from(atom.bonds);
   if (bonds.length) {
-    bondLength = goog.array.reduce(bonds, function(r, b) {
+    bondLength = bonds.reduce(function(r, b) {
       return r + MathCoordinate.distance(b.source.coord, b.target.coord);
     }, 0) / bonds.length;
   }  // average of other bonds
