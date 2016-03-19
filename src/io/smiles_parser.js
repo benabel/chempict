@@ -15,7 +15,6 @@
 
 'use strict';
 
-const utilsString = require('../utils/string');
 const ModelAtom = require('../model/atom');
 const ModelBond = require('../model/bond');
 const ModelMolecule = require('../model/molecule');
@@ -136,9 +135,9 @@ SmilesParser.parse = function(smi) {
       // Example: alternatives for cyclohexene (there is only one double bond here): C1=CCCCC1 <=>
       // C=1CCCCC1 <=> C1CCCCC=1 <=> C=1CCCCC=1
     } else if (
-        item.length > 1 && (utilsString.startsWith(item, SmilesParser.BondType.DOUBLE_BOND) ||
-                            utilsString.startsWith(item, SmilesParser.BondType.TRIPLE_BOND) ||
-                            utilsString.startsWith(item, SmilesParser.BondType.QUAD_BOND)) &&
+        item.length > 1 && (item.startsWith(SmilesParser.BondType.DOUBLE_BOND) ||
+                            item.startsWith(SmilesParser.BondType.TRIPLE_BOND) ||
+                            item.startsWith(SmilesParser.BondType.QUAD_BOND)) &&
         !isNaN(ringid = parseInt(item.substr(1), 10))) {
       ringAtom = ring[ringid];
       if (!ringAtom) {
