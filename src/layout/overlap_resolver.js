@@ -46,10 +46,10 @@ layoutOverlapResolver.getOverlapScore = function(molecule, overlappingAtoms) {
   var overlapCutoff = layoutCoordinateGenerator.bondLength / 5;
 
   var atCount = molecule.countAtoms();
-  for (var f = 0; f < atCount; f++) {
+  for (let f = 0; f < atCount; f++) {
     var atom1 = molecule.getAtom(f);
     var p1 = atom1.coord;
-    for (var g = f + 1; g < atCount; g++) {
+    for (let g = f + 1; g < atCount; g++) {
       var atom2 = molecule.getAtom(g);
       var p2 = atom2.coord;
       var distance = MathCoordinate.distance(p1, p2);

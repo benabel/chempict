@@ -19,6 +19,7 @@
 const utilsArray = require('../utils/array');
 const resourceCovalence = require('../resource/covalence');
 const MathCoordinate = require('../math/coordinate');
+const mathMath = require('../math/math');
 
 const modelFlags = require('./flags');
 /**
@@ -38,7 +39,7 @@ const ModelAtom = function(optSymbol, optX, optY, optCharge, optAromatic, optIso
    *
    * @type {string}
    */
-  this.symbol = goog.isDef(optSymbol) ? optSymbol : 'C';
+  this.symbol = optSymbol ? optSymbol : 'C';
 
   var x = optX ? optX : 0;
 
@@ -75,7 +76,7 @@ const ModelAtom = function(optSymbol, optX, optY, optCharge, optAromatic, optIso
    *
    * @type{boolean}
    */
-  this.aromatic = goog.isDef(optAromatic) ? optAromatic : false;
+  this.aromatic = optAromatic ? optAromatic : false;
 
   this.hybridization = null;
 
@@ -83,7 +84,6 @@ const ModelAtom = function(optSymbol, optX, optY, optCharge, optAromatic, optIso
    * Array with property flags (true/false)
    */
   this.flags = new Array(modelFlags.MAX_FLAG_INDEX + 1);
-
 };
 
 /** @return {string} atomic symbol */
@@ -126,7 +126,7 @@ ModelAtom.prototype.hydrogenCount = function() {
 ModelAtom.prototype.getNeighbors = function() {
   var bonds = Array.from(this.bonds);
   var nbrs = [];
-  for (var i = 0, li = bonds.length; i < li; i++) {
+  for (let i = 0, li = bonds.length; i < li; i++) {
     nbrs.push(bonds[i].otherAtom(this));
   }
   return nbrs;
@@ -142,20 +142,24 @@ ModelAtom.nextBondAngle = function(atom) {
 
   if (bonds.length === 0) {
     newAngle = 0;
-
   } else if (bonds.length === 1) {
-    var otherAtom = bonds[0].otherAtom(atom);
-    var existingAngle =
-        goog.math.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
+    const otherAtom = bonds[0].otherAtom(atom);
+    let otherArray;
+    const existingAngle =
+        mathMath.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
 
-    var otherAnglesDiff = otherArray.from(atom.bonds).map(function(b) {
-      var notOther = b.otherAtom(otherAtom);
-      if (notOther !== atom) {
-        return goog.math.angleDifference(
+    const otherAnglesDiff = otherArray.from(atom.bonds).map(function(b) {
+      let notOther = b.otherAtom(otherAtom);
+      let angle;
+      if (notOther === atom) {
+        angle = 0;
+      } else {
+        angle = mathMath.angleDifference(
             existingAngle,
-            goog.math.angle(
+            mathMath.angle(
                 otherAtom.coord.x, otherAtom.coord.y, notOther.coord.x, notOther.coord.y));
       }
+      return angle;
     });
     otherAnglesDiff.sort();
 
@@ -170,15 +174,15 @@ ModelAtom.nextBondAngle = function(atom) {
     // otherAnglesDiff ' + otherAnglesDiff.toString() + ' newAngle ' +
     // newAngle);
   } else if (bonds.length === 2) {
-    var angles = bonds.map(function(bond) {
+    let angles = bonds.map(function(bond) {
       var otherAtom = bond.otherAtom(atom);
-      return goog.math.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
+      return mathMath.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
     });
-    var diff = goog.math.angleDifference(angles[0], angles[1]);
+    var diff = mathMath.angleDifference(angles[0], angles[1]);
     if (Math.abs(diff) < 180) {
       diff = 180 + diff / 2;
     } else {
-      diff = diff / 2;
+      diff /= 2;
     }
     newAngle = angles[0] + diff;
   } else if (bonds.length === 3) {
@@ -192,9 +196,9 @@ ModelAtom.nextBondAngle = function(atom) {
 
     var angles = insertBetween.map(function(b) {
       var otherAtom = b.otherAtom(atom);
-      return goog.math.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
+      return mathMath.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
     });
-    newAngle = angles[0] + goog.math.angleDifference(angles[0], angles[1]) / 2;
+    newAngle = angles[0] + mathMath.angleDifference(angles[0], angles[1]) / 2;
     // this.logger.info('angles ' + angles.toString() + " newAngle "
     // + newAngle);
   }

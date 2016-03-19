@@ -17,19 +17,20 @@
  */
 'use strict';
 
+const MathCoordinate = require('../math/coordinate');
 const modelFlags = require('../model/flags');
 
 /**
  * Creates a new Ring
  *
- * @param {Array.<kemia.model.Atom>} atoms
- * @param {Array.<kemia.model.Bond>} bonds
+ * @param {Array.<modelAtom>} atoms
+ * @param {Array.<modelBond>} bonds
  * @constructor
  */
 const RingRing = function(atoms, bonds) {
-  /** @type {Array.<kemia.model.Atom>} */
+  /** @type {Array.<modelAtom>} */
   this.atoms = atoms;
-  /** @type {Array.<kemia.model.Bond>} */
+  /** @type {Array.<modelBond>} */
   this.bonds = bonds;
 
   /**
@@ -64,11 +65,10 @@ RingRing.prototype.setFlag = function(flagType, flagValue) {
  * @return {MathCoordinate}
  */
 RingRing.prototype.getCenter = function() {
-
   if (!this._center) {
     var avgX = 0;
     var avgY = 0;
-    for (var j = 0, jl = this.atoms.length; j < jl; j++) {
+    for (let j = 0, jl = this.atoms.length; j < jl; j++) {
       avgX += this.atoms[j].coord.x;
       avgY += this.atoms[j].coord.y;
     }
@@ -86,10 +86,10 @@ RingRing.prototype.resetRingCenter = function() {
 
 RingRing.prototype.toString = function() {
   return 'RingRing ' +
-             '\n\t' + this.atoms,
-         function(atom) { return ' ' + atom.toString(); }.map(this).join('\n\t') + '\n\t' +
-             this.bonds.map(function(bond) { return ' ' + bond.toString(); }, this).join('\n\t') +
-             '\n\t';
+      '\n\t' +
+      this.atoms.forEach(function(atom) { return ' ' + atom.toString(); }.map(this).join('\n\t')) +
+      '\n\t' + this.bonds.map(function(bond) { return ' ' + bond.toString(); }, this).join('\n\t') +
+      '\n\t';
 };
 
 module.exports = RingRing;

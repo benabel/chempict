@@ -45,7 +45,7 @@ class ChemJsonWriter {
     const bonds = molecule.bonds;
     mol.a = atoms.map(this.processAtom);
     mol.b = [];
-    for (var i = 0; i < bonds.length; i++) {
+    for (let i = 0; i < bonds.length; i++) {
       mol.b.push(this.processBond(bonds[i], molecule));
     }
 

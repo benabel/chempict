@@ -35,7 +35,7 @@ describe('e2e tests', () => {
   describe('run e2e scripts', () => {
     it('will throw error if errors during run', () => {
       fs.readdir(E2E_PATH, (err, files) => {
-        for (var i = 0; i < files.length; i++) {
+        for (let i = 0; i < files.length; i++) {
           let p = path.join(E2E_PATH, files[i]);
           runScript(p, function(err) {
             if (err) throw err;

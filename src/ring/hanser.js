@@ -22,7 +22,6 @@
 const utilsArray = require('../utils/array');
 
 const RingRing = require('./ring');
-const RingPathEdge = require('./path_edge');
 const RingPathGraph = require('./path_graph');
 
 /**
@@ -38,27 +37,26 @@ const ringHanser = function() {};
  *
  * @param {kemia.model.Molecule} molecule
  * @param {number} maxLen
- * @return {Array.<kemia.model.Atom>}
+ * @return {Array.<modelAtom>}
  */
 ringHanser.findRings = function(molecule, maxLen) {
-
-  /** @type {Array.<kemia.model.Atom>} */
+  /** @type {Array.<modelAtom>} */
   var atomOnlyRings = [];
 
   /** @type {RingPathGraph} */
   var graph = new RingPathGraph(molecule);
 
-  for (var i = 0, il = molecule.countAtoms(); i < il; i++) {
+  for (let i = 0, il = molecule.countAtoms(); i < il; i++) {
     /** @type {Array.<RingPathEdge>} */
     var edges = graph.remove(molecule.getAtom(i), maxLen);
-    for (var j = 0; j < edges.length; j++) {
+    for (let j = 0; j < edges.length; j++) {
       /** @type {RingPathEdge} */
       var edge = edges[j];
-      /** @type {Array.<kemia.model.Atom>} */
+      /** @type {Array.<modelAtom>} */
       var atomRing = edge.atoms;
       // Hanser last atom is same as first atom, remove it
       atomRing.pop();
-      for (var k = 0, lk = atomRing.length; k < lk; k++) {
+      for (let k = 0, lk = atomRing.length; k < lk; k++) {
         atomRing[k] = molecule.indexOfAtom(atomRing[k]);
       }
       atomOnlyRings.push(atomRing);
@@ -74,14 +72,13 @@ ringHanser.findRings = function(molecule, maxLen) {
  * complete this information with the bonds and the ring center, creating a ring
  * object.
  *
- * @param {Array.<kemia.model.Atom>} atoms
+ * @param {Array.<modelAtom>} atoms
  * @param {kemia.model.Molecule}  molecule
  * @return {RingRing}
  */
 ringHanser.createRing = function(atoms, molecule) {
-
-  var bonds = [];
-  for (var i = 0, il = atoms.length - 1; i < il; i++) {
+  let bonds = [];
+  for (let i = 0, il = atoms.length - 1; i < il; i++) {
     var bond = molecule.findBond(atoms[i], atoms[i + 1]);
     if (bond !== null) {
       bonds.push(bond);

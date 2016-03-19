@@ -1,4 +1,4 @@
-/*****
+/** ***
 *
 *   Vector2D.js
 *
@@ -10,7 +10,7 @@
 *****/
 'use strict';
 
-/*****
+/** ***
 *
 *   constructor
 *
@@ -23,7 +23,7 @@ const MathVector2D = function(x, y) {
   }
 };
 
-/*****
+/** ***
 *
 *   length
 *
@@ -32,7 +32,7 @@ MathVector2D.prototype.length = function() {
   return Math.sqrt(this.x * this.x + this.y * this.y);
 };
 
-/*****
+/** ***
 *
 *   dot
 *
@@ -41,7 +41,7 @@ MathVector2D.prototype.dot = function(that) {
   return this.x * that.x + this.y * that.y;
 };
 
-/*****
+/** ***
 *
 *   cross
 *
@@ -50,7 +50,7 @@ MathVector2D.prototype.cross = function(that) {
   return this.x * that.y - this.y * that.x;
 };
 
-/*****
+/** ***
 *
 *   unit
 *
@@ -59,7 +59,7 @@ MathVector2D.prototype.unit = function() {
   return this.divide(this.length());
 };
 
-/*****
+/** ***
 *
 *   unitEquals
 *
@@ -70,7 +70,7 @@ MathVector2D.prototype.unitEquals = function() {
   return this;
 };
 
-/*****
+/** ***
 *
 *   add
 *
@@ -79,7 +79,7 @@ MathVector2D.prototype.add = function(that) {
   return new MathVector2D(this.x + that.x, this.y + that.y);
 };
 
-/*****
+/** ***
 *
 *   addEquals
 *
@@ -91,7 +91,7 @@ MathVector2D.prototype.addEquals = function(that) {
   return this;
 };
 
-/*****
+/** ***
 *
 *   subtract
 *
@@ -100,7 +100,7 @@ MathVector2D.prototype.subtract = function(that) {
   return new MathVector2D(this.x - that.x, this.y - that.y);
 };
 
-/*****
+/** ***
 *
 *   subtractEquals
 *
@@ -112,7 +112,7 @@ MathVector2D.prototype.subtractEquals = function(that) {
   return this;
 };
 
-/*****
+/** ***
 *
 *   multiply
 *
@@ -121,7 +121,7 @@ MathVector2D.prototype.multiply = function(scalar) {
   return new MathVector2D(this.x * scalar, this.y * scalar);
 };
 
-/*****
+/** ***
 *
 *   multiplyEquals
 *
@@ -133,7 +133,7 @@ MathVector2D.prototype.multiplyEquals = function(scalar) {
   return this;
 };
 
-/*****
+/** ***
 *
 *   divide
 *
@@ -142,7 +142,7 @@ MathVector2D.prototype.divide = function(scalar) {
   return new MathVector2D(this.x / scalar, this.y / scalar);
 };
 
-/*****
+/** ***
 *
 *   divideEquals
 *
@@ -154,7 +154,7 @@ MathVector2D.prototype.divideEquals = function(scalar) {
   return this;
 };
 
-/*****
+/** ***
 *
 *   perp
 *
@@ -163,7 +163,7 @@ MathVector2D.prototype.perp = function() {
   return new MathVector2D(-this.y, this.x);
 };
 
-/*****
+/** ***
 *
 *   perpendicular
 *
@@ -172,7 +172,7 @@ MathVector2D.prototype.perpendicular = function(that) {
   return this.subtract(this.project(that));
 };
 
-/*****
+/** ***
 *
 *   project
 *
@@ -183,7 +183,7 @@ MathVector2D.prototype.project = function(that) {
   return that.multiply(percent);
 };
 
-/*****
+/** ***
 *
 *   toString
 *
@@ -192,7 +192,7 @@ MathVector2D.prototype.toString = function() {
   return this.x + ',' + this.y;
 };
 
-/*****
+/** ***
 *
 *   fromPoints
 *
@@ -254,10 +254,13 @@ MathVector2D.prototype.negate = function() {
 */
 MathVector2D.prototype.angle = function(v1) {
   var vDot = this.dot(v1) / (this.length() * v1.length());
-  if (vDot < -1.0) vDot = -1.0;
-  if (vDot > 1.0) vDot = 1.0;
+  if (vDot < -1.0) {
+    vDot = -1.0;
+  }
+  if (vDot > 1.0) {
+    vDot = 1.0;
+  }
   return ((Math.acos(vDot)));
-
 };
 
 module.exports = MathVector2D;

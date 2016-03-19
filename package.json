@@ -9,15 +9,13 @@
     "eslint": "^2.2.0",
     "eslint-config-google": "^0.4.0",
     "google-closure-compiler": "^20160208.4.0",
-    "google-closure-library": "^20151015.0.0",
-    "jscs": "^2.10.1",
     "mocha": "^2.4.5",
     "webpack": "^1.12.14",
     "webpack-closure-compiler": "^2.0.1"
   },
   "scripts": {
     "build": "webpack",
-    "fix": "jscs --fix src/**/*.js",
+    "fix": "eslint --fix src/**/*.js",
     "format": "clang-format -i src/**/*.js",
     "lint": "eslint src/**/*.js",
     "test": "mocha --es_staging",

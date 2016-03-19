@@ -26,11 +26,11 @@ layoutAtomPlacer.getInitialLongestChain = function(molecule) {
   var bondCount = molecule.countBonds();
   var apspLength = apsp.length;
 
-  for (var f = 0; f < apspLength; f++) {
+  for (let f = 0; f < apspLength; f++) {
     var atom = molecule.getAtom(f);
     var connBondCount = layoutAtomPlacer.getConnectedBondsCount(atom, molecule, bondCount);
     if (connBondCount === 1) {
-      for (var g = 0; g < apspLength; g++) {
+      for (let g = 0; g < apspLength; g++) {
         if (apsp[f][g] > maxPathLength) {
           maxPathLength = apsp[f][g];
           bestStartAtom = f;
@@ -64,10 +64,10 @@ layoutAtomPlacer.computeFloydAPSP = function(costMatrix) {
   var nrow = costMatrix.length;
 
   var distMatrix = new Array(nrow);
-  for (var i = 0; i < nrow; ++i) distMatrix[i] = new Array(nrow);
+  for (let i = 0; i < nrow; ++i) distMatrix[i] = new Array(nrow);
 
-  for (var i = 0; i < nrow; i++) {
-    for (var j = 0; j < nrow; j++) {
+  for (let i = 0; i < nrow; i++) {
+    for (let j = 0; j < nrow; j++) {
       if (costMatrix[i][j] === 0) {
         distMatrix[i][j] = 999999;
       } else {
@@ -76,12 +76,12 @@ layoutAtomPlacer.computeFloydAPSP = function(costMatrix) {
     }
   }
 
-  for (i = 0; i < nrow; i++) {
+  for (let i = 0; i < nrow; i++) {
     distMatrix[i][i] = 0;  // no self cycle
   }
-  for (var k = 0; k < nrow; k++) {
-    for (i = 0; i < nrow; i++) {
-      for (j = 0; j < nrow; j++) {
+  for (let k = 0; k < nrow; k++) {
+    for (let i = 0; i < nrow; i++) {
+      for (let j = 0; j < nrow; j++) {
         if (distMatrix[i][k] + distMatrix[k][j] < distMatrix[i][j]) {
           distMatrix[i][j] = distMatrix[i][k] + distMatrix[k][j];
         }
@@ -108,7 +108,7 @@ layoutAtomPlacer.getLongestUnplacedChain = function(molecule, startAtom) {
   var atCount = molecule.countAtoms();
   var bondCount = molecule.countBonds();
 
-  for (var f = 0; f < atCount; f++) {
+  for (let f = 0; f < atCount; f++) {
     molecule.getAtom(f).setFlag(modelFlags.VISITED, false);
     paths[f] = new ModelMolecule;
     paths[f].addAtom(startAtom);
@@ -120,7 +120,7 @@ layoutAtomPlacer.getLongestUnplacedChain = function(molecule, startAtom) {
 
   layoutAtomPlacer.breadthFirstSearch(molecule, startSphere, paths, bondCount);
 
-  for (var ds = 0; ds < atCount; ds++) {
+  for (let ds = 0; ds < atCount; ds++) {
     if (paths[ds].countAtoms() >= longestPathLength) {
       degreeSum = layoutAtomPlacer.getDegreeSum(paths[ds], molecule, bondCount);
       if (degreeSum > maxDegreeSum) {
@@ -139,7 +139,7 @@ layoutAtomPlacer.getLongestUnplacedChain = function(molecule, startAtom) {
 layoutAtomPlacer.getDegreeSum = function(molecule, superMolecule, superBondCount) {
   var degreeSum = 0;
   var atCount = molecule.countAtoms();
-  for (var cb = 0; cb < atCount; cb++) {
+  for (let cb = 0; cb < atCount; cb++) {
     degreeSum += layoutAtomPlacer.getConnectedBondsCount(
         molecule.getAtom(cb), superMolecule, superBondCount);
   }
@@ -151,7 +151,7 @@ layoutAtomPlacer.getDegreeSum = function(molecule, superMolecule, superBondCount
  */
 layoutAtomPlacer.getConnectedBondsCount = function(atom, molecule, bondCount) {
   var connBondCount = 0;
-  for (var i = 0; i < bondCount; i++) {
+  for (let i = 0; i < bondCount; i++) {
     if (molecule.getBond(i).source === atom || molecule.getBond(i).target === atom) connBondCount++;
   }
   return connBondCount;
@@ -168,12 +168,12 @@ layoutAtomPlacer.getConnectedBondsCount = function(atom, molecule, bondCount) {
 layoutAtomPlacer.breadthFirstSearch = function(mol, sphere, paths, bondCount) {
   var newSphere = [];
   var sphereLen = sphere.length;
-  for (var f = 0; f < sphereLen; f++) {
+  for (let f = 0; f < sphereLen; f++) {
     var atom = sphere[f];
     if (!atom.flags[modelFlags.ISINRING]) {
       var atomNr = mol.indexOfAtom(atom);
       var bonds = mol.getConnectedBondsList(atom);
-      for (var g = 0; g < bonds.length; g++) {
+      for (let g = 0; g < bonds.length; g++) {
         var curBond = bonds[g];
         var nextAtom = curBond.otherAtom(atom);
 
@@ -190,7 +190,7 @@ layoutAtomPlacer.breadthFirstSearch = function(mol, sphere, paths, bondCount) {
     }
   }
   if (newSphere.length > 0) {
-    for (var ns = 0; ns < newSphere.length; ns++) {
+    for (let ns = 0; ns < newSphere.length; ns++) {
       newSphere[ns].setFlag(modelFlags.VISITED, true);
     }
     layoutAtomPlacer.breadthFirstSearch(mol, newSphere, paths, bondCount);
@@ -199,7 +199,7 @@ layoutAtomPlacer.breadthFirstSearch = function(mol, sphere, paths, bondCount) {
 
 layoutAtomPlacer.copyPath = function(path) {
   var pathCopy = new ModelMolecule;
-  for (var pl = 0, pathLen = path.countAtoms(); pl < pathLen; pl++) {
+  for (let pl = 0, pathLen = path.countAtoms(); pl < pathLen; pl++) {
     pathCopy.addAtom(path.getAtom(pl));
   }
   return pathCopy;
@@ -213,7 +213,7 @@ layoutAtomPlacer.copyPath = function(path) {
 layoutAtomPlacer.placeLinearChain = function(chain, initialBondVector, bondLength) {
 
   var bondVector = initialBondVector;
-  for (var f = 0; f < chain.countAtoms() - 1; f++) {
+  for (let f = 0; f < chain.countAtoms() - 1; f++) {
     var atom = chain.getAtom(f);
     var nextAtom = chain.getAtom(f + 1);
     var atomPoint = new MathCoordinate(atom.coord.x, atom.coord.y);
@@ -256,7 +256,7 @@ layoutAtomPlacer.get2DCenter = function(molecule) {
   var centerX = 0;
   var centerY = 0;
   var counter = 0;
-  for (var atIdx = 0, atCount = molecule.countAtoms(); atIdx < atCount; atIdx++) {
+  for (let atIdx = 0, atCount = molecule.countAtoms(); atIdx < atCount; atIdx++) {
     var atom = molecule.getAtom(atIdx);
     if (atom.flags[modelFlags.ISPLACED] === true) {
       centerX += atom.coord.x;
@@ -272,7 +272,7 @@ layoutAtomPlacer.getAtoms2DCenter = function(atoms) {
   var centerX = 0;
   var centerY = 0;
   var counter = 0;
-  for (var atIdx = 0, atCount = atoms.length; atIdx < atCount; atIdx++) {
+  for (let atIdx = 0, atCount = atoms.length; atIdx < atCount; atIdx++) {
     var atom = atoms[atIdx];
     if (atom.flags[modelFlags.ISPLACED] === true) {
       centerX += atom.coord.x;
@@ -324,7 +324,7 @@ layoutAtomPlacer.getNextBondVector = function(atom, previousAtom, distanceMeasur
 };
 
 layoutAtomPlacer.allPlaced = function(molecule, atCount) {
-  for (var ap = 0; ap < atCount; ap++)
+  for (let ap = 0; ap < atCount; ap++)
     if (!molecule.getAtom(ap).flags[modelFlags.ISPLACED]) return false;
   return true;
 };
@@ -354,7 +354,7 @@ layoutAtomPlacer.distributePartners = function(
   var unPlacedNeighboursCountAtoms = unplacedNeighbours.countAtoms();
 
   if (placedNeighboursCountAtoms === 1) {
-    for (var f1 = 0; f1 < unPlacedNeighboursCountAtoms; f1++) {
+    for (let f1 = 0; f1 < unPlacedNeighboursCountAtoms; f1++) {
       atomsToDraw.push(unplacedNeighbours.getAtom(f1));
     }
     addAngle = Math.PI * 2 / (unPlacedNeighboursCountAtoms + placedNeighboursCountAtoms);
@@ -368,7 +368,7 @@ layoutAtomPlacer.distributePartners = function(
         bondLength);
     return;
   } else if (placedNeighboursCountAtoms === 0) {
-    for (f1 = 0; f1 < unPlacedNeighboursCountAtoms; f1++) {
+    for (let f1 = 0; f1 < unPlacedNeighboursCountAtoms; f1++) {
       atomsToDraw.push(unplacedNeighbours.getAtom(f1));
     }
     addAngle = Math.PI * 2.0 / unPlacedNeighboursCountAtoms;
@@ -394,7 +394,7 @@ layoutAtomPlacer.distributePartners = function(
 
   // get the two sharedAtom partners with the smallest distance to the new
   // center
-  for (f1 = 0; f1 < placedNeighboursCountAtoms; f1++) {
+  for (let f1 = 0; f1 < placedNeighboursCountAtoms; f1++) {
     sortedAtoms.push(placedNeighbours.getAtom(f1));
   }
   layoutAtomPlacer.sortBy2DDistance(sortedAtoms, distanceMeasure);
@@ -429,7 +429,7 @@ layoutAtomPlacer.distributePartners = function(
   remainingAngle = (2 * Math.PI) - occupiedAngle;
   addAngle = remainingAngle / (unPlacedNeighboursCountAtoms + 1);
 
-  for (var fff = 0; fff < unPlacedNeighboursCountAtoms; fff++) {
+  for (let fff = 0; fff < unPlacedNeighboursCountAtoms; fff++) {
     atomsToDraw.push(unplacedNeighbours.getAtom(fff));
   }
   radius = bondLength;
@@ -450,7 +450,7 @@ layoutAtomPlacer.sortBy2DDistance = function(atoms, point) {
   var doneSomething;
   do {
     doneSomething = false;
-    for (var atIdx = 0, atLen = atoms.length; atIdx < atLen - 1; atIdx++) {
+    for (let atIdx = 0, atLen = atoms.length; atIdx < atLen - 1; atIdx++) {
       var atom1 = atoms[atIdx];
       var atom2 = atoms[atIdx + 1];
       var distance1 = MathCoordinate.distance(point, atom1.coord);
@@ -477,7 +477,7 @@ layoutAtomPlacer.populatePolygonCorners = function(
 
   var points = [];
   var angle = startAngle;
-  for (var ad = 0, ads = atomsToDraw.length; ad < ads; ad++) {
+  for (let ad = 0, ads = atomsToDraw.length; ad < ads; ad++) {
     angle = angle + addAngle;
     if (angle >= 2.0 * Math.PI) angle -= 2.0 * Math.PI;
 
@@ -494,7 +494,7 @@ layoutAtomPlacer.populatePolygonCorners = function(
     var newY = y + rotationCenter.y;
     points.push(new MathCoordinate(newX, newY));
   }
-  for (ad = 0, ads = atomsToDraw.length; ad < ads; ad++) {
+  for (let ad = 0; ad < atomsToDraw.length; ad++) {
     connectAtom = atomsToDraw[ad];
     connectAtom.coord = points[ad];
     connectAtom.flags[modelFlags.ISPLACED] = true;
@@ -506,7 +506,7 @@ layoutAtomPlacer.populatePolygonCorners = function(
  * @param molecule
  *            {ModelMolecule} The molecule getting laid.
  * @param atom
- *            {kemia.model.Atom} The atom whose bonding partners are to be
+ *            {modelAtom} The atom whose bonding partners are to be
  *            partitioned.
  * @param unplacedPartners
  *            An array for the unplaced bonding partners to go in.

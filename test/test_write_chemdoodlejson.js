@@ -1,4 +1,4 @@
-require('../node_modules/google-closure-library/closure/goog/bootstrap/nodejs');
+'use strict';
 
 const assert = require('assert');
 const utils = require('./utils');

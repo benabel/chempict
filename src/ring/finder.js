@@ -35,23 +35,23 @@ const ringFinder = function() {};
  */
 ringFinder.createRing = function(atomIndexes, molecule) {
   // Translate atom indexes to atom objects.
-  /** @type {Array.<kemia.model.Atom>} */
+  /** @type {Array.<modelAtom>} */
   var atoms = [];
-  for (var i = 0, li = atomIndexes.length; i < li; i++) {
+  for (let i = 0, li = atomIndexes.length; i < li; i++) {
     atoms.push(molecule.getAtom(atomIndexes[i]));
   }
 
   // Add the bonds for the ring.
-  /** @type {Array.<kemia.model.Bond>} */
+  /** @type {Array.<modelBond>} */
   var bonds = [];
-  for (var i = 0, il = atoms.length - 1; i < il; i++) {
-    var bond = molecule.findBond(atoms[i], atoms[i + 1]);
+  for (let i = 0, il = atoms.length - 1; i < il; i++) {
+    let bond = molecule.findBond(atoms[i], atoms[i + 1]);
     if (bond !== null) {
       bonds.push(bond);
     }
   }
   // Don't forget the bond between first & last atom.
-  var bond = molecule.findBond(atoms[0], atoms[atoms.length - 1]);
+  let bond = molecule.findBond(atoms[0], atoms[atoms.length - 1]);
   if (bond !== null) {
     bonds.push(bond);
   }
@@ -69,20 +69,22 @@ ringFinder.createRing = function(atomIndexes, molecule) {
  * @return {boolean}
  */
 ringFinder.isCandidateInSet = function(C, Csssr, valences, ringCount) {
-  for (var i = 0, li = Csssr.length; i < li; i++) {
+  for (let i = 0, li = Csssr.length; i < li; i++) {
     var sssr = Csssr[i];
     // the part from the paper
     if (C.length >= sssr.length) {
       var candidateContainsRing = true;
-      for (var j = 0, lj = sssr.length; j < lj; j++) {
+      for (let j = 0; j < sssr.length; j++) {
         if (!C.includes(sssr[j])) {
           candidateContainsRing = false;
         }
       }
-      if (candidateContainsRing) return true;
+      if (candidateContainsRing) {
+        return true;
+      }
     }
     // updated part
-    for (j = 0, lj = C.length; j < lj; j++) {
+    for (let j = 0; j < C.length; j++) {
       if (sssr.includes(C[j])) {
         ringCount[j]++;
       }
@@ -93,14 +95,14 @@ ringFinder.isCandidateInSet = function(C, Csssr, valences, ringCount) {
   // valence minus one, the candidate is a new ring. You can work this out
   // on paper for tetrahedron, cube, ...
   var isNewRing = false;
-  for (j = 0, lj = C.length; j < lj; j++) {
+  for (let j = 0, lj = C.length; j < lj; j++) {
     if (ringCount[C[j]] < valences[C[j]] - 1) {
       isNewRing = true;
     }
   }
 
   if (isNewRing) {
-    for (j = 0, lj = C.length; j < lj; j++) {
+    for (let j = 0, lj = C.length; j < lj; j++) {
       ringCount[C[j]]++;
     }
     return false;
@@ -122,12 +124,12 @@ ringFinder.verifySSSR = function(sssr, nsssr, molecule) {
   var Csssr = [];
   // store the valences for all atoms
   var valences = [];
-  for (var i = 0, li = molecule.countAtoms(); i < li; i++) {
+  for (let i = 0, li = molecule.countAtoms(); i < li; i++) {
     valences.push(molecule.getAtom(i).countBonds());
   }
 
   const ringCount = utilsArray.zeros(molecule.countAtoms());
-  for (var i = 0, li = sssr.length; i < li; i++) {
+  for (let i = 0, li = sssr.length; i < li; i++) {
     var ring = sssr[i];
     if (!ringSSSR.isCandidateInSet(ring, Csssr, valences, ringCount)) {
       Csssr.push(ring);
@@ -146,14 +148,14 @@ ringFinder.verifySSSR = function(sssr, nsssr, molecule) {
          */
 /*
          * function copyMolecule(molecule) { var moleculeCopy = new
-         * kemia.model.Molecule(); for (var i = 0, li = molecule.countAtoms(); i <
-         * li; i++) { var atomCopy = new kemia.model.Atom(); atomCopy.index = i;
-         * moleculeCopy.addAtom(atomCopy) } for (i = 0, li = molecule.countBonds();
+         * kemia.model.Molecule(); for (let i = 0, li = molecule.countAtoms(); i <
+         * li; i++) { var atomCopy = new modelAtom(); atomCopy.index = i;
+         * moleculeCopy.addAtom(atomCopy) } for (let i = 0, li = molecule.countBonds();
          * i < li; i++) { var bond = molecule.getBond(i); var sourceIndex =
          * bond.source.index; var targetIndex = bond.target.index; var sourceCopy =
          * moleculeCopy.getAtom(sourceIndex); var targetCopy =
          * moleculeCopy.getAtom(targetIndex); var bondCopy = new
-         * kemia.model.Bond(sourceCopy, targetCopy); bondCopy.index = i;
+         * modelBond(sourceCopy, targetCopy); bondCopy.index = i;
          * moleculeCopy.addBond(bondCopy); } return moleculeCopy; }
          */
 
@@ -168,7 +170,7 @@ ringFinder.verifySSSR = function(sssr, nsssr, molecule) {
          * molecule.countAtoms(); var lastAtomCount = atomCount + 1; var start = 0;
          * while (lastAtomCount !== atomCount) { lastAtomCount = atomCount;
          *
-         * for (var i = start; i < atomCount; i++) { var atom = molecule.getAtom(i);
+         * for (let i = start; i < atomCount; i++) { var atom = molecule.getAtom(i);
          * if (atom.countBonds() < 2) { molecule.removeAtom(atom); atomCount--;
          * start = i; break; } } } }
          */
@@ -210,7 +212,7 @@ ringFinder.detectRingAtoms = function(molecule) {
     queue.shift();
 
     var bonds = Array.from(atom.bonds);
-    for (var i = 0, li = bonds.length; i < li; i++) {
+    for (let i = 0, li = bonds.length; i < li; i++) {
       var bond = bonds[i];
       var bondIndex = bond.index;
       // skip the path we're comming from
@@ -226,7 +228,8 @@ ringFinder.detectRingAtoms = function(molecule) {
       // if the bond is not visited yet but the neighbor is, the bond
       // is a ring closure or chord
       if (visitedAtoms[neighborIndex]) {
-        var previous = [], depth;
+        let previous = [];
+        let depth;
         if (atom.depth === neighbor.depth) {
           // odd sized ring
           previous.push(atom);
@@ -236,7 +239,7 @@ ringFinder.detectRingAtoms = function(molecule) {
           // even sized ring
           neighbor.isInCycle = true;
           var nbrNeighbors = neighbor.getNeighbors();
-          for (var j = 0, lj = nbrNeighbors.length; j < lj; j++) {
+          for (let j = 0, lj = nbrNeighbors.length; j < lj; j++) {
             var nbrNeighbor = nbrNeighbors[j];
             if (nbrNeighbor.depth === neighbor.depth - 1) {
               previous.push(nbrNeighbor);
@@ -251,14 +254,14 @@ ringFinder.detectRingAtoms = function(molecule) {
           previous[1].isInCycle = true;
           depth--;
           var prevNeighbors1 = previous[0].getNeighbors();
-          for (var j = 0, lj = prevNeighbors1.length; j < lj; j++) {
+          for (let j = 0, lj = prevNeighbors1.length; j < lj; j++) {
             if (prevNeighbors1[j].depth === depth) {
               previous[0] = prevNeighbors1[j];
               break;
             }
           }
           var prevNeighbors2 = previous[1].getNeighbors();
-          for (var j = 0, lj = prevNeighbors2.length; j < lj; j++) {
+          for (let j = 0, lj = prevNeighbors2.length; j < lj; j++) {
             if (prevNeighbors2[j].depth === depth) {
               previous[1] = prevNeighbors2[j];
               break;
@@ -278,7 +281,7 @@ ringFinder.detectRingAtoms = function(molecule) {
     }
   }
   /*
-   * debug('before: ' + molecule.countAtoms()); var after = 0; for (var i = 0,
+   * debug('before: ' + molecule.countAtoms()); var after = 0; for (let i = 0,
    * li = molecule.countAtoms(); i < li; i++) { if
    * (molecule.atoms[i].isInCycle) { after++; } } debug('after: ' + after);
    */
@@ -295,7 +298,6 @@ ringFinder.detectRingAtoms = function(molecule) {
  * @return {Array.<RingRing>}
  */
 ringFinder.createRingSystems = function(molecule) {
-
   var rings = [];
 
   var n = molecule.countAtoms();
@@ -303,7 +305,7 @@ ringFinder.createRingSystems = function(molecule) {
   var visitedBonds = utilsArray.full(n, false);
   var indexMap = utilsArray.full(n, -1);  // molecule -> ringSystem
 
-  for (var k = 0, lk = molecule.countAtoms(); k < lk; k++) {
+  for (let k = 0, lk = molecule.countAtoms(); k < lk; k++) {
     var startAtom = molecule.atoms[k];
     // skip visited atoms
     if (visitedAtoms[startAtom.index]) {
@@ -315,7 +317,7 @@ ringFinder.createRingSystems = function(molecule) {
     }
 
     // create a new ring system
-    var ringSystem = new molecule.constructor;
+    var ringSystem = new molecule.constructor();
 
     var queue = [];
 
@@ -335,9 +337,9 @@ ringFinder.createRingSystems = function(molecule) {
       queue.shift();
 
       var bonds = Array.from(atom.bonds);
-      for (var i = 0, li = bonds.length; i < li; i++) {
-        var bond = bonds[i];
-        var bondIndex = bond.index;
+      for (let i = 0, li = bonds.length; i < li; i++) {
+        let bond = bonds[i];
+        let bondIndex = bond.index;
         // skip the path we're comming from
         if (visitedBonds[bondIndex]) {
           continue;
@@ -356,8 +358,8 @@ ringFinder.createRingSystems = function(molecule) {
         // is a ring closure or chord
         if (visitedAtoms[neighborIndex]) {
           // create the ring closure bond
-          var closureBond = molecule.findBond(atom, neighbor);
-          var newBond = new ModelBond(
+          let closureBond = molecule.findBond(atom, neighbor);
+          let newBond = new ModelBond(
               ringSystem.atoms[indexMap[atom.index]], ringSystem.atoms[indexMap[neighbor.index]]);
           newBond.index2 = closureBond.index;
           ringSystem.addBond(newBond);
@@ -369,8 +371,6 @@ ringFinder.createRingSystems = function(molecule) {
           newAtom.index2 = neighbor.index;
           indexMap[neighbor.index] = ringSystem.atoms.length;
           ringSystem.addAtom(newAtom);
-          // create the new bond
-          var bond = molecule.findBond(atom, neighbor);
           var newBond = new ModelBond(ringSystem.atoms[indexMap[atom.index]], newAtom);
           newBond.index2 = bond.index;
           ringSystem.addBond(newBond);
@@ -379,10 +379,10 @@ ringFinder.createRingSystems = function(molecule) {
     }
 
     // assign indexes
-    for (var i = 0, li = ringSystem.atoms.length; i < li; i++) {
+    for (let i = 0, li = ringSystem.atoms.length; i < li; i++) {
       ringSystem.atoms[i].index = i;
     }
-    for (var i = 0, li = ringSystem.bonds.length; i < li; i++) {
+    for (let i = 0, li = ringSystem.bonds.length; i < li; i++) {
       ringSystem.bonds[i].index = i;
     }
 
@@ -409,14 +409,14 @@ ringFinder.createRingSystems = function(molecule) {
 
     // translate the indexes from the reduced ringSystem back to
     // the original indexes
-    for (i = 0, li = sssr.length; i < li; i++) {
+    for (let i = 0, li = sssr.length; i < li; i++) {
       var ring = sssr[i];
-      for (var j = 0, lj = ring.length; j < lj; j++) {
+      for (let j = 0, lj = ring.length; j < lj; j++) {
         ring[j] = ringSystem.atoms[ring[j]].index2;
       }
     }
 
-    for (var i = 0, il = sssr.length; i < il; i++) {
+    for (let i = 0, il = sssr.length; i < il; i++) {
       rings.push(ringFinder.createRing(sssr[i], molecule));
     }
   }
@@ -429,7 +429,6 @@ ringFinder.createRingSystems = function(molecule) {
  * @return {Array.<RingRing>}
  */
 ringFinder.findRings = function(molecule) {
-
   // If there are no rings, we're done
   var nsssr = molecule.countBonds() - molecule.countAtoms() + molecule.fragmentCount;
   if (!nsssr) {
@@ -437,14 +436,14 @@ ringFinder.findRings = function(molecule) {
   }
 
   // assign indexes
-  for (var i = 0, li = molecule.atoms.length; i < li; i++) {
+  for (let i = 0, li = molecule.atoms.length; i < li; i++) {
     var atom = molecule.atoms[i];
     atom.index = i;
     atom.depth = undefined;
     atom.isInCycle = undefined;
     molecule.atoms[i].index = i;
   }
-  for (var i = 0, li = molecule.bonds.length; i < li; i++) {
+  for (let i = 0, li = molecule.bonds.length; i < li; i++) {
     molecule.bonds[i].index = i;
   }
 

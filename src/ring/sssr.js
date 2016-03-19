@@ -34,7 +34,7 @@ const ringSSSR = function() {};
  */
 ringSSSR.deepCopy = function(arr) {
   var newArray = [];
-  for (var i = 0, li = arr.length; i < li; i++) {
+  for (let i = 0, li = arr.length; i < li; i++) {
     var item = arr[i];
     if (item instanceof Array) {
       newArray.push(ringSSSR.deepCopy(item));
@@ -53,8 +53,8 @@ ringSSSR.deepCopy = function(arr) {
 ringSSSR.matrixToHTML = function(matrix) {
   var text = '';
   var n = matrix.length;
-  for (var i = 0; i < n; i++) {
-    for (var j = 0; j < n; j++) {
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
       text += JSON.stringify(matrix[i][j]) + ' ';
     }
     text += '<br>';
@@ -69,9 +69,9 @@ ringSSSR.matrixToHTML = function(matrix) {
  */
 ringSSSR.createEmptyMatrix = function(n) {
   var matrix = [];
-  for (var i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     var row = [];
-    for (var j = 0; j < n; j++) {
+    for (let j = 0; j < n; j++) {
       row.push(0);
     }
     matrix.push(row);
@@ -87,9 +87,9 @@ ringSSSR.createEmptyMatrix = function(n) {
  */
 ringSSSR.createWeightMatrix = function(molecule, n) {
   var matrix = [];
-  for (var i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     var row = [];
-    for (var j = 0; j < n; j++) {
+    for (let j = 0; j < n; j++) {
       if (i === j) {
         row.push(0);
       } else if (molecule.findBond(molecule.getAtom(i), molecule.getAtom(j))) {
@@ -112,15 +112,14 @@ ringSSSR.createWeightMatrix = function(molecule, n) {
  */
 ringSSSR.createEmptyPIDMatrix = function(n) {
   var matrix = [];
-  for (var i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     var row = [];
-    for (var j = 0; j < n; j++) {
+    for (let j = 0; j < n; j++) {
       row.push([]);
     }
     matrix.push(row);
   }
   return matrix;
-
 };
 
 /**
@@ -134,9 +133,9 @@ ringSSSR.createEmptyPIDMatrix = function(n) {
  */
 ringSSSR.createPIDMatrix = function(molecule, n) {
   var matrix = [];
-  for (var i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     var row = [];
-    for (var j = 0; j < n; j++) {
+    for (let j = 0; j < n; j++) {
       var beginAtom = molecule.getAtom(i);
       var endAtom = molecule.getAtom(j);
       var bond = molecule.findBond(beginAtom, endAtom);
@@ -159,10 +158,10 @@ ringSSSR.createPIDMatrix = function(molecule, n) {
  * @param {Array} p2
  */
 ringSSSR.appendPath = function(lhs, p1, p2) {
-  if (!lhs.length) {
-    lhs[0] = p1[0].concat(p2[0]);
-  } else {
+  if (lhs.length) {
     lhs.push(p1[0].concat(p2[0]));
+  } else {
+    lhs[0] = p1[0].concat(p2[0]);
   }
 };
 
@@ -183,9 +182,9 @@ ringSSSR.makePIDMatrixes = function(molecule) {
   // debug("Pe =<br>" + matrixToHTML(Pe1));
   // debug("Pe' =<br>" + matrixToHTML(Pe2));
 
-  for (var k = 0; k < n; k++) {
-    for (var i = 0; i < n; i++) {
-      for (var j = 0; j < n; j++) {
+  for (let k = 0; k < n; k++) {
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
         var lastPathLength = lastD[i][j];
         var pathLength = lastD[i][k] + lastD[k][j];
         var path1 = Pe1[i][k];
@@ -249,8 +248,8 @@ ringSSSR.makeCandidateSet = function(D, Pe1, Pe2) {
   var n = D.length;
   var Cset = [];
 
-  for (var i = 0; i < n; i++) {
-    for (var j = 0; j < n; j++) {
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
       if (D[i][j] === 0 || (Pe1[i][j].length === 1 && Pe2[i][j].length === 0)) {
         continue;  // skip degenerate cases
       } else {
@@ -294,20 +293,22 @@ ringSSSR.makeCandidateSet = function(D, Pe1, Pe2) {
  * @return {boolean}
  */
 ringSSSR.isCandidateInSet = function(C, Csssr, valences, ringCount) {
-  for (var i = 0, li = Csssr.length; i < li; i++) {
+  for (let i = 0, li = Csssr.length; i < li; i++) {
     var sssr = Csssr[i];
     // the part from the paper
     if (C.length >= sssr.length) {
       var candidateContainsRing = true;
-      for (var j = 0, lj = sssr.length; j < lj; j++) {
+      for (let j = 0, lj = sssr.length; j < lj; j++) {
         if (!C.includes(sssr[j])) {
           candidateContainsRing = false;
         }
       }
-      if (candidateContainsRing) return true;
+      if (candidateContainsRing) {
+        return true;
+      }
     }
     // updated part
-    for (j = 0, lj = C.length; j < lj; j++) {
+    for (let j = 0; j < C.length; j++) {
       if (sssr.includes(C[j])) {
         ringCount[j]++;
       }
@@ -325,7 +326,7 @@ ringSSSR.isCandidateInSet = function(C, Csssr, valences, ringCount) {
   }
 
   if (isNewRing) {
-    for (j = 0, lj = C.length; j < lj; j++) {
+    for (let j = 0; j < C.length; j++) {
       ringCount[C[j]]++;
     }
     return false;
@@ -341,7 +342,7 @@ ringSSSR.isCandidateInSet = function(C, Csssr, valences, ringCount) {
  */
 ringSSSR.bondRingToAtomRing = function(ring, molecule) {
   var atoms = [];
-  for (var i = 0, li = ring.length; i < li; i++) {
+  for (let i = 0, li = ring.length; i < li; i++) {
     var bond = molecule.getBond(ring[i]);
     var sourceIndex = molecule.indexOfAtom(bond.source);
     var targetIndex = molecule.indexOfAtom(bond.target);
@@ -393,22 +394,22 @@ ringSSSR.candidateSearch = function(Cset, nsssr, molecule, D) {
   var Csssr = [];
   // store the valences for all atoms
   var valences = [];
-  for (var i = 0, li = molecule.countAtoms(); i < li; i++) {
+  for (let i = 0, li = molecule.countAtoms(); i < li; i++) {
     valences.push(molecule.getAtom(i).countBonds());
   }
 
   var ringCount = [];
-  for (var i = 0; i < molecule.countAtoms(); i++) {
+  for (let i = 0; i < molecule.countAtoms(); i++) {
     ringCount[i] = 0;
   }
 
-  for (var i = 0, li = Cset.length; i < li; i++) {
+  for (let i = 0, li = Cset.length; i < li; i++) {
     var set = Cset[i];
 
-    if (set['Cnum'] % 2) {
+    if (set.Cnum % 2) {
       // odd ring
-      for (var j = 0, lj = set['Pe2'].length; j < lj; j++) {
-        var bondIndexes = set['Pe1'][0].concat(set['Pe2'][j]);
+      for (let j = 0, lj = set.Pe2.length; j < lj; j++) {
+        let bondIndexes = set.Pe1[0].concat(set.Pe2[j]);
         ringSSSR.processCandidate(bondIndexes, Csssr, molecule, valences, ringCount);
         if (Csssr.length === nsssr) {
           return Csssr;
@@ -416,8 +417,8 @@ ringSSSR.candidateSearch = function(Cset, nsssr, molecule, D) {
       }
     } else {
       // even ring
-      for (var j = 0, lj = set['Pe1'].length - 1; j < lj; j++) {
-        var bondIndexes = set['Pe1'][j].concat(set['Pe1'][j + 1]);
+      for (let j = 0, lj = set.Pe1.length - 1; j < lj; j++) {
+        var bondIndexes = set.Pe1[j].concat(set.Pe1[j + 1]);
         ringSSSR.processCandidate(bondIndexes, Csssr, molecule, valences, ringCount);
         if (Csssr.length === nsssr) {
           return Csssr;
@@ -483,7 +484,7 @@ ringSSSR.findRings = function(molecule) {
   // Select the SSSR from the candidates
   var indexes = ringSSSR.candidateSearch(Cset, nsssr, molecule, matrices.D);
 
-  for (var i = 0, li = indexes.length; i < li; i++) {
+  for (let i = 0, li = indexes.length; i < li; i++) {
     indexes[i] = ringSSSR.sortByPath(indexes[i], molecule);
   }
 

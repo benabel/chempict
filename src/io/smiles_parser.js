@@ -86,9 +86,9 @@ SmilesParser.parse = function(smi) {
 
   var errstr = '';
   var chiralCenters = [];
-  for (var i = 0; i < items.length; i++) {
-    var item = items[i];
-    // alert("item "+item)
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    let ringid = parseInt(item[1] + item[2], 10);
     if (item === SmilesParser.punctuation.nobond) {
     } else if (item === SmilesParser.punctuation.openbranch) {
       branch.push(previousAtom);
@@ -109,8 +109,7 @@ SmilesParser.parse = function(smi) {
     } else if (item === SmilesParser.punctuation.aromaticbond) {
       bondType = SmilesParser.BondType.AROMATIC_BOND;
     } else if (item[0] === SmilesParser.punctuation.ringclosure) {
-      var ringid = parseInt(item[1] + item[2], 10);
-      var ringAtom = ring[ringid];
+      let ringAtom = ring[ringid];
       if (ringAtom) {
         mol.addBond(SmilesParser.createBond(bondType, previousAtom, ringAtom));
         bondType = SmilesParser.BondType.NONE;
@@ -121,13 +120,13 @@ SmilesParser.parse = function(smi) {
     } else if (item === SmilesParser.punctuation.cis) {
     } else if (item === SmilesParser.punctuation.trans) {
     } else if (!isNaN(ringid = parseInt(item, 10))) {
-      ringAtom = ring[ringid];
-      if (!ringAtom) {
-        ring[ringid] = previousAtom;
-      } else {
+      let ringAtom = ring[ringid];
+      if (ringAtom) {
         mol.addBond(SmilesParser.createBond(bondType, previousAtom, ringAtom));
         bondType = SmilesParser.BondType.NONE;
         ring[ringid] = null;
+      } else {
+        ring[ringid] = previousAtom;
       }
 
       // The default bond order for the ring closure is single (or aromatic) but may be specified by
@@ -192,7 +191,7 @@ SmilesParser.sanityCheck = function(branch, ring, bondType) {
   if (branch.length) {
     throw new Error('unbalanced parens');
   }
-  for (var i = 0; i < ring.length; ++i) {
+  for (let i = 0; i < ring.length; ++i) {
     if (ring[i]) {
       throw new Error('unclosed rings');
     }
@@ -293,7 +292,7 @@ SmilesParser.createBond = function(type, source, target) {
     case SmilesParser.BondType.ANY:
     default:
       throw new Error('invalid bond type [' + type + ']');
-  };
+  }
 };
 
 /**
@@ -305,7 +304,7 @@ SmilesParser.createBond = function(type, source, target) {
  *            center in Smiles (plus extra overhead data).
  */
 SmilesParser.setChiralCenters = function(molecule, chiralCenters) {
-  for (var c = 0, centers = chiralCenters.length; c < centers; c++) {
+  for (let c = 0, centers = chiralCenters.length; c < centers; c++) {
     var atIndex = chiralCenters[c];
     var chiralAtom = molecule.getAtom(atIndex);
     if (chiralAtom !== undefined) {
@@ -355,124 +354,124 @@ SmilesParser.setChiralCenters = function(molecule, chiralCenters) {
 };
 
 SmilesParser.periodicTable = {
-  'H': {'number': 1, 'name': 'Hydrogen'},
-  'He': {'number': 2, 'name': 'Helium'},
-  'Li': {'number': 3, 'name': 'Lithium'},
-  'Be': {'number': 4, 'name': 'Beryllium'},
-  'B': {'number': 5, 'name': 'Boron'},
-  'C': {'number': 6, 'name': 'Carbon'},
-  'c': {'number': 6, 'name': 'Carbon'},
-  'N': {'number': 7, 'name': 'Nitrogen'},
-  'n': {'number': 7, 'name': 'Nitrogen'},
-  'O': {'number': 8, 'name': 'Oxygen'},
-  'o': {'number': 8, 'name': 'Oxygen'},
-  'F': {'number': 9, 'name': 'Fluorine'},
-  'Ne': {'number': 10, 'name': 'Neon'},
-  'Na': {'number': 11, 'name': 'Sodium'},
-  'Mg': {'number': 12, 'name': 'Magnesium'},
-  'Al': {'number': 13, 'name': 'Aluminium'},
-  'Si': {'number': 14, 'name': 'Silicon'},
-  'P': {'number': 15, 'name': 'Phosphorus'},
-  'S': {'number': 16, 'name': 'Sulfur'},
-  's': {'number': 16, 'name': 'Sulfur'},
-  'Cl': {'number': 17, 'name': 'Chlorine'},
-  'Ar': {'number': 18, 'name': 'Argon'},
-  'K': {'number': 19, 'name': 'Potassium'},
-  'Ca': {'number': 20, 'name': 'Calcium'},
-  'Sc': {'number': 21, 'name': 'Scandium'},
-  'Ti': {'number': 22, 'name': 'Titanium'},
-  'V': {'number': 23, 'name': 'Vanadium'},
-  'Cr': {'number': 24, 'name': 'Chromium'},
-  'Mn': {'number': 25, 'name': 'Manganese'},
-  'Fe': {'number': 26, 'name': 'Iron'},
-  'Co': {'number': 27, 'name': 'Cobalt'},
-  'Ni': {'number': 28, 'name': 'Nickel'},
-  'Cu': {'number': 29, 'name': 'Copper'},
-  'Zn': {'number': 30, 'name': 'Zinc'},
-  'Ga': {'number': 31, 'name': 'Gallium'},
-  'Ge': {'number': 32, 'name': 'Germanium'},
-  'As': {'number': 33, 'name': 'Arsenic'},
-  'as': {'number': 33, 'name': 'Arsenic'},
-  'Se': {'number': 34, 'name': 'Selenium'},
-  'se': {'number': 34, 'name': 'Selenium'},
-  'Br': {'number': 35, 'name': 'Bromine'},
-  'Kr': {'number': 36, 'name': 'Krypton'},
-  'Rb': {'number': 37, 'name': 'Rubidium'},
-  'Sr': {'number': 38, 'name': 'Strontium'},
-  'Y': {'number': 39, 'name': 'Yttrium'},
-  'Zr': {'number': 40, 'name': 'Zirconium'},
-  'Nb': {'number': 41, 'name': 'Niobium'},
-  'Mo': {'number': 42, 'name': 'Molybdenum'},
-  'Tc': {'number': 43, 'name': 'Technetium'},
-  'Ru': {'number': 44, 'name': 'Ruthenium'},
-  'Rh': {'number': 45, 'name': 'Rhodium'},
-  'Pd': {'number': 46, 'name': 'Palladium'},
-  'Ag': {'number': 47, 'name': 'Silver'},
-  'Cd': {'number': 48, 'name': 'Cadmium'},
-  'In': {'number': 49, 'name': 'Indium'},
-  'Sn': {'number': 50, 'name': 'Tin'},
-  'Sb': {'number': 51, 'name': 'Antimony'},
-  'Te': {'number': 52, 'name': 'Tellurium'},
-  'I': {'number': 53, 'name': 'Iodine'},
-  'Xe': {'number': 54, 'name': 'Xenon'},
-  'Cs': {'number': 55, 'name': 'Caesium'},
-  'Ba': {'number': 56, 'name': 'Barium'},
-  'La': {'number': 57, 'name': 'Lanthanum'},
-  'Ce': {'number': 58, 'name': 'Cerium'},
-  'Pr': {'number': 59, 'name': 'Praseodymium'},
-  'Nd': {'number': 60, 'name': 'Neodymium'},
-  'Pm': {'number': 61, 'name': 'Promethium'},
-  'Sm': {'number': 62, 'name': 'Samarium'},
-  'Eu': {'number': 63, 'name': 'Europium'},
-  'Gd': {'number': 64, 'name': 'Gadolinium'},
-  'Tb': {'number': 65, 'name': 'Terbium'},
-  'Dy': {'number': 66, 'name': 'Dysprosium'},
-  'Ho': {'number': 67, 'name': 'Holmium'},
-  'Er': {'number': 68, 'name': 'Erbium'},
-  'Tm': {'number': 69, 'name': 'Thulium'},
-  'Yb': {'number': 70, 'name': 'Ytterbium'},
-  'Lu': {'number': 71, 'name': 'Lutetium'},
-  'Hf': {'number': 72, 'name': 'Hafnium'},
-  'Ta': {'number': 73, 'name': 'Tantalum'},
-  'W': {'number': 74, 'name': 'Tungsten'},
-  'Re': {'number': 75, 'name': 'Rhenium'},
-  'Os': {'number': 76, 'name': 'Osmium'},
-  'Ir': {'number': 77, 'name': 'Iridium'},
-  'Pt': {'number': 78, 'name': 'Platinum'},
-  'Au': {'number': 79, 'name': 'Gold'},
-  'Hg': {'number': 80, 'name': 'Mercury'},
-  'Tl': {'number': 81, 'name': 'Thallium'},
-  'Pb': {'number': 82, 'name': 'Lead'},
-  'Bi': {'number': 83, 'name': 'Bismuth'},
-  'Po': {'number': 84, 'name': 'Polonium'},
-  'At': {'number': 85, 'name': 'Astatine'},
-  'Rn': {'number': 86, 'name': 'Radon'},
-  'Fr': {'number': 87, 'name': 'Francium'},
-  'Ra': {'number': 88, 'name': 'Radium'},
-  'Ac': {'number': 89, 'name': 'Actinium'},
-  'Th': {'number': 90, 'name': 'Thorium'},
-  'Pa': {'number': 91, 'name': 'Protactinium'},
-  'U': {'number': 92, 'name': 'Uranium'},
-  'Np': {'number': 93, 'name': 'Neptunium'},
-  'Pu': {'number': 94, 'name': 'Plutonium'},
-  'Am': {'number': 95, 'name': 'Americium'},
-  'Cm': {'number': 96, 'name': 'Curium'},
-  'Bk': {'number': 97, 'name': 'Berkelium'},
-  'Cf': {'number': 98, 'name': 'Californium'},
-  'Es': {'number': 99, 'name': 'Einsteinium'},
-  'Fm': {'number': 100, 'name': 'Fermium'},
-  'Md': {'number': 101, 'name': 'Mendelevium'},
-  'No': {'number': 102, 'name': 'Nobelium'},
-  'Lr': {'number': 103, 'name': 'Lawrencium'},
-  'Rf': {'number': 104, 'name': 'Rutherfordium'},
-  'Db': {'number': 105, 'name': 'Dubnium'},
-  'Sg': {'number': 106, 'name': 'Seaborgium'},
-  'Bh': {'number': 107, 'name': 'Bohrium'},
-  'Hs': {'number': 108, 'name': 'Hassium'},
-  'Mt': {'number': 109, 'name': 'Meitnerium'},
-  'Ds': {'number': 110, 'name': 'Darmstadtium'},
-  'Rg': {'number': 111, 'name': 'Roentgenium'},
-  'Cn': {'number': 112, 'name': 'Copernicium'}
+  H: {number: 1, name: 'Hydrogen'},
+  He: {number: 2, name: 'Helium'},
+  Li: {number: 3, name: 'Lithium'},
+  Be: {number: 4, name: 'Beryllium'},
+  B: {number: 5, name: 'Boron'},
+  C: {number: 6, name: 'Carbon'},
+  c: {number: 6, name: 'Carbon'},
+  N: {number: 7, name: 'Nitrogen'},
+  n: {number: 7, name: 'Nitrogen'},
+  O: {number: 8, name: 'Oxygen'},
+  o: {number: 8, name: 'Oxygen'},
+  F: {number: 9, name: 'Fluorine'},
+  Ne: {number: 10, name: 'Neon'},
+  Na: {number: 11, name: 'Sodium'},
+  Mg: {number: 12, name: 'Magnesium'},
+  Al: {number: 13, name: 'Aluminium'},
+  Si: {number: 14, name: 'Silicon'},
+  P: {number: 15, name: 'Phosphorus'},
+  S: {number: 16, name: 'Sulfur'},
+  s: {number: 16, name: 'Sulfur'},
+  Cl: {number: 17, name: 'Chlorine'},
+  Ar: {number: 18, name: 'Argon'},
+  K: {number: 19, name: 'Potassium'},
+  Ca: {number: 20, name: 'Calcium'},
+  Sc: {number: 21, name: 'Scandium'},
+  Ti: {number: 22, name: 'Titanium'},
+  V: {number: 23, name: 'Vanadium'},
+  Cr: {number: 24, name: 'Chromium'},
+  Mn: {number: 25, name: 'Manganese'},
+  Fe: {number: 26, name: 'Iron'},
+  Co: {number: 27, name: 'Cobalt'},
+  Ni: {number: 28, name: 'Nickel'},
+  Cu: {number: 29, name: 'Copper'},
+  Zn: {number: 30, name: 'Zinc'},
+  Ga: {number: 31, name: 'Gallium'},
+  Ge: {number: 32, name: 'Germanium'},
+  As: {number: 33, name: 'Arsenic'},
+  as: {number: 33, name: 'Arsenic'},
+  Se: {number: 34, name: 'Selenium'},
+  se: {number: 34, name: 'Selenium'},
+  Br: {number: 35, name: 'Bromine'},
+  Kr: {number: 36, name: 'Krypton'},
+  Rb: {number: 37, name: 'Rubidium'},
+  Sr: {number: 38, name: 'Strontium'},
+  Y: {number: 39, name: 'Yttrium'},
+  Zr: {number: 40, name: 'Zirconium'},
+  Nb: {number: 41, name: 'Niobium'},
+  Mo: {number: 42, name: 'Molybdenum'},
+  Tc: {number: 43, name: 'Technetium'},
+  Ru: {number: 44, name: 'Ruthenium'},
+  Rh: {number: 45, name: 'Rhodium'},
+  Pd: {number: 46, name: 'Palladium'},
+  Ag: {number: 47, name: 'Silver'},
+  Cd: {number: 48, name: 'Cadmium'},
+  In: {number: 49, name: 'Indium'},
+  Sn: {number: 50, name: 'Tin'},
+  Sb: {number: 51, name: 'Antimony'},
+  Te: {number: 52, name: 'Tellurium'},
+  I: {number: 53, name: 'Iodine'},
+  Xe: {number: 54, name: 'Xenon'},
+  Cs: {number: 55, name: 'Caesium'},
+  Ba: {number: 56, name: 'Barium'},
+  La: {number: 57, name: 'Lanthanum'},
+  Ce: {number: 58, name: 'Cerium'},
+  Pr: {number: 59, name: 'Praseodymium'},
+  Nd: {number: 60, name: 'Neodymium'},
+  Pm: {number: 61, name: 'Promethium'},
+  Sm: {number: 62, name: 'Samarium'},
+  Eu: {number: 63, name: 'Europium'},
+  Gd: {number: 64, name: 'Gadolinium'},
+  Tb: {number: 65, name: 'Terbium'},
+  Dy: {number: 66, name: 'Dysprosium'},
+  Ho: {number: 67, name: 'Holmium'},
+  Er: {number: 68, name: 'Erbium'},
+  Tm: {number: 69, name: 'Thulium'},
+  Yb: {number: 70, name: 'Ytterbium'},
+  Lu: {number: 71, name: 'Lutetium'},
+  Hf: {number: 72, name: 'Hafnium'},
+  Ta: {number: 73, name: 'Tantalum'},
+  W: {number: 74, name: 'Tungsten'},
+  Re: {number: 75, name: 'Rhenium'},
+  Os: {number: 76, name: 'Osmium'},
+  Ir: {number: 77, name: 'Iridium'},
+  Pt: {number: 78, name: 'Platinum'},
+  Au: {number: 79, name: 'Gold'},
+  Hg: {number: 80, name: 'Mercury'},
+  Tl: {number: 81, name: 'Thallium'},
+  Pb: {number: 82, name: 'Lead'},
+  Bi: {number: 83, name: 'Bismuth'},
+  Po: {number: 84, name: 'Polonium'},
+  At: {number: 85, name: 'Astatine'},
+  Rn: {number: 86, name: 'Radon'},
+  Fr: {number: 87, name: 'Francium'},
+  Ra: {number: 88, name: 'Radium'},
+  Ac: {number: 89, name: 'Actinium'},
+  Th: {number: 90, name: 'Thorium'},
+  Pa: {number: 91, name: 'Protactinium'},
+  U: {number: 92, name: 'Uranium'},
+  Np: {number: 93, name: 'Neptunium'},
+  Pu: {number: 94, name: 'Plutonium'},
+  Am: {number: 95, name: 'Americium'},
+  Cm: {number: 96, name: 'Curium'},
+  Bk: {number: 97, name: 'Berkelium'},
+  Cf: {number: 98, name: 'Californium'},
+  Es: {number: 99, name: 'Einsteinium'},
+  Fm: {number: 100, name: 'Fermium'},
+  Md: {number: 101, name: 'Mendelevium'},
+  No: {number: 102, name: 'Nobelium'},
+  Lr: {number: 103, name: 'Lawrencium'},
+  Rf: {number: 104, name: 'Rutherfordium'},
+  Db: {number: 105, name: 'Dubnium'},
+  Sg: {number: 106, name: 'Seaborgium'},
+  Bh: {number: 107, name: 'Bohrium'},
+  Hs: {number: 108, name: 'Hassium'},
+  Mt: {number: 109, name: 'Meitnerium'},
+  Ds: {number: 110, name: 'Darmstadtium'},
+  Rg: {number: 111, name: 'Roentgenium'},
+  Cn: {number: 112, name: 'Copernicium'}
 };
 
 module.exports = SmilesParser;

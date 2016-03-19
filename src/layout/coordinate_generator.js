@@ -12,7 +12,8 @@
 'use strict';
 
 const MathCoordinate = require('../math/coordinate');
-const MathVector2D = require('../math/vector2d.js');
+const MathVector2D = require('../math/vector2d');
+const mathMath = require('../math/math');
 
 const modelFlags = require('../model/flags');
 const ModelMolecule = require('../model/molecule');
@@ -40,7 +41,7 @@ layoutCoordinateGenerator.generate = function(molecule) {
   var firstBondVector = new MathVector2D(0, 1);
 
   var atCount = molecule.countAtoms();
-  for (var f = 0; f < atCount; f++) {
+  for (let f = 0; f < atCount; f++) {
     var atom = molecule.getAtom(f);
     atom.setFlag(modelFlags.ISPLACED, false);
     atom.setFlag(modelFlags.VISITED, false);
@@ -143,11 +144,11 @@ layoutCoordinateGenerator.generate = function(molecule) {
  * places first bond of first ring with source at origin and target at scaled
  * vector
  *
- * @param {kemia.model.Bond}
+ * @param {modelBond}
  *            bond, subject bond to be placed
  * @param {MathVector2D}
  *            vector, where to put the bond.target
- * @return {Array.<kemia.model.Atom>} array of the atoms placed
+ * @return {Array.<modelAtom>} array of the atoms placed
  */
 layoutCoordinateGenerator.placeFirstBond = function(bond, vector) {
   vector.normalize();
@@ -160,7 +161,7 @@ layoutCoordinateGenerator.placeFirstBond = function(bond, vector) {
 };
 
 layoutCoordinateGenerator.allPlaced = function(rings) {
-  for (var f1 = 0; f1 < rings.length; f1++) {
+  for (let f1 = 0; f1 < rings.length; f1++) {
     if (!rings[f1].flags[modelFlags.ISPLACED]) {
       return false;
     }
@@ -172,7 +173,7 @@ layoutCoordinateGenerator.allPlaced = function(rings) {
  * Returns the next atom with unplaced aliphatic neighbors
  */
 layoutCoordinateGenerator.getNextAtomWithAliphaticUnplacedNeigbors = function(molecule, bondCount) {
-  for (var bc = 0; bc < bondCount; bc++) {
+  for (let bc = 0; bc < bondCount; bc++) {
     var bond = molecule.getBond(bc);
 
     if (bond.source.flags[modelFlags.ISPLACED] && !bond.target.flags[modelFlags.ISPLACED]) {
@@ -188,7 +189,7 @@ layoutCoordinateGenerator.getNextAtomWithAliphaticUnplacedNeigbors = function(mo
 layoutCoordinateGenerator.getAtoms = function(atom, molecule, bondCount, placed) {
   var atoms = new ModelMolecule;
   var bonds = molecule.getConnectedBondsList(atom);
-  for (var ga = 0, bLen = bonds.length; ga < bLen; ga++) {
+  for (let ga = 0, bLen = bonds.length; ga < bLen; ga++) {
     var connectedAtom = bonds[ga].otherAtom(atom);
     if (placed && connectedAtom.flags[modelFlags.ISPLACED])
       atoms.addAtom(connectedAtom);
@@ -231,7 +232,7 @@ layoutCoordinateGenerator.handleAliphatics = function(molecule, bondCount, bondL
               at, placedAtoms.getAtom(0), layoutAtomPlacer.get2DCenter(molecule), true);
         }
 
-        for (var z = 1, zCnt = longestUnplacedChain.countAtoms(); z < zCnt; z++) {
+        for (let z = 1, zCnt = longestUnplacedChain.countAtoms(); z < zCnt; z++) {
           longestUnplacedChain.getAtom(z).flags[modelFlags.ISPLACED] = false;
         }
         layoutAtomPlacer.placeLinearChain(longestUnplacedChain, direction, bondLength);
@@ -245,19 +246,19 @@ layoutCoordinateGenerator.handleAliphatics = function(molecule, bondCount, bondL
 
 layoutCoordinateGenerator.getMostComplexRing = function(ringSet) {
   var neighbors = new Array(ringSet.length);
-  for (var i = 0; i < neighbors.length; i++) {
+  for (let i = 0; i < neighbors.length; i++) {
     neighbors[i] = 0;
   }
   var mostComplex = 0;
   var mostComplexPosition = 0;
-  for (i = 0; i < ringSet.length; i++) {
+  for (let i = 0; i < ringSet.length; i++) {
     var ring1 = ringSet[i];
-    for (var j = 0; j < ring1.atoms.length; j++) {
+    for (let j = 0; j < ring1.atoms.length; j++) {
       var atom1 = ring1[j];
-      for (var k = i + 1; k < ringSet.length; k++) {
+      for (let k = i + 1; k < ringSet.length; k++) {
         var ring2 = ringSet[k];
         if (ring1 !== ring2) {
-          for (var l = 0; l < ring2.atoms.length; l++) {
+          for (let l = 0; l < ring2.atoms.length; l++) {
             var atom2 = ring2[l];
             if (atom1 === atom2) {
               neighbors[i]++;
@@ -269,7 +270,7 @@ layoutCoordinateGenerator.getMostComplexRing = function(ringSet) {
       }
     }
   }
-  for (i = 0; i < neighbors.length; i++) {
+  for (let i = 0; i < neighbors.length; i++) {
     if (neighbors[i] > mostComplex) {
       mostComplex = neighbors[i];
       mostComplexPosition = i;
@@ -444,9 +445,8 @@ layoutRingPlacer.placeBridgedRing = function(
   var addAngle = remainingAngle / (ring.atoms.length - sharedFrag.atoms.length + 1);
 
   var startAtom = layoutRingPlacer.findStartAtom(ringCenterVector, bondAtom1, bondAtom2);
-  var startAngle = goog.math.toRadians(
-      goog.math.angle(
-          startAtom.coord.x, startAtom.coord.y, ringCenterVector.x, ringCenterVector.y));
+  var startAngle = mathMath.toRadians(
+      mathMath.angle(startAtom.coord.x, startAtom.coord.y, ringCenterVector.x, ringCenterVector.y));
 
   var atomsToPlace =
       layoutRingPlacer.atomsInPlacementOrder(startAtom, sharedFrag.bonds[0], ring.bonds);
@@ -472,9 +472,9 @@ layoutRingPlacer.atomsInPlacementOrder = function(atom, bond, bonds) {
  *
  * @param {MathVector2D}
  *            ringCenter
- * @param {kemia.model.Atom}
+ * @param {modelAtom}
  *            atom1
- * @param {kemia.model.Atom}
+ * @param {modelAtom}
  *            atom2
  *
  * @return{number} 1 or -1
@@ -619,7 +619,7 @@ layoutRingPlacer.placeFusedRing = function(
   var currentBond = sharedAtoms.bonds[0];
 
   var atomsToDraw = [];
-  for (var x1 = 0, x2 = ring.bonds.length - 2; x1 < x2; x1++) {
+  for (let x1 = 0, x2 = ring.bonds.length - 2; x1 < x2; x1++) {
     currentBond = layoutRingPlacer.getNextBond(ring, currentBond, currentAtom);
     currentAtom = currentBond.otherAtom(currentAtom);
     atomsToDraw.push(currentAtom);
@@ -629,7 +629,7 @@ layoutRingPlacer.placeFusedRing = function(
 };
 
 layoutRingPlacer.getNextBond = function(ring, bond, atom) {
-  for (var f = 0; f < ring.bonds.length; f++) {
+  for (let f = 0; f < ring.bonds.length; f++) {
     if (ring.bonds[f] !== bond &&
         (ring.bonds[f].source === atom || ring.bonds[f].target === atom)) {
       return ring.bonds[f];
@@ -712,7 +712,7 @@ layoutRingPlacer.getIntersectingBonds = function(ring1, ring2) {
  * finds center of a list of atoms
  *
  * @param {Array.
- *            <kemia.model.Atom>} atoms list of atoms to find center of
+ *            <modelAtom>} atoms list of atoms to find center of
  * @return {MathCoordinate} coordinate of center of atoms
  */
 layoutRingPlacer.center = function(atoms) {
@@ -725,7 +725,7 @@ layoutRingPlacer.center = function(atoms) {
 
 layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondLength) {
   var connectedRings = ringPartitioner.directConnectedRings(ring, ringset);
-  for (var r = 0, r1 = connectedRings.length; r < r1; r++) {
+  for (let r = 0, r1 = connectedRings.length; r < r1; r++) {
     var connectedRing = connectedRings[r];
     if (!connectedRing.flags[modelFlags.ISPLACED]) {
       var sharedFrag = {
@@ -736,7 +736,7 @@ layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondL
       if ((sac === 2 && handleType === 'FUSED') || (sac === 1 && handleType === 'SPIRO') ||
           (sac > 2 && handleType === 'BRIDGED')) {
         var debug = '';
-        for (var qw = 0; qw < sharedFrag.atoms.length; qw++)
+        for (let qw = 0; qw < sharedFrag.atoms.length; qw++)
           debug +=
               ('\n         ' + sharedFrag.atoms[qw].coord + ' ' +
                sharedFrag.atoms[qw].flags[modelFlags.ISPLACED]);

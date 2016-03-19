@@ -1,7 +1,5 @@
 'use strict';
 
-require('../node_modules/google-closure-library/closure/goog/bootstrap/nodejs');
-
 const SmilesParser = require('../src/io/smiles_parser');
 const CoordinateGenerator = require('../src/layout/coordinate_generator');
 const SvgDepict = require('../src/depict/svg');
@@ -21,7 +19,7 @@ const smi2svg = function(smi) {
   return svg;
 };
 
-for (var i = 0; i < smiles.length; i++) {
+for (let i = 0; i < smiles.length; i++) {
   // const smi = smiles[i];
   // const mol = SmilesParser.parse(smi);
   // CoordinateGenerator.generate(mol);

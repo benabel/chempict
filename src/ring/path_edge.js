@@ -17,11 +17,11 @@
 'use strict';
 
 /**
- * @param {Array.<kemia.model.Atom>} _atoms
+ * @param {Array.<modelAtom>} _atoms
  * @constructor
  */
 const RingPathEdge = function(_atoms) {
-  /** @type {Array.<kemia.model.Atom>} */
+  /** @type {Array.<modelAtom>} */
   this.atoms = _atoms;
 };
 
@@ -38,14 +38,13 @@ RingPathEdge.prototype.isCycle = function() {
  * @return {RingPathEdge}
  */
 RingPathEdge.prototype.splice = function(other) {
-
-  /** @type {kemia.model.Atom} */
+  /** @type {modelAtom} */
   var intersection = this.getIntersection(other.atoms);
 
-  /** @type {Array.<kemia.model.Atom>} */
+  /** @type {Array.<modelAtom>} */
   var newAtoms = [];
 
-  for (var i = 0, il = this.atoms.length; i < il; i++) {
+  for (let i = 0, il = this.atoms.length; i < il; i++) {
     newAtoms.push(this.atoms[i]);
   }
 
@@ -54,11 +53,11 @@ RingPathEdge.prototype.splice = function(other) {
   }
 
   if (other.atoms[0] === intersection) {
-    for (var i = 1, il = other.atoms.length; i < il; i++) {
+    for (let i = 1, il = other.atoms.length; i < il; i++) {
       newAtoms.push(other.atoms[i]);
     }
   } else {
-    for (var i = other.atoms.length - 2; i >= 0; i--) {
+    for (let i = other.atoms.length - 2; i >= 0; i--) {
       newAtoms.push(other.atoms[i]);
     }
   }
@@ -71,12 +70,12 @@ RingPathEdge.prototype.splice = function(other) {
 };
 
 /**
- * @param {Array.<kemia.model.Atom>} atoms
+ * @param {Array.<modelAtom>} atoms
  * @return {boolean}
  */
 RingPathEdge.prototype.isRealPath = function(atoms) {
-  for (var i = 1, il = atoms.length - 1; i < il; i++) {
-    for (var j = 1; j < il; j++) {
+  for (let i = 1, il = atoms.length - 1; i < il; i++) {
+    for (let j = 1; j < il; j++) {
       if (i === j) {
         continue;
       }
@@ -89,8 +88,8 @@ RingPathEdge.prototype.isRealPath = function(atoms) {
 };
 
 /**
- * @param {Array.<kemia.model.Atom>} others
- * @return {kemia.model.Atom}
+ * @param {Array.<modelAtom>} others
+ * @return {modelAtom}
  */
 RingPathEdge.prototype.getIntersection = function(others) {
   var lastAtomPos = this.atoms.length - 1;
@@ -101,7 +100,7 @@ RingPathEdge.prototype.getIntersection = function(others) {
   if (this.atoms[0] === others[0] || this.atoms[0] === others[lastOtherPos]) {
     return this.atoms[0];
   }
-  throw 'Couldn\'t splice - no intersection';
+  throw new Error('Couldn\'t splice - no intersection');
 };
 
 module.exports = RingPathEdge;

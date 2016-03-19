@@ -1,7 +1,5 @@
 'use strict';
 
-require('../node_modules/google-closure-library/closure/goog/bootstrap/nodejs');
-
 const fs = require('fs');
 const SmilesParser = require('../src/io/smiles_parser');
 const CoordinateGenerator = require('../src/layout/coordinate_generator');

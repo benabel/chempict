@@ -1,4 +1,4 @@
-require('./node_modules/google-closure-library/closure/goog/bootstrap/nodejs');
+'use strict';
 
 // const fs = require('fs');
 const SmilesParser = require('./src/io/smiles_parser');

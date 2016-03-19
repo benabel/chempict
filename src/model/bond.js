@@ -33,28 +33,28 @@ const ModelBond = function(source, target, optOrder, optStereo, optAromatic, opt
    *
    * @type {ModelBond.ORDER}
    */
-  this.order = goog.isDef(optOrder) ? optOrder : ModelBond.ORDER.SINGLE;
+  this.order = optOrder ? optOrder : ModelBond.ORDER.SINGLE;
 
   /**
    * Stereochemistry
    *
    * @type {ModelBond.STEREO}
    */
-  this.stereo = goog.isDef(optStereo) ? optStereo : ModelBond.STEREO.NOT_STEREO;
+  this.stereo = optStereo ? optStereo : ModelBond.STEREO.NOT_STEREO;
 
   /**
    * Aromatic flag.
    *
    * @type {boolean}
    */
-  this.aromatic = goog.isDef(optAromatic) ? optAromatic : false;
+  this.aromatic = optAromatic ? optAromatic : false;
 
   /**
    * parent molecule
    *
    * @type {kemia.model.Molecule}
    */
-  this.molecule = goog.isDef(optMolecule) ? optMolecule : null;
+  this.molecule = optMolecule ? optMolecule : null;
 };
 
 /**
@@ -94,7 +94,6 @@ ModelBond.prototype.deepClone = function() {
   return new ModelBond(
       this.source.clone(), this.target.clone(), this.order, this.stereo, this.aromatic,
       this.molecule);
-
 };
 
 /**
@@ -125,7 +124,6 @@ ModelBond.prototype.toString = function() {
   var molname = this.molecule ? this.molecule.name : 'no molecule';
   return 'ModelBond[' + this.order + ', ' + this.stereo + ']  ' + this.source.toString() + ' -- ' +
       this.target.toString() + ' mol: ' + molname;
-
 };
 
 module.exports = ModelBond;

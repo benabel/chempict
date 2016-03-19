@@ -67,7 +67,7 @@ class MathBox {
      */
     const first = coordinates[0];
     let box = new MathBox(first.y, first.x, first.y, first.x);
-    for (var i = 1; i < coordinates.length; i++) {
+    for (let i = 1; i < coordinates.length; i++) {
       box.expandToIncludeCoordinate(coordinates[i]);
     }
     return box;
