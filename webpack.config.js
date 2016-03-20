@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
   entry: [path.join(__dirname, 'index.js')],
@@ -11,5 +12,6 @@ module.exports = {
     filename: 'chempict.min.js',
     libraryTarget: 'var',
     library: 'ChemPict'
-  }
+  },
+  plugins: [new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}})]
 };
