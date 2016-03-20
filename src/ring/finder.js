@@ -29,7 +29,7 @@ const ringFinder = function() {};
  * object.
  *
  * @param {Array.<number>} atomIndexes
- * @param {kemia.model.Molecule}
+ * @param {modelMolecule}
  *            molecule
  * @return {RingRing}
  */
@@ -115,7 +115,7 @@ ringFinder.isCandidateInSet = function(C, Csssr, valences, ringCount) {
  *
  * @param {Array.<Array.<number>>} sssr
  * @param {number} nsssr
- * @param {kemia.model.Molecule}
+ * @param {modelMolecule}
  *            molecule
  * @return {Array.<RingRing>}
  */
@@ -148,7 +148,7 @@ ringFinder.verifySSSR = function(sssr, nsssr, molecule) {
          */
 /*
          * function copyMolecule(molecule) { var moleculeCopy = new
-         * kemia.model.Molecule(); for (let i = 0, li = molecule.countAtoms(); i <
+         * modelMolecule(); for (let i = 0, li = molecule.countAtoms(); i <
          * li; i++) { var atomCopy = new modelAtom(); atomCopy.index = i;
          * moleculeCopy.addAtom(atomCopy) } for (let i = 0, li = molecule.countBonds();
          * i < li; i++) { var bond = molecule.getBond(i); var sourceIndex =
@@ -293,7 +293,7 @@ ringFinder.detectRingAtoms = function(molecule) {
  * ring system molecule. Ring perception is done on each ring system
  * individually for optimal performance.
  *
- * @param {kemia.model.Molecule}
+ * @param {modelMolecule}
  *            molecule
  * @return {Array.<RingRing>}
  */
@@ -424,7 +424,7 @@ ringFinder.createRingSystems = function(molecule) {
 };
 
 /**
- * @param {kemia.model.Molecule}
+ * @param {modelMolecule}
  *            molecule
  * @return {Array.<RingRing>}
  */

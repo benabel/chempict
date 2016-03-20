@@ -8,6 +8,8 @@
     type="text/css">
   <script type="text/javascript"
     src="http://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb.js"></script>
+<script type="text/javascript"
+    src="./dist/chempict.min.js"></script>
 </head>
 
 <body>
@@ -26,16 +28,20 @@
   viewACS.loadMolecule(caffeine);
   </script>
   <h1>Load a json produced by chempict</h1>
-  <script type="text/javascript">
+  <script>
+  var smi = 'N[C@@H](CCC(=O)N[C@@H](CSSC[C@H](NC(=O)CC[C@H](N)C(O)=O)C(=O)NCC(O)=O)C(=O)NCC(O)=O)C(O)=O';
+  var mol = ChemPict.SmilesParser.parse(smi);
+  ChemPict.CoordinateGenerator.generate(mol);
+  var json = ChemPict.WriteChemdoodleJson(mol).toJson();
+  var jsonfile = JSON.parse(json);
   //var dummy = new ChemDoodle.io.JSONInterpreter().molFrom(caffeineMolFile);
   //console.log(dummy);
   // this line reconstructs the Molecule data structure from the JSON object
   //var reconstructed = new ChemDoodle.io.JSONInterpreter().molFrom(dummy);
-  console.log(reconstructed);
   var viewJSON = new ChemDoodle.ViewerCanvas('viewJSON', 100, 100);
-  var jsonfile = JSON.parse(
-    '{"m":[{"a":[{"I":"C","x":-3.897114317029975,"y":3.750000000000006,"c":0},{"I":"C","x":-2.598076211353315,"y":4.500000000000003,"c":0},{"I":"O","x":-2.5980762113533125,"y":6.000000000000003,"c":0},{"I":"O","x":-1.2990381056766582,"y":3.7500000000000004,"c":0},{"I":"C","x":-1.2990381056766582,"y":2.2500000000000004,"c":0},{"I":"C","x":-2.5980762113533165,"y":1.5,"c":0},{"I":"C","x":-2.598076211353316,"y":-2.220446049250313e-16,"c":0},{"I":"C","x":-1.2990381056766584,"y":-0.7500000000000001,"c":0},{"I":"C","x":0,"y":0,"c":0},{"I":"C","x":0,"y":1.5,"c":0},{"I":"C","x":1.2990381056766584,"y":2.249999999999999,"c":0},{"I":"O","x":2.598076211353315,"y":1.4999999999999973,"c":0},{"I":"O","x":1.2990381056766598,"y":3.749999999999999,"c":0}],"b":[{"b":0,"e":1,"o":1},{"b":1,"e":2,"o":2},{"b":1,"e":3,"o":1},{"b":3,"e":4,"o":1},{"b":4,"e":5,"o":2},{"b":5,"e":6,"o":1},{"b":6,"e":7,"o":2},{"b":7,"e":8,"o":1},{"b":8,"e":9,"o":2},{"b":9,"e":4,"o":1},{"b":9,"e":10,"o":1},{"b":10,"e":11,"o":2},{"b":10,"e":12,"o":1}]}],"s":[]}'
-  );
+  // var jsonfile = JSON.parse(
+  //   '{"m":[{"a":[{"I":"C","x":-3.897114317029975,"y":3.750000000000006,"c":0},{"I":"C","x":-2.598076211353315,"y":4.500000000000003,"c":0},{"I":"O","x":-2.5980762113533125,"y":6.000000000000003,"c":0},{"I":"O","x":-1.2990381056766582,"y":3.7500000000000004,"c":0},{"I":"C","x":-1.2990381056766582,"y":2.2500000000000004,"c":0},{"I":"C","x":-2.5980762113533165,"y":1.5,"c":0},{"I":"C","x":-2.598076211353316,"y":-2.220446049250313e-16,"c":0},{"I":"C","x":-1.2990381056766584,"y":-0.7500000000000001,"c":0},{"I":"C","x":0,"y":0,"c":0},{"I":"C","x":0,"y":1.5,"c":0},{"I":"C","x":1.2990381056766584,"y":2.249999999999999,"c":0},{"I":"O","x":2.598076211353315,"y":1.4999999999999973,"c":0},{"I":"O","x":1.2990381056766598,"y":3.749999999999999,"c":0}],"b":[{"b":0,"e":1,"o":1},{"b":1,"e":2,"o":2},{"b":1,"e":3,"o":1},{"b":3,"e":4,"o":1},{"b":4,"e":5,"o":2},{"b":5,"e":6,"o":1},{"b":6,"e":7,"o":2},{"b":7,"e":8,"o":1},{"b":8,"e":9,"o":2},{"b":9,"e":4,"o":1},{"b":9,"e":10,"o":1},{"b":10,"e":11,"o":2},{"b":10,"e":12,"o":1}]}],"s":[]}'
+  // );
   // this line reconstructs the Molecule data structure from the JSON object
   var reconstructed = new ChemDoodle.io.JSONInterpreter().molFrom(jsonfile.m[0]);
   reconstructed.scaleToAverageBondLength(14.4);

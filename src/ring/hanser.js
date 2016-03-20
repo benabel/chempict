@@ -35,7 +35,7 @@ const ringHanser = function() {};
 /**
  * Hanser main loop, produces the rings for a given molecule.
  *
- * @param {kemia.model.Molecule} molecule
+ * @param {modelMolecule} molecule
  * @param {number} maxLen
  * @return {Array.<modelAtom>}
  */
@@ -73,7 +73,7 @@ ringHanser.findRings = function(molecule, maxLen) {
  * object.
  *
  * @param {Array.<modelAtom>} atoms
- * @param {kemia.model.Molecule}  molecule
+ * @param {modelMolecule}  molecule
  * @return {RingRing}
  */
 ringHanser.createRing = function(atoms, molecule) {

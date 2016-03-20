@@ -52,7 +52,7 @@ const ModelBond = function(source, target, optOrder, optStereo, optAromatic, opt
   /**
    * parent molecule
    *
-   * @type {kemia.model.Molecule}
+   * @type {modelMolecule}
    */
   this.molecule = optMolecule ? optMolecule : null;
 };

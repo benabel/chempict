@@ -81,7 +81,7 @@ ringSSSR.createEmptyMatrix = function(n) {
 
 /**
  * Create an initial distance matrix. This is  the D matrix from the paper.
- * @param {kemia.model.Molecule} molecule
+ * @param {modelMolecule} molecule
  * @param {number} n
  * @return {Array.<Array.<number>>}
  */
@@ -127,7 +127,7 @@ ringSSSR.createEmptyPIDMatrix = function(n) {
  * indicates this should be an empty PID matrix, this makes no sense though.
  * We initialize it with adding all bonds as paths of length 1 when atom i
  * and j are connected.
- * @param {kemia.model.Molecule} molecule
+ * @param {modelMolecule} molecule
  * @param {number} n
  * @return {Array.<Array.<Array.<Array.<number>>>>}
  */
@@ -169,7 +169,7 @@ ringSSSR.appendPath = function(lhs, p1, p2) {
  * Create the two Path-Included Distance matrices (Pe and Pe') and the
  * distance matrix D. This is Algorithm 1 in the supplementary information
  * that comes with the paper.
- * @param {kemia.model.Molecule} molecule
+ * @param {modelMolecule} molecule
  * @return {Object}
  */
 ringSSSR.makePIDMatrixes = function(molecule) {
@@ -337,7 +337,7 @@ ringSSSR.isCandidateInSet = function(C, Csssr, valences, ringCount) {
 /**
  * Convert an array of bond indexes to an array of atom indexes.
  * @param {Array.<number>} ring
- * @param {kemia.model.Molecule} molecule
+ * @param {modelMolecule} molecule
  * @return {Array.<number>}
  */
 ringSSSR.bondRingToAtomRing = function(ring, molecule) {
@@ -361,7 +361,7 @@ ringSSSR.bondRingToAtomRing = function(ring, molecule) {
  * Add the ring ring to the SSSR set if it is not.
  * @param {Array.<number>} bondIndexes
  * @param {Array} Csssr
- * @param {kemia.model.Molecule} molecule
+ * @param {modelMolecule} molecule
  * @param {Array} valences
  * @param {Array} ringCount
  */
@@ -385,7 +385,7 @@ ringSSSR.processCandidate = function(bondIndexes, Csssr, molecule, valences, rin
  * is algorithm 3 from the supplementary information.
  * @param {Array} Cset
  * @param {number} nsssr
- * @param {kemia.model.Molecule} molecule
+ * @param {modelMolecule} molecule
  * @param {Object} D
  * @return {Array}
  */
@@ -432,7 +432,7 @@ ringSSSR.candidateSearch = function(Cset, nsssr, molecule, D) {
 /**
  *
  * @param {Array.<number>} atomIndexes
- * @param {kemia.model.Molecule} molecule
+ * @param {modelMolecule} molecule
  * @return {Array}
  */
 ringSSSR.sortByPath = function(atomIndexes, molecule) {
@@ -462,7 +462,7 @@ ringSSSR.sortByPath = function(atomIndexes, molecule) {
 
 /**
  * Find the Smallest Set of Smallest rings.
- * @param {kemia.model.Molecule} molecule
+ * @param {modelMolecule} molecule
  * @return {Array.<Array.<number>>}
  */
 ringSSSR.findRings = function(molecule) {
