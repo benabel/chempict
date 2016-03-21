@@ -1,3 +1,4 @@
+'use strict';
 /**
 * @fileoverview Utilities for manipulating arrays inspired by numpy api and google closure library.
 */

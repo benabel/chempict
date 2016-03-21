@@ -25,14 +25,14 @@ for (let i = 0; i < smiles.length; i++) {
   // CoordinateGenerator.generate(mol);
   // const o = new SvgDepict(mol);
   // o.toSvg();
-  smi2svg(smiles[i]);
+  // smi2svg(smiles[i]);
 }
 
-// // write svg file
-// const fs = require('fs');
-// fs.writeFile('/home/ben/Bureau/mol.svg', smi2svg('CC(=O)OC1=CC=CC=C1C(=O)O'), function(err) {
-//   if (err) {
-//     return console.log(err);
-//   }
-//   console.log('Le svg est enregistré sur le Bureau');
-// });
+// write svg file
+const fs = require('fs');
+fs.writeFile('/home/ben/Bureau/mol.svg', smi2svg('CC(=O)OC1=CC=CC=C1C(=O)O'), function(err) {
+  if (err) {
+    return console.log(err);
+  }
+  console.log('Le svg est enregistré sur le Bureau');
+});

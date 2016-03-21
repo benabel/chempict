@@ -26,6 +26,7 @@
 const ptToPx = 1.25;
 
 const config = {
+  bgColor: "white",
   fontSize: 10,
   bondLength: 14.4,
   bondSpacing: 0.18 * 14.4,

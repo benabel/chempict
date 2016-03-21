@@ -25,12 +25,20 @@ class SvgDepict {
     this.h = this.scale * (box.bottom - box.top) + 2 * margin;
   }
 
-  writeHeader() {
+  writeHeader(bgColor) {
     sb += `
-  <svg version="1.2"
-       baseProfile="full"
-       width="${this.w}" height="${this.h}"
-       xmlns="http://www.w3.org/2000/svg">
+<svg version="1.2"
+    baseProfile="full"
+    width="${this.w}" height="${this.h}"
+    xmlns="http://www.w3.org/2000/svg">
+<defs>
+    <filter x="-0.05" y="0.05" width="1.1" height="1.1" id="solid-bg">
+        <feFlood flood-color="${bgColor}"/>
+        <feComposite in="SourceGraphic"/>
+    </filter>
+</defs>
+
+<rect width="100%" height="100%" fill="${bgColor}" stroke="black"/>
   `;
   }
 
@@ -55,7 +63,8 @@ class SvgDepict {
     y += 3 * fontSize / 8;
     sb += `<text x="${x}" y="${y}" font-family="Arial"
         font-size="${fontSize}"
-        fill="black">${txt}</text>\n`;
+        fill="black"
+        filter="url(#solid-bg)">${txt}</text>\n`;
   }
 
   drawAtoms() {
@@ -90,10 +99,11 @@ class SvgDepict {
   drawBonds() { this.mol.bonds.forEach(this._drawBond, this); }
 
   toSvg() {
-    this.writeHeader();
-    sb += '<rect width="100%" height="100%" fill="white" stroke="black"/>\n';
-    this.drawAtoms();
+    this.writeHeader(this.config.bgColor);
+    sb += '\n';
     this.drawBonds();
+    // atoms must be drawn after to hide part of the bonds
+    this.drawAtoms();
     return sb + '</svg>';
   }
 }
