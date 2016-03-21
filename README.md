@@ -25,6 +25,10 @@ clang-format: format js code
 - Generate documentation with jsdoc.
 - Implement vectorization with [simd.js](https://hacks.mozilla.org/2014/10/introducing-simd-js/) see also <https://hacks.mozilla.org/2015/12/bringing-the-power-of-simd-js-to-gl-matrix/>
 
+## Guidelines
+
+- Depictions should try to follow [Graphical representation standards for chemical structure diagrams (IUPAC Recommendations 2008)](http://iupac.org/publications/pac/80/2/0277/).
+
 ## Credits
 
 This project is a fork of the [kemia](http://kemia.github.io/) project, which is a reaction editor written in javascript and compiled using the google closure compiler.
