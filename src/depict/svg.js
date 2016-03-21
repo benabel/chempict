@@ -14,15 +14,15 @@ class SvgDepict {
   }
 
   sizeCalculator() {
-    const margin = this.config.marginWidth;
     this.scale = this.config.bondLength / this.mol.getAverageBondLength();
+    const margin = this.scale * this.config.marginWidth;
     const box = this.mol.getBoundingBox();  // getters: top bottom left right
     // translations
-    this.dx = margin + this.scale * box.left;
-    this.dy = margin + this.scale * box.top;
+    this.dx = this.scale * box.left - margin;
+    this.dy = this.scale * box.top - margin;
     // size
-    this.w = 2 * margin + this.scale * (box.right - box.left);
-    this.h = 2 * margin + this.scale * (box.bottom - box.top);
+    this.w = this.scale * (box.right - box.left) + 2 * margin;
+    this.h = this.scale * (box.bottom - box.top) + 2 * margin;
   }
 
   writeHeader() {
@@ -51,7 +51,7 @@ class SvgDepict {
     let y = coord.y * this.scale - this.dy;
     // Text alignments
     // TODO: needs to be more general
-    x -= fontSize / 2;
+    x -= fontSize / 2.5;
     y += 3 * fontSize / 8;
     sb += `<text x="${x}" y="${y}" font-family="Arial"
         font-size="${fontSize}"
@@ -91,7 +91,7 @@ class SvgDepict {
 
   toSvg() {
     this.writeHeader();
-    sb += '<rect width="100%" height="100%" fill="white"/>\n';
+    sb += '<rect width="100%" height="100%" fill="white" stroke="black"/>\n';
     this.drawAtoms();
     this.drawBonds();
     return sb + '</svg>';

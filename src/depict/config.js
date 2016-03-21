@@ -21,7 +21,9 @@
  */
 'use strict';
 
-const ptToPx = 4 / 3;
+// Units conversion in svg
+// https://www.w3.org/TR/SVG/coords.html#Units
+const ptToPx = 1.25;
 
 const config = {
   fontSize: 10,
