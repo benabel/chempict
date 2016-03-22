@@ -1,9 +1,9 @@
 {
   "name": "chempict",
-  "version": "0.1.1",
+  "version": "0.0.1",
   "description": "Depict chemical pictures for the web.",
   "main": "dist/chempict.min.js",
-  "files": ["dist/chempict.min.js"],
+  "files": ["package.json", "README.md", "LICENCE", "dist/chempict.min.js"],
   "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.7.2",
