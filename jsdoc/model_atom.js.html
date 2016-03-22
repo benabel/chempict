@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: model/atom.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: model/atom.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Copyright 2010 Paul Novak (paul@wingu.com)
+ * Copyright 2015-2016 Benjamin Abel bbig26@gmail.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+'use strict';
+
+const utilsArray = require('../utils/array');
+const resourceCovalence = require('../resource/covalence');
+const MathCoordinate = require('../math/coordinate');
+const mathMath = require('../math/math');
+
+const modelFlags = require('./flags');
+/**
+ * Class representing an atom
+ *
+ * @param {string=} optSymbol, Atom symbol, defaults to "C"
+ * @param {number=} optX X-coordinate of atom, defaults to 0
+ * @param {number=} optY, Y-coordinate of atom, defaults to 0
+ * @param {number=} optCharge, Charge of atom, defaults to 0.
+ * @param {boolean=} optAromatic, whether atom is aromatic, defaults to false
+ * @param {number=} optIsotope, isotope, defaults to 0
+ * @constructor
+ */
+const ModelAtom = function(optSymbol, optX, optY, optCharge, optAromatic, optIsotope) {
+  /**
+   * Atom symbol
+   *
+   * @type {string}
+   */
+  this.symbol = optSymbol ? optSymbol : 'C';
+
+  var x = optX ? optX : 0;
+
+  var y = optY ? optY : 0;
+
+  /**
+   * 2d coordinates
+   *
+   * @type{MathCoordinate}
+   */
+  this.coord = new MathCoordinate(x, y);
+  /**
+   * Bonds belonging to this atom
+   *
+   * @type{Set}
+   */
+  this.bonds = new Set();
+  /**
+   * charge
+   *
+   * @type{number}
+   */
+  this.charge = optCharge ? optCharge : 0;
+
+  /**
+   * isotope
+   *
+   * @type{number}
+   */
+  this.isotope = optIsotope ? optIsotope : 0;
+
+  /**
+   * aromatic
+   *
+   * @type{boolean}
+   */
+  this.aromatic = optAromatic ? optAromatic : false;
+
+  this.hybridization = null;
+
+  /**
+   * Array with property flags (true/false)
+   */
+  this.flags = new Array(modelFlags.MAX_FLAG_INDEX + 1);
+};
+
+/** @return {string} atomic symbol */
+ModelAtom.prototype.getSymbol = function() {
+  return this.symbol;
+};
+
+/** @return {number} atomic charge */
+ModelAtom.prototype.getCharge = function() {
+  return this.charge;
+};
+
+ModelAtom.prototype.countBonds = function() {
+  return this.bonds.size;
+};
+/**
+ * Implict hydrogen count
+ *
+ * @return {number}
+ */
+ModelAtom.prototype.hydrogenCount = function() {
+  /** @type {number} */
+  var cov = resourceCovalence[this.symbol];
+
+  var bondArray = Array.from(this.bonds);
+
+  var totalBondOrder = bondArray.reduce((r, v) => r + v.order, 0);
+  var hydrogenCount = 0;
+  if (cov) {
+    hydrogenCount = cov - totalBondOrder + this.charge;
+  }
+  return hydrogenCount;
+};
+
+/**
+ * Get an array with the neighbor atoms.
+ *
+ * @return {Array.&lt;ModelAtom>}
+ */
+ModelAtom.prototype.getNeighbors = function() {
+  var bonds = Array.from(this.bonds);
+  var nbrs = [];
+  for (let i = 0, li = bonds.length; i &lt; li; i++) {
+    nbrs.push(bonds[i].otherAtom(this));
+  }
+  return nbrs;
+};
+/**
+ * @param {ModelAtom} atom
+ * @return {number} the next angle
+ */
+ModelAtom.nextBondAngle = function(atom) {
+  var bonds = Array.from(atom.bonds);
+
+  var newAngle;
+
+  if (bonds.length === 0) {
+    newAngle = 0;
+  } else if (bonds.length === 1) {
+    const otherAtom = bonds[0].otherAtom(atom);
+    let otherArray;
+    const existingAngle =
+        mathMath.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
+
+    const otherAnglesDiff = otherArray.from(atom.bonds).map(function(b) {
+      let notOther = b.otherAtom(otherAtom);
+      let angle;
+      if (notOther === atom) {
+        angle = 0;
+      } else {
+        angle = mathMath.angleDifference(
+            existingAngle,
+            mathMath.angle(
+                otherAtom.coord.x, otherAtom.coord.y, notOther.coord.x, notOther.coord.y));
+      }
+      return angle;
+    });
+    otherAnglesDiff.sort();
+
+    var minAngle = otherAnglesDiff[0];
+
+    if (minAngle > 0) {
+      newAngle = existingAngle - 120;
+    } else {
+      newAngle = existingAngle + 120;
+    }
+    // this.logger.info('existingAngle ' + existingAngle + '
+    // otherAnglesDiff ' + otherAnglesDiff.toString() + ' newAngle ' +
+    // newAngle);
+  } else if (bonds.length === 2) {
+    let angles = bonds.map(function(bond) {
+      var otherAtom = bond.otherAtom(atom);
+      return mathMath.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
+    });
+    var diff = mathMath.angleDifference(angles[0], angles[1]);
+    if (Math.abs(diff) &lt; 180) {
+      diff = 180 + diff / 2;
+    } else {
+      diff /= 2;
+    }
+    newAngle = angles[0] + diff;
+  } else if (bonds.length === 3) {
+    // find two bonds with least number of bonds on other end to insert
+    // between
+    bonds.sort(function(b1, b2) {
+      return utilsArray.defaultCompare(
+          b1.otherAtom(atom).Array.from(bonds).length, b2.otherAtom(atom).Array.from(bonds).length);
+    });
+    var insertBetween = bonds.slice(0, 2);
+
+    var angles = insertBetween.map(function(b) {
+      var otherAtom = b.otherAtom(atom);
+      return mathMath.angle(atom.coord.x, atom.coord.y, otherAtom.coord.x, otherAtom.coord.y);
+    });
+    newAngle = angles[0] + mathMath.angleDifference(angles[0], angles[1]) / 2;
+    // this.logger.info('angles ' + angles.toString() + " newAngle "
+    // + newAngle);
+  }
+  return newAngle;
+};
+
+/**
+ * clones this atom
+ *
+ * @return {ModelAtom}
+ */
+ModelAtom.prototype.clone = function() {
+  return new ModelAtom(
+      this.symbol, this.coord.x, this.coord.y, this.charge, this.aromatic, this.isotope);
+};
+
+/**
+ * Hybridization states
+ *
+ * @enum {number}
+ */
+ModelAtom.Hybridizations = {
+  S: 0,
+  SP1: 1,      // linear
+  SP2: 2,      // trigonal planar (single pi-electron in pz)
+  SP3: 3,      // tetrahedral
+  PLANAR3: 4,  // trigonal planar (lone pair in pz)
+  SP3D1: 5,    // trigonal planar
+  SP3D2: 6,    // octahedral
+  SP3D3: 7,    // pentagonal bipyramid
+  SP3D4: 8,    // square antiprim
+  SP3D5: 9
+  // tricapped trigonal prism
+};
+
+/**
+ * Set a flag to be true or false
+ *
+ * @param {Object}
+ *            flagType &lt;modelFlags>
+ * @param {Object}
+ *            flagValue true or false
+ */
+ModelAtom.prototype.setFlag = function(flagType, flagValue) {
+  this.flags[flagType] = flagValue;
+};
+/**
+ * @return {string}
+ */
+ModelAtom.prototype.toString = function() {
+  return 'ModelAtom [' + this.symbol + '] ' + this.coord.toString();
+};
+
+module.exports = ModelAtom;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ChemJsonWriter.html">ChemJsonWriter</a></li><li><a href="MathBox.html">MathBox</a></li><li><a href="MathCoordinate.html">MathCoordinate</a></li><li><a href="ModelAtom.html">ModelAtom</a></li><li><a href="ModelBond.html">ModelBond</a></li><li><a href="ModelMolecule.html">ModelMolecule</a></li><li><a href="RingPathEdge.html">RingPathEdge</a></li><li><a href="RingPathGraph.html">RingPathGraph</a></li><li><a href="RingRing.html">RingRing</a></li></ul><h3>Global</h3><ul><li><a href="global.html#layoutAtomPlacer">layoutAtomPlacer</a></li><li><a href="global.html#layoutCoordinateGenerator">layoutCoordinateGenerator</a></li><li><a href="global.html#MathVector2D">MathVector2D</a></li><li><a href="global.html#ringHanser">ringHanser</a></li><li><a href="global.html#ringSSSR">ringSSSR</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Mar 22 2016 09:17:28 GMT+0100 (CET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
