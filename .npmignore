@@ -1,8 +1,0 @@
-doc/
-e2e/
-scripts/
-src/
-test/
-.clangformat
-.eslintrc
-webpack.config.js
