@@ -20,10 +20,8 @@ const ringPartitioner = function() {};
 /**
  * partitions array of rings into connected lists
  *
- * @param {Array.
- *            <ringRing>} rings list of rings to group into connected
- *            arrays
- * @return {Array.<Array.<ringRing>>} array of arrays of Rings
+ * @param {Array.<ringRing>} rings list of rings to group into connected arrays
+ * @return {Array.<ringRing>} array of arrays of Rings
  */
 
 ringPartitioner.GetPartitionedRings = function(rings) {

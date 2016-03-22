@@ -470,12 +470,9 @@ layoutRingPlacer.atomsInPlacementOrder = function(atom, bond, bonds) {
 /**
  * determine direction
  *
- * @param {MathVector2D}
- *            ringCenter
- * @param {modelAtom}
- *            atom1
- * @param {modelAtom}
- *            atom2
+ * @param {MathVector2D} -ringCenter
+ * @param {modelAtom} - atom1
+ * @param {modelAtom} - atom2
  *
  * @return{number} 1 or -1
  */
@@ -711,9 +708,8 @@ layoutRingPlacer.getIntersectingBonds = function(ring1, ring2) {
 /**
  * finds center of a list of atoms
  *
- * @param {Array.
- *            <modelAtom>} atoms list of atoms to find center of
- * @return {MathCoordinate} coordinate of center of atoms
+ * @param {Array.<modelAtom>} - atoms list of atoms to find center of
+ * @return {MathCoordinate} - coordinate of center of atoms
  */
 layoutRingPlacer.center = function(atoms) {
   var sum = atoms.reduce(function(rval, atom) {
@@ -761,8 +757,7 @@ layoutRingPlacer.placeConnectedRings = function(ringset, ring, handleType, bondL
 /**
  * flag all atoms in rings as unplaced atoms
  *
- * @param {Array.
- *            <Array.<ringRing>>} ringset
+ * @param {Array.<ringRing>} ringset
  */
 layoutRingPlacer.resetUnplacedRingAtoms = function(ringset) {
   ringset.forEach(ring => {

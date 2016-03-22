@@ -63,7 +63,7 @@ ringFinder.createRing = function(atomIndexes, molecule) {
  * Check if a candidate ring is already in the SSSR ring set.
  *
  * @param {Array.<RingRing>} C
- * @param {Array.<Array.<RingRing>>} Csssr
+ * @param {Array.<RingRing>} Csssr
  * @param {Array.<number>} valences
  * @param {Array.<number>} ringCount
  * @return {boolean}
@@ -113,7 +113,7 @@ ringFinder.isCandidateInSet = function(C, Csssr, valences, ringCount) {
 /**
  * Verify if a ring set is the SSSR ring set.
  *
- * @param {Array.<Array.<number>>} sssr
+ * @param {Array.<number>} sssr
  * @param {number} nsssr
  * @param {modelMolecule}
  *            molecule

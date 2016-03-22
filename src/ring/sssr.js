@@ -47,7 +47,7 @@ ringSSSR.deepCopy = function(arr) {
 
 /**
  * Debug helper function
- * @param {Array.<Array.<number>>} matrix -
+ * @param {Array.<number>} matrix -
  * @return {string} -
  */
 ringSSSR.matrixToHTML = function(matrix) {
@@ -65,7 +65,7 @@ ringSSSR.matrixToHTML = function(matrix) {
 /**
  * Create a n x n matrix with all elements set to 0.
  * @param {number} n dimension -
- * @return {Array.<Array.<number>>} - n x n matrix with all elements set to 0.
+ * @return {Array.<number>} - n x n matrix with all elements set to 0.
  */
 ringSSSR.createEmptyMatrix = function(n) {
   var matrix = [];
@@ -83,7 +83,7 @@ ringSSSR.createEmptyMatrix = function(n) {
  * Create an initial distance matrix. This is  the D matrix from the paper.
  * @param {modelMolecule} molecule
  * @param {number} n
- * @return {Array.<Array.<number>>}
+ * @return {Array.<number>}
  */
 ringSSSR.createWeightMatrix = function(molecule, n) {
   var matrix = [];
@@ -108,7 +108,7 @@ ringSSSR.createWeightMatrix = function(molecule, n) {
  * with all elements set to an empty list (i.e. there is no path between
  * i and j)
  * @param {number} n
- * @return {Array.<Array.<Array>>}
+ * @return {Array.<Array>}
  */
 ringSSSR.createEmptyPIDMatrix = function(n) {
   var matrix = [];
@@ -239,9 +239,9 @@ ringSSSR.sortByCnum = function(a, b) {
  * Compute the set of ring candidates using the distance matrix and the
  * two path-included distance matrices. This is algorithm 2 in supplementary
  * information.
- * @param {Array.<Array.<number>>} D
+ * @param {Array.<number>} D
  * @param {Array.<Array.<Array.<number>>>} Pe1
- * @param {Array.<Array.<Array>>} Pe2
+ * @param {Array.<Array>} Pe2
  * @return {Array}
  */
 ringSSSR.makeCandidateSet = function(D, Pe1, Pe2) {
@@ -463,7 +463,7 @@ ringSSSR.sortByPath = function(atomIndexes, molecule) {
 /**
  * Find the Smallest Set of Smallest rings.
  * @param {modelMolecule} molecule
- * @return {Array.<Array.<number>>}
+ * @return {Array.<number>}
  */
 ringSSSR.findRings = function(molecule) {
   // var start = new Date().getTime();

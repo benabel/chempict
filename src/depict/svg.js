@@ -27,18 +27,18 @@ class SvgDepict {
 
   writeHeader(bgColor) {
     sb += `
-<svg version="1.2"
-    baseProfile="full"
-    width="${this.w}" height="${this.h}"
-    xmlns="http://www.w3.org/2000/svg">
+<svg version='1.2'
+    baseProfile='full'
+    width='${this.w}' height='${this.h}'
+    xmlns='http://www.w3.org/2000/svg'>
 <defs>
-    <filter x="-0.05" y="0.05" width="1.1" height="1.1" id="solid-bg">
-        <feFlood flood-color="${bgColor}"/>
-        <feComposite in="SourceGraphic"/>
+    <filter x='-0.05' y='0.05' width='1.1' height='1.1' id='solid-bg'>
+        <feFlood flood-color='${bgColor}'/>
+        <feComposite in='SourceGraphic'/>
     </filter>
 </defs>
 
-<rect width="100%" height="100%" fill="${bgColor}" stroke="black"/>
+<rect width='100%' height='100%' fill='${bgColor}' stroke='black'/>
   `;
   }
 
@@ -51,7 +51,7 @@ class SvgDepict {
     const dy = fontSize / 2;
     let txt = `${symb}`;
     if (hydrogen > 1) {
-      txt += `<tspan>H<tspan dy="${dy}">${hydrogen}</tspan></tspan>`;
+      txt += `<tspan>H<tspan dy='${dy}'>${hydrogen}</tspan></tspan>`;
     } else if (hydrogen === 1) {
       txt += '<tspan>H</tspan>';
     }
@@ -61,10 +61,10 @@ class SvgDepict {
     // TODO: needs to be more general
     x -= fontSize / 2.5;
     y += 3 * fontSize / 8;
-    sb += `<text x="${x}" y="${y}" font-family="Arial"
-        font-size="${fontSize}"
-        fill="black"
-        filter="url(#solid-bg)">${txt}</text>\n`;
+    sb += `<text x='${x}' y='${y}' font-family='Arial'
+        font-size='${fontSize}'
+        fill='black'
+        filter='url(#solid-bg)'>${txt}</text>\n`;
   }
 
   drawAtoms() {
@@ -82,17 +82,17 @@ class SvgDepict {
     let y2 = bond.target.coord.y * this.scale - this.dy;
 
     if (bond.order === 1) {
-      sb += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black"
-      stroke-width="${lineWidth}"/>\n`;
+      sb += `<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='black'
+      stroke-width='${lineWidth}'/>\n`;
     } else if (bond.order === 2) {
       y1 += bondSpacing / 2;
       y2 += bondSpacing / 2;
-      sb += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black"
-      stroke-width="${lineWidth}"/>\n`;
+      sb += `<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='black'
+      stroke-width='${lineWidth}'/>\n`;
       y1 -= bondSpacing;
       y2 -= bondSpacing;
-      sb += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black"
-      stroke-width="${lineWidth}"/>\n`;
+      sb += `<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='black'
+      stroke-width='${lineWidth}'/>\n`;
     }
   }
 

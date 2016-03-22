@@ -22,10 +22,22 @@
         <script type="text/javascript"
           src="http://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb.js"></script>
         <script type="text/javascript"
-          src="./dist/chempict.min.js"></script>
+          src="./js/chempict.min.js"></script>
     </head>
 
     <body>
+        <nav class="navbar navbar-dark bg-inverse">
+          <div class="container">
+            <div class="nav navbar-nav">
+                <a class="nav-item nav-link active"
+                  href="#">ChemPict <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link"
+                  href="./jsdoc/index.html">API Doc</a>
+                <a class="nav-item nav-link pull-xs-right"
+                  href="#">Github</a>
+            </div>
+          </div>
+        </nav>
         <div class="container">
             <div class="jumbotron">
                 <h2 class="display-4">Hello, ChemPict!</h2>
@@ -34,9 +46,7 @@
                 <p>ChemPict is a open source javascript library that aims to depict
                     molecules for web usage.</p>
                 <p>
-                    It currently supports input as <a href="http://www.opensmiles.org/opensmiles.html">smiles</a>
-                    strings, and ouputs as <a href="https://web.chemdoodle.com/docs/chemdoodle-json-format/">chemdoodle json</a>
-                    format and svg(not yet completed).
+                    It currently supports input as <a href="http://www.opensmiles.org/opensmiles.html">smiles</a>                    strings, and ouputs as <a href="https://web.chemdoodle.com/docs/chemdoodle-json-format/">chemdoodle json</a>                    format and svg(not yet completed).
                 </p>
             </div>
             <div class="col-sm-6">
