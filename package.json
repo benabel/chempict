@@ -1,6 +1,6 @@
 {
   "name": "chempict",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Depict chemical pictures for the web.",
   "main": "dist/chempict.min.js",
   "files": ["dist/chempict.min.js"],
