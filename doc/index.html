@@ -19,10 +19,8 @@
         <link rel="stylesheet"
           href="http://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb.css"
           type="text/css">
-        <script type="text/javascript"
-          src="http://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb.js"></script>
-        <script type="text/javascript"
-          src="./js/chempict.min.js"></script>
+        <script src="http://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb.js"></script>
+        <script src="./js/chempict.min.js"></script>
     </head>
 
     <body>
@@ -78,7 +76,7 @@
                 </script>
             </div>
             <div class="col-sm-6">
-                <h3>Depict a smiles as a svg graphic</h3>
+                <h3>Depict a smile string as a svg graphic</h3>
                 <script>
                 var svg = new ChemPict.SvgDepict(mol).toSvg();
                 document.body.onload = function()
