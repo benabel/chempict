@@ -31,7 +31,6 @@ clang-format: format js code
 ## TODO
 
 - Validate jsdoc tags with eslint.
-- Generate documentation with jsdoc.
 - Implement vectorization with [simd.js](https://hacks.mozilla.org/2014/10/introducing-simd-js/) see also <https://hacks.mozilla.org/2015/12/bringing-the-power-of-simd-js-to-gl-matrix/>
 
 ## Guidelines
