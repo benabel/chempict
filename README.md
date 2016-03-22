@@ -1,9 +1,18 @@
 # chempict
 Create chemical pictures for the web.
 
+## Install
+
+This is a javascript app that can be run in node and in the browser.
+
+- To install it in node from npm: `npm i chempict`
+- To import it in a webpage add a `<script>` tag your webpage:
+
+    <script src="https://npmcdn.com/chempict"></script>
+
 ## Usage
 
-This is a node app which provide:
+It provides:
 
 - a SMILES parser
 - a coordinate generator
@@ -35,6 +44,8 @@ This project is a fork of the [kemia](http://kemia.github.io/) project, which is
 
 The google closure library was used in kemia and some parts of it had been included as `utils` modules.
 
-- [Webpack](https://github.com/webpack/webpack) is used to bundle a js file for web usage.
+[Webpack](https://github.com/webpack/webpack) is used to bundle a umd js file for web and node usage.
+
+[npmcdn](https://npmcdn.com/) is used to distribute the library for web usage.
 
 The chemdoodle writer is inspired by this blog [post](http://zachcp.org/blog/2015/browserchemistry/) written by [zach charlop-powers](http://zachcp.org/index.html)
