@@ -1,11 +1,11 @@
 'use strict';
 
 const assert = require('assert');
-const utils = require('./utils');
+const testUtils = require('./utils');
 const ChemJsonWriter = require('../src/io/write_chemdoodlejson.js');
 
-const atom = utils.atom();
-const molecule = utils.molecule();
+const atom = testUtils.atom();
+const molecule = testUtils.molecule();
 const ChemJson = new ChemJsonWriter(molecule);
 
 describe('ChemJsonWriter', () => {

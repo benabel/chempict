@@ -1,12 +1,12 @@
 'use strict';
 
 const assert = require('assert');
-const utils = require('./utils');
+const testUtils = require('./utils');
 
 describe('utils', () => {
   describe('single atom', () => {
     it('should return a C modelAtom in 0,0', () => {
-      const atom = utils.atom();
+      const atom = testUtils.atom();
       assert.equal(atom.coord.x, 0);
       assert.equal(atom.coord.y, 0);
       assert.equal(atom.symbol, 'C');
@@ -14,7 +14,7 @@ describe('utils', () => {
     });
   });
   describe('single bond', () => {
-    const bond = utils.bond();
+    const bond = testUtils.bond();
     it('should return a bond between C atom in 0,0 and O atom in 1,1', () => {
       assert.equal(bond.source.symbol, 'C');
       assert.equal(bond.source.coord.x, 0);
@@ -26,7 +26,7 @@ describe('utils', () => {
   });
   describe('single molecule', () => {
     it('should return a molecule with a single bond', () => {
-      const molecule = utils.molecule();
+      const molecule = testUtils.molecule();
       assert.equal(molecule.bonds.length, 1);
       const bond = molecule.bonds[0];
       assert.equal(bond.source.symbol, 'C');
