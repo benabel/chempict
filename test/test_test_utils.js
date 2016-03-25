@@ -1,6 +1,6 @@
 'use strict';
 
-const assert = require('assert');
+const assert = require('chai').assert;
 const testUtils = require('./utils');
 
 describe('utils', () => {

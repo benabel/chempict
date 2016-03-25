@@ -1,6 +1,6 @@
 'use strict';
 
-const assert = require('assert');
+const assert = require('chai').assert;
 const utilsArray = require('../src/utils/array');
 
 describe('Test utils array', () => {
