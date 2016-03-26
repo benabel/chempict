@@ -8,7 +8,7 @@ const atom = testUtils.atom();
 const molecule = testUtils.molecule();
 const ChemJson = new ChemJsonWriter(molecule);
 
-describe('Test chemdoodle json writer', () => {
+describe('Test io/write_chemdoodlejson module', () => {
   describe('process_atom', () => {
     it('convert ModelAtom to a js object',
        () => { assert.deepEqual(ChemJson.processAtom(atom), {l: 'C', x: 0, y: 0, c: 0}); });

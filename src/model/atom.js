@@ -124,13 +124,24 @@ ModelAtom.prototype.hydrogenCount = function() {
  * @return {Array.<ModelAtom>}
  */
 ModelAtom.prototype.getNeighbors = function() {
-  var bonds = Array.from(this.bonds);
+  var bonds = this.getBonds();
   var nbrs = [];
   for (let i = 0, li = bonds.length; i < li; i++) {
     nbrs.push(bonds[i].otherAtom(this));
   }
   return nbrs;
 };
+
+/**
+ * Get an array with the bonds.
+ *
+ * @return {Array.<ModelBond>}
+ */
+ModelAtom.prototype.getBonds = function() {
+  const bonds = Array.from(this.bonds);
+  return bonds;
+};
+
 /**
  * @param {ModelAtom} atom
  * @return {number} the next angle

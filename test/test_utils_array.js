@@ -3,7 +3,7 @@
 const assert = require('chai').assert;
 const utilsArray = require('../src/utils/array');
 
-describe('Test utils array', () => {
+describe('Test utils/array module', () => {
   describe('difference of two arrays', () => {
     it('should return the difference of two arrays', () => {
       assert.deepEqual(utilsArray.diff([1, 2, 3], [1]), [2, 3]);

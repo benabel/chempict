@@ -3,7 +3,7 @@
 const assert = require('chai').assert;
 const testUtils = require('./utils');
 
-describe('utils', () => {
+describe('Test test/utils module', () => {
   describe('single atom', () => {
     it('should return a C modelAtom in 0,0', () => {
       const atom = testUtils.atom();
@@ -35,6 +35,23 @@ describe('utils', () => {
       assert.equal(bond.target.symbol, 'O');
       assert.equal(bond.target.coord.x, 1);
       assert.equal(bond.target.coord.y, 1);
+    });
+  });
+  describe('Create a molecule from a smile:', () => {
+    it('should return a molecule with a single atom', () => {
+      const molecule = testUtils.moleculeFromSmiles('C');
+      assert.equal(molecule.countBonds(), 0);
+      assert.equal(molecule.countAtoms(), 1);
+    });
+    it('should return a molecule C-O', () => {
+      const molecule = testUtils.moleculeFromSmiles('CO');
+      assert.equal(molecule.countBonds(), 1);
+      assert.equal(molecule.countAtoms(), 2);
+    });
+    it('should return a molecule propane', () => {
+      const molecule = testUtils.moleculeFromSmiles('CCC');
+      assert.equal(molecule.countBonds(), 2);
+      assert.equal(molecule.countAtoms(), 3);
     });
   });
 });
