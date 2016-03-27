@@ -1,0 +1,6 @@
+.jumbotron {
+  text-align: center;
+}
+.jumbotron > iframe {
+  margin: 30px;
+}

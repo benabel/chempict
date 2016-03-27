@@ -14,23 +14,18 @@ const smiles = [
 const smi2svg = function(smi) {
   const mol = SmilesParser.parse(smi);
   CoordinateGenerator.generate(mol);
-  const o = new SvgDepict(mol);
-  const svg = o.toSvg();
+  const writer = new SvgDepict(mol);
+  const svg = writer.toSvg();
   return svg;
 };
 
 for (let i = 0; i < smiles.length; i++) {
-  // const smi = smiles[i];
-  // const mol = SmilesParser.parse(smi);
-  // CoordinateGenerator.generate(mol);
-  // const o = new SvgDepict(mol);
-  // o.toSvg();
-  // smi2svg(smiles[i]);
+  const svg = smi2svg(smiles[i]);
 }
 
 // write svg file
 const fs = require('fs');
-fs.writeFile('/home/ben/Bureau/mol.svg', smi2svg('CC(=O)OC1=CC=CC=C1C(=O)O'), function(err) {
+fs.writeFile('/home/ben/Bureau/mol.svg', smi2svg(smiles[0]), function(err) {
   if (err) {
     return console.log(err);
   }

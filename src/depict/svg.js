@@ -26,13 +26,13 @@ class SvgDepict {
   }
 
   writeHeader(bgColor) {
-    sb += `
+    sb = `
 <svg version='1.2'
     baseProfile='full'
     width='${this.w}' height='${this.h}'
     xmlns='http://www.w3.org/2000/svg'>
 <defs>
-    <filter x='-0.01' y='0.01' width='1.02' height='1.02' id='solid-bg'>
+    <filter x='0.05' y='0' width='1.05' height='1.2' id='solid-bg'>
         <feFlood flood-color='${bgColor}'/>
         <feComposite in='SourceGraphic'/>
     </filter>

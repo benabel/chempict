@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags always come first -->
+        <meta charset="utf-8">
+        <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible"
+          content="ie=edge">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+
+          crossorigin="anonymous">
+        <link rel="stylesheet"
+          href="style.css"
+          media="screen"
+          charset="utf-8">
+        <title>ChemPict Try me</title>
+        <link rel="stylesheet"
+          href="http://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb.css"
+          type="text/css">
+        <script src="http://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb.js"></script>
+        <script src="./js/chempict.min.js"></script>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-dark bg-inverse">
+            <div class="container">
+                <div class="nav navbar-nav">
+                    <a class="nav-item nav-link active"
+                      href="#">ChemPict <span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link"
+                      href="./try-me.html">Try me!</a>
+                    <a class="nav-item nav-link"
+                      href="./jsdoc/index.html">API Doc</a>
+                    <a class="nav-item nav-link pull-xs-right"
+                      href="https://github.com/benjaminabel/chempict">Github</a>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="jumbotron">
+                <h2 class="display-4">Try me!</h2>
+                <p>
+                    <button class="btn btn-primary"
+                      type="button"
+                      data-toggle="collapse"
+                      data-target="#collapseExample"
+                      aria-expanded="false"
+                      aria-controls="collapseExample">
+                        Toggle M. Dynamite
+                    </button>
+                </p>
+                <div class="collapse"
+                  id="collapseExample">
+                    <div class="card card-block">
+                        <iframe width="480"
+                          height="360"
+                          src="https://www.youtube-nocookie.com/embed/6HYpxd4KRSM"
+
+                          frameborder="0"
+                          allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <hr class="m-y-2">
+                <p class="lead">Just type a smile string to see ChemPict in action.</p>
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon">&#9786;</span>
+                    <input type="text"
+                      id="smiles-input"
+                      class="form-control"
+                      placeholder="Enter a smile string like CCO for ethanol"
+                      onkeyup="rePaint()"
+                      aria-describedby="sizing-addon1">
+                    <span class="input-group-addon">&#9786;</span>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3>Chemdoodle display</h3>
+                </div>
+                <div class="col-sm-6">
+                    <h3>ChemPict display</h3>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-6">
+
+                    <script>
+                    // ChemPict part
+                    var smi =
+                        'N[C@@H](CCC(=O)N[C@@H](CSSC[C@H](NC(=O)CC[C@H](N)C(O)=O)C(=O)NCC(O)=O)C(=O)NCC(O)=O)C(O)=O';
+                    var mol = ChemPict.SmilesParser.parse(smi);
+                    ChemPict.CoordinateGenerator.generate(mol);
+                    var json = ChemPict.WriteChemdoodleJson(mol).toJson();
+                    var objJson = JSON.parse(json);
+                    // ChemDoodle part
+                    var viewJSON = new ChemDoodle.ViewerCanvas('viewJSON',
+                        200,
+                        300);
+                    viewJSON.specs.bonds_width_2D = .6;
+                    viewJSON.specs.bonds_saturationWidth_2D = .18;
+                    viewJSON.specs.bonds_hashSpacing_2D = 2.5;
+                    viewJSON.specs.atoms_font_size_2D = 10;
+                    viewJSON.specs.atoms_font_families_2D = ['Helvetica',
+                        'Arial',
+                        'sans-serif'
+                    ];
+                    viewJSON.specs.atoms_displayTerminalCarbonLabels_2D =
+                        true;
+                    // this line reconstructs the Molecule data structure from the JSON object
+                    var reconstructed = new ChemDoodle.io.JSONInterpreter()
+                        .molFrom(
+                            objJson.m[
+                                0]);
+                    reconstructed.scaleToAverageBondLength(14.4);
+                    viewJSON.loadMolecule(reconstructed);
+
+                    var svg = new ChemPict.SvgDepict(mol).toSvg();
+                    document.body.onload = function()
+                    {
+                        var svgContainer = document.querySelector(
+                            '#svg-container');
+                        svgContainer.innerHTML = svg;
+                    }
+                    </script>
+                </div>
+                <div class="col-sm-6">
+
+
+                    <div id="svg-container">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+
+          integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+
+          crossorigin="anonymous"></script>
+        <script type="text/javascript">
+        function rePaint()
+        {
+            var smi = document.getElementById("smiles-input").value;
+            var mol = ChemPict.SmilesParser.parse(smi);
+            ChemPict.CoordinateGenerator.generate(mol);
+            var json = ChemPict.WriteChemdoodleJson(mol).toJson();
+            var objJson = JSON.parse(json);
+            // ChemDoodle part
+            // this line reconstructs the Molecule data structure from the JSON object
+            var reconstructed = new ChemDoodle.io.JSONInterpreter()
+                .molFrom(
+                    objJson.m[
+                        0]);
+            reconstructed.scaleToAverageBondLength(14.4);
+            viewJSON.loadMolecule(reconstructed);
+
+            var svg = new ChemPict.SvgDepict(mol).toSvg();
+
+            var svgContainer = document.querySelector(
+                '#svg-container');
+            svgContainer.innerHTML = svg;
+
+        };
+        </script>
+    </body>
+
+</html>
