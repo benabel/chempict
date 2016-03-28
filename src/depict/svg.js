@@ -6,6 +6,11 @@ const svgConfig = require('./config');
 let sb = '';
 
 class SvgDepict {
+  /**
+   * constructor - Load config and calculate size of the depiction
+   *
+   * @param  {modelMolecule} mol - Molecule to display
+   */
   constructor(mol) {
     // TODO: Use es6 default parameter for config when available in node
     this.config = svgConfig;
@@ -67,9 +72,34 @@ class SvgDepict {
         filter='url(#solid-bg)'>${txt}</text>\n`;
   }
 
+  /**
+   * _selectAtoms - select atoms for depiction
+   * Cuurently depict only hetroatoms and terminal carbons if config
+   * displayTerminalCarbonLabels is true
+   *
+   * @param  {modelAtom} atom - input atom
+   * @return {boolean}        - does the input atom should be displayed or not
+   */
+  _selectAtom(atom) {
+    const c = this.config;
+    switch (c.displayCarbonLabels) {
+      case 'all':
+        return atom;
+      case 'none':
+        return atom.symbol === 'C' ? false : atom;
+      case 'terminal':
+      default: {
+        let output = false;
+        if (atom.symbol !== 'C' || (atom.symbol === 'C' && atom.getNeighbors().length < 2)) {
+          output = atom;
+        }
+        return output;
+      }
+    }
+  }
+
   drawAtoms() {
-    // depict only heteroatoms
-    let atoms = this.mol.atoms.filter(atom => atom.symbol === 'C' ? false : atom);
+    let atoms = this.mol.atoms.filter(this._selectAtom, this);
     atoms.forEach(this._drawAtom, this);
   }
 
