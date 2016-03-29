@@ -1,6 +1,7 @@
 'use strict';
 
 const svgConfig = require('./config');
+const HydrogenPosition = require('../renderer/hydrogen_position');
 
 // svg string
 let sb = '';
@@ -52,13 +53,19 @@ class SvgDepict {
     const symb = element.symbol;
     const coord = element.coord;
     const hydrogen = element.hydrogenCount();
+    const hydrogenPosition = new HydrogenPosition(element).getHydrogenPosition();
     // used for subscript numbers
     const dy = fontSize / 2;
+    let dx = 0;
+    // for hydrogens labels on the left
+    if (hydrogenPosition === 'Left') {
+      dx = -fontSize;
+    }
     let txt = `${symb}`;
     if (hydrogen > 1) {
-      txt += `<tspan>H<tspan dy='${dy}'>${hydrogen}</tspan></tspan>`;
+      txt += `<tspan dx=${2*dx}>H<tspan dy='${dy}'>${hydrogen}</tspan></tspan>`;
     } else if (hydrogen === 1) {
-      txt += '<tspan>H</tspan>';
+      txt += `<tspan dx=${dx}>H</tspan>`;
     }
     let x = coord.x * this.scale - this.dx;
     let y = coord.y * this.scale - this.dy;
@@ -69,17 +76,18 @@ class SvgDepict {
     sb += `<text x='${x}' y='${y}' font-family='Arial'
         font-size='${fontSize}'
         fill='black'
-        filter='url(#solid-bg)'>${txt}</text>\n`;
+        filter='url(#solid-bg)'\n>${txt}</text>\n`;
   }
 
   /**
-   * _selectAtoms - select atoms for depiction
-   * Cuurently depict only hetroatoms and terminal carbons if config
-   * displayTerminalCarbonLabels is true
-   *
-   * @param  {modelAtom} atom - input atom
-   * @return {boolean}        - does the input atom should be displayed or not
-   */
+  * _selectAtoms - select atoms for depiction
+  * Cuurently depict only hetroatoms and terminal carbons if config
+  * displayTerminalCarbonLabels is true
+  *
+  * @param  {modelAtom} atom - input atom
+  *
+  * @return {boolean} - does the input atom should be displayed or not
+  */
   _selectAtom(atom) {
     const c = this.config;
     switch (c.displayCarbonLabels) {
@@ -113,16 +121,16 @@ class SvgDepict {
 
     if (bond.order === 1) {
       sb += `<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='black'
-      stroke-width='${lineWidth}'/>\n`;
+      stroke-width='${lineWidth}'/>\n `;
     } else if (bond.order === 2) {
       y1 += bondSpacing / 2;
       y2 += bondSpacing / 2;
-      sb += `<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='black'
-      stroke-width='${lineWidth}'/>\n`;
+      sb += `<line x1 = '${x1}' y1 = '${y1}' x2 = '${x2}' y2 = '${y2}' stroke =
+                  'black' stroke - width = '${lineWidth}'/>\n `;
       y1 -= bondSpacing;
       y2 -= bondSpacing;
-      sb += `<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='black'
-      stroke-width='${lineWidth}'/>\n`;
+      sb += `<line x1 = '${x1}' y1 = '${y1}' x2 = '${x2}' y2 = '${y2}' stroke =
+                  'black' stroke - width = '${lineWidth}'/>\n`;
     }
   }
 
