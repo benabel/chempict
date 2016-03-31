@@ -27,7 +27,7 @@ class HydrogenPosition {
       Left: new MathVector2D(-1, 0),
       Above: new MathVector2D(0, 1),
       Below: new MathVector2D(0, -1)
-    }
+    };
   }
 
   /**
@@ -36,16 +36,15 @@ class HydrogenPosition {
    * @return {string}  - best position Right, Left, Above or Below
    */
   getHydrogenPosition() {
-    const neighbors = this.atom.getNeighbors().length;
+    const neighbors = this.atom.getNeighbors();
     if (neighbors.length > 2) {
-      return undefined;  // usingAngularExtent(vectors);
+      return 'Right';  // usingAngularExtent(vectors);
     } else if (neighbors.length > 1) {
-      return undefined;  // usingCardinalDirection(average(vectors));
-    } else if (neighbors.length == 1) {
-      return undefined;  // vectors.get(0).x > VERTICAL_THRESHOLD ? Left : Right;
-    } else {
-      return this.usingDefaultPlacement();
+      return 'Right';  // usingCardinalDirection(average(vectors));
+    } else if (neighbors.length === 1) {
+      return 'Right';  // vectors.get(0).x > VERTICAL_THRESHOLD ? Left : Right;
     }
+    return this.usingDefaultPlacement();
   }
 
   /**
@@ -63,7 +62,7 @@ class HydrogenPosition {
      */
     const PREFIXED_H = ['O', 'S', 'Se', 'Te', 'F', 'Cl', 'Br', 'I'];
     const position = PREFIXED_H.includes(this.atom.symbol) ? 'Left' : 'Right';
-    return position
+    return position;
   }
 }
 

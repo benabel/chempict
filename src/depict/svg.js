@@ -36,7 +36,12 @@ class SvgDepict {
 <svg version='1.2'
     baseProfile='full'
     width='${this.w}' height='${this.h}'
-    xmlns='http://www.w3.org/2000/svg'>
+    xmlns='http://www.w3.org/2000/svg'
+    x="0" y="0"
+    font-family="sans-serif"
+    font-size='${this.config.fontSize}'
+    stroke="rgb(0,0,0)" stroke-width="${this.config.lineWidth}"
+    stroke-linecap="round">
 <defs>
     <filter x='0.05' y='0' width='1.05' height='1.2' id='solid-bg'>
         <feFlood flood-color='${bgColor}'/>
@@ -63,9 +68,9 @@ class SvgDepict {
     }
     let txt = `${symb}`;
     if (hydrogen > 1) {
-      txt += `<tspan dx=${2*dx}>H<tspan dy='${dy}'>${hydrogen}</tspan></tspan>`;
+      txt += `<tspan dx="${2 * dx}">H<tspan dy="${dy}">${hydrogen}</tspan></tspan>`;
     } else if (hydrogen === 1) {
-      txt += `<tspan dx=${dx}>H</tspan>`;
+      txt += `<tspan dx="${2 * dx}">H</tspan>`;
     }
     let x = coord.x * this.scale - this.dx;
     let y = coord.y * this.scale - this.dy;
@@ -73,10 +78,7 @@ class SvgDepict {
     // TODO: needs to be more general
     x -= fontSize / 2.5;
     y += 3 * fontSize / 8;
-    sb += `<text x='${x}' y='${y}' font-family='Arial'
-        font-size='${fontSize}'
-        fill='black'
-        filter='url(#solid-bg)'\n>${txt}</text>\n`;
+    sb += `<text x='${x}' y='${y}' fill='black' filter='url(#solid-bg)'>${txt}</text>\n`;
   }
 
   /**
@@ -112,7 +114,6 @@ class SvgDepict {
   }
 
   _drawBond(bond) {
-    const lineWidth = this.config.lineWidth;
     const bondSpacing = this.config.bondSpacing;
     let x1 = bond.source.coord.x * this.scale - this.dx;
     let y1 = bond.source.coord.y * this.scale - this.dy;
@@ -120,17 +121,14 @@ class SvgDepict {
     let y2 = bond.target.coord.y * this.scale - this.dy;
 
     if (bond.order === 1) {
-      sb += `<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}' stroke='black'
-      stroke-width='${lineWidth}'/>\n `;
+      sb += `<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}'/>\n `;
     } else if (bond.order === 2) {
       y1 += bondSpacing / 2;
       y2 += bondSpacing / 2;
-      sb += `<line x1 = '${x1}' y1 = '${y1}' x2 = '${x2}' y2 = '${y2}' stroke =
-                  'black' stroke - width = '${lineWidth}'/>\n `;
+      sb += `<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}'/>\n `;
       y1 -= bondSpacing;
       y2 -= bondSpacing;
-      sb += `<line x1 = '${x1}' y1 = '${y1}' x2 = '${x2}' y2 = '${y2}' stroke =
-                  'black' stroke - width = '${lineWidth}'/>\n`;
+      sb += `<line x1='${x1}' y1='${y1}' x2='${x2}' y2='${y2}'/>\n`;
     }
   }
 
