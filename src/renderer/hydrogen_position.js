@@ -21,7 +21,11 @@ class HydrogenPosition {
 
   constructor(atom) {
     this.atom = atom;
-    this.bonds = atom.getBonds();
+    this.vectorBonds = atom.getBonds().map(function(bond) {
+      let atom1 = atom;
+      let atom2 = bond.otherAtom(atom1);
+      return new MathVector2D(atom2.coord.x - atom1.coord.x, atom2.coord.y - atom1.coord.y)
+    });
     this.position = {
       Right: new MathVector2D(1, 0),
       Left: new MathVector2D(-1, 0),
@@ -42,7 +46,7 @@ class HydrogenPosition {
     } else if (neighbors.length > 1) {
       return 'Right';  // usingCardinalDirection(average(vectors));
     } else if (neighbors.length === 1) {
-      return 'Right';  // vectors.get(0).x > VERTICAL_THRESHOLD ? Left : Right;
+      return this.vectorBonds[0].x > 0.1 ? 'Left' : 'Right';
     }
     return this.usingDefaultPlacement();
   }
