@@ -43,7 +43,7 @@ class SvgDepict {
     stroke="rgb(0,0,0)" stroke-width="${this.config.lineWidth}"
     stroke-linecap="round">
 <defs>
-    <filter x='0.05' y='0' width='1.05' height='1.2' id='solid-bg'>
+    <filter x='-0.05' y='0' width='1.3' height='1.3' id='solid-bg'>
         <feFlood flood-color='${bgColor}'/>
         <feComposite in='SourceGraphic'/>
     </filter>
@@ -59,26 +59,36 @@ class SvgDepict {
     const coord = element.coord;
     const hydrogen = element.hydrogenCount();
     const hydrogenPosition = new HydrogenPosition(element).getHydrogenPosition();
-    // used for subscript numbers
-    const dy = fontSize / 2;
-    let dx = 0;
-    // for hydrogens labels on the left
-    if (hydrogenPosition === 'Left') {
-      dx = -fontSize;
-    }
-    let txt = `${symb}`;
-    if (hydrogen > 1) {
-      txt += `<tspan dx="${2 * dx}">H<tspan dy="${dy}">${hydrogen}</tspan></tspan>`;
-    } else if (hydrogen === 1) {
-      txt += `<tspan dx="${2 * dx}">H</tspan>`;
-    }
+
     let x = coord.x * this.scale - this.dx;
     let y = coord.y * this.scale - this.dy;
     // Text alignments
     // TODO: needs to be more general
     x -= fontSize / 2.5;
     y += 3 * fontSize / 8;
-    sb += `<text x='${x}' y='${y}' fill='black' filter='url(#solid-bg)'>${txt}</text>\n`;
+    sb += `<text x='${x}' y='${y}' filter='url(#solid-bg)'>${symb}</text>\n`;
+
+    if (hydrogen > 0) {
+      let dx = fontSize * 9 / 10;
+      // used for subscript numbers
+      const dy = fontSize / 2;
+
+      if (hydrogenPosition === 'Left') {
+        if (hydrogen > 1) {
+          sb += `<text x='${x - 2 * dx}' y='${y}' filter='url(#solid-bg)'>H</text>\n`;
+          sb +=
+              `<text x='${x - 1 * dx}' y='${y + dy}' filter='url(#solid-bg)'>${hydrogen}</text>\n`;
+        } else {
+          sb += `<text x='${x - dx}' y='${y}' filter='url(#solid-bg)'>H</text>\n`;
+        }
+      } else {
+        sb += `<text x='${x + dx}' y='${y}' filter='url(#solid-bg)'>H</text>\n`;
+        if (hydrogen > 1) {
+          sb +=
+              `<text x='${x + 2 * dx}' y='${y + dy}' filter='url(#solid-bg)'>${hydrogen}</text>\n`;
+        }
+      }
+    }
   }
 
   /**

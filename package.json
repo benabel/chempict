@@ -26,13 +26,13 @@
   "scripts": {
     "build": "webpack --progress --colors",
     "build:watch": "webpack --progress --colors --watch",
-    "clean": "rm ./doc/js/chempict.min.js",
+    "clean": "rm -f ./doc/js/chempict.min.js",
     "doc": "npm run clean && jsdoc ./src -r -d doc/jsdoc && cp ./dist/chempict.min.js ./doc/js/",
     "doc:dev": "npm run clean && ln -rs ./dist/chempict.min.js ./doc/js/",
     "fix": "eslint --fix src/**/*.js",
     "format": "clang-format -i ./src/**/*.js",
     "lint": "eslint ./src/**/*.js",
-    "publish-gh": "node ./scripts/publish2ghpages.js",
+    "publish-gh": "npm run build && npm run doc && node ./scripts/publish2ghpages.js",
     "test": "mocha --es_staging",
     "test:watch": "mocha --es_staging --watch"
   },
