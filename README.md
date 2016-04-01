@@ -1,4 +1,5 @@
 # chempict
+
 Create chemical pictures for the web.
 
 ## Install
@@ -10,13 +11,14 @@ This is a javascript app that can be run in node and in the browser.
 
     <script src="https://npmcdn.com/chempict"></script>
 
-## Usage
+## Features
 
 It provides:
 
-- a SMILES parser
-- a coordinate generator
+- a SMILES parser from kemia.
+- a coordinate generator from kemia.
 - a [chemdoodle json](https://web.chemdoodle.com/docs/chemdoodle-json-format/) writer
+- a SVG writer(not yet finished)
 
 ## Dependencies
 
@@ -25,12 +27,12 @@ clang-format: format js code
 
 ## `npm` scripts
 
-- lint javascript with eslint: `npm run lint`
-- format javascript with clang-format: `npm run format`
+This package provides npm scripts to facilitate the development, see `package.json` for more informations.
 
 ## TODO
 
 - Validate jsdoc tags with eslint.
+- Fix lint errors.
 - Implement vectorization with [simd.js](https://hacks.mozilla.org/2014/10/introducing-simd-js/) see also <https://hacks.mozilla.org/2015/12/bringing-the-power-of-simd-js-to-gl-matrix/>
 
 ## Guidelines
@@ -40,6 +42,8 @@ clang-format: format js code
 ## Credits
 
 This project is a fork of the [kemia](http://kemia.github.io/) project, which is a reaction editor written in javascript and compiled using the google closure compiler.
+
+Hydrogen labels placement is heavily inspired by the excellent [cdk]() java program.
 
 The google closure library was used in kemia and some parts of it had been included as `utils` modules.
 
