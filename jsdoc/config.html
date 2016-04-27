@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: MathCoordinate</title>
+    <title>JSDoc: Namespace: config</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: MathCoordinate</h1>
+    <h1 class="page-title">Namespace: config</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>MathCoordinate</h2>
+        <h2>config</h2>
         
     
 </header>
@@ -37,31 +37,17 @@
     <div class="container-overview">
     
         
+            <div class="description">A config object used to store depict configuration</div>
+        
+
+        
+
+
+    <h5 class="subsection-title">Properties:</h5>
 
     
 
-    <h4 class="name" id="MathCoordinate"><span class="type-signature"></span>new MathCoordinate<span class="signature">(optX, optY)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Class for representing coordinates and positions.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
+<table class="props">
     <thead>
     <tr>
         
@@ -83,13 +69,13 @@
 
         <tr>
             
-                <td class="name"><code>optX</code></td>
+                <td class="name"><code>bgColor</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
@@ -99,14 +85,14 @@
 
             
 
-            <td class="description last">Left, defaults to 0.</td>
+            <td class="description last">The background color.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>optY</code></td>
+                <td class="name"><code>fontSize</code></td>
             
 
             <td class="type">
@@ -122,14 +108,129 @@
 
             
 
-            <td class="description last">Top, defaults to 0.</td>
+            <td class="description last">Font size used for atoms labels</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bondLength</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Bond length in pixels</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bondSpacing</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Bond spacing for double bonds in pixels</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>displayCarbonLabels</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Carbons labels to diplay: all or none or terminal
+                                             fallback to terminal
+                                             with a fallback to terminal</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lineWidth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Bond line width</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>marginWidth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Margin around molecule</td>
         </tr>
 
     
     </tbody>
 </table>
-
-
 
 
 
@@ -163,7 +264,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="math_coordinate.js.html">math/coordinate.js</a>, <a href="math_coordinate.js.html#line28">line 28</a>
+        <a href="depict_config.js.html">depict/config.js</a>, <a href="depict_config.js.html#line28">line 28</a>
     </li></ul></dd>
     
 
@@ -175,20 +276,7 @@
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
     
     </div>
 
@@ -202,154 +290,6 @@
 
     
 
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="x"><span class="type-signature"></span>x<span class="type-signature"> :number</span></h4>
-
-
-
-
-<div class="description">
-    X-value
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">number</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="math_coordinate.js.html">math/coordinate.js</a>, <a href="math_coordinate.js.html#line36">line 36</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="y"><span class="type-signature"></span>y<span class="type-signature"> :number</span></h4>
-
-
-
-
-<div class="description">
-    Y-value
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">number</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="math_coordinate.js.html">math/coordinate.js</a>, <a href="math_coordinate.js.html#line42">line 42</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
     
 
     

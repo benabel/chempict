@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: io/write_chemdoodlejson.js</title>
+    <title>JSDoc: Module: renderer/hydrogen_position</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,99 +17,141 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: io/write_chemdoodlejson.js</h1>
+    <h1 class="page-title">Module: renderer/hydrogen_position</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>'use strict';
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">hydrogen_position module.
+inspired by cdk HydrogenPosition.java module of the standard generator</div>
+        
+
+        
+            
 
 
-/** Class for the chemdoodle json writer. */
-class ChemJsonWriter {
-  /**
-   * constructor - Create a json string from a molecule model
-   *
-   * @param  {modelMolecule} mol - Molecule model to convert
-   */
-  constructor(mol) { this.molObj = this.processMolecule(mol); }
 
-  /**
-   * convert ModelAtom to a js object
-   */
-  processAtom(atom) {
-    let a = {};
-    let coord = atom.coord;
-    a.l = atom.symbol;
-    a.x = coord.x;
-    a.y = coord.y;
-    a.c = atom.charge;
-    return a;
-  }
 
-  /**
-   * convert ModelBond from a molecule to a js object
-   */
-  processBond(bond, molecule) {
-    let b = {};
-    let atom1 = bond.source;
-    let atom2 = bond.target;
-    b.b = molecule.indexOfAtom(atom1);
-    b.e = molecule.indexOfAtom(atom2);
-    b.o = bond.order;
-    switch (bond.stereo) {
-      case 10:
-        b.s = 'none';
-        break;
-      case 11:
-        b.s = 'protuding';
-        break;
-      case 12:
-        b.s = 'ambiguous';
-        break;
-      case 13:
-        b.s = 'recessed';
-        break;
-      default:
-        b.s = 'none';
-    }
-    return b;
-  }
 
-  /**
-   * convert ModelMolecule to chemdoodle JSON
-   */
-  processMolecule(molecule) {
-    let obj = {};
-    let mols = [];
-    let mol = {};
-    const atoms = molecule.atoms;
-    const bonds = molecule.bonds;
-    mol.a = atoms.map(this.processAtom);
-    mol.b = [];
-    for (let i = 0; i &lt; bonds.length; i++) {
-      mol.b.push(this.processBond(bonds[i], molecule));
-    }
 
-    mols[0] = mol;
-    obj.m = mols;
-    obj.s = [];
-    return obj;
-  }
-  /**
-   * return the chemdoodle JSON string
-   */
-  toJson() { return JSON.stringify(this.molObj); }
-}
 
-module.exports = ChemJsonWriter;
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Benjamin Abel</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="renderer_hydrogen_position.js.html">renderer/hydrogen_position.js</a>, <a href="renderer_hydrogen_position.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="module-renderer_hydrogen_position-HydrogenPosition.html">HydrogenPosition</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

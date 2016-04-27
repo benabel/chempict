@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: MathCoordinate</title>
+    <title>JSDoc: Class: SvgDepict</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: MathCoordinate</h1>
+    <h1 class="page-title">Class: SvgDepict</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>MathCoordinate</h2>
+        <h2>SvgDepict</h2>
         
     
 </header>
@@ -40,14 +40,14 @@
 
     
 
-    <h4 class="name" id="MathCoordinate"><span class="type-signature"></span>new MathCoordinate<span class="signature">(optX, optY)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="SvgDepict"><span class="type-signature"></span>new SvgDepict<span class="signature">(mol)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Class for representing coordinates and positions.
+    constructor - Load config and calculate size of the depiction
 </div>
 
 
@@ -83,13 +83,13 @@
 
         <tr>
             
-                <td class="name"><code>optX</code></td>
+                <td class="name"><code>mol</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">modelMolecule</span>
 
 
             
@@ -99,30 +99,7 @@
 
             
 
-            <td class="description last">Left, defaults to 0.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>optY</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Top, defaults to 0.</td>
+            <td class="description last">Molecule to display</td>
         </tr>
 
     
@@ -163,7 +140,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="math_coordinate.js.html">math/coordinate.js</a>, <a href="math_coordinate.js.html#line28">line 28</a>
+        <a href="depict_svg.js.html">depict/svg.js</a>, <a href="depict_svg.js.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -203,30 +180,83 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
+
+    
+        <h3 class="subsection-title">Methods</h3>
 
         
             
-<h4 class="name" id="x"><span class="type-signature"></span>x<span class="type-signature"> :number</span></h4>
 
+    
+
+    <h4 class="name" id="_selectAtom"><span class="type-signature"></span>_selectAtom<span class="signature">(atom)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
 
 
 
 <div class="description">
-    X-value
+    _selectAtoms - select atoms for depiction
+Cuurently depict only hetroatoms and terminal carbons if config
+displayTerminalCarbonLabels is true
 </div>
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
             
-<span class="param-type">number</span>
+                <td class="name"><code>atom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">modelAtom</span>
 
 
-        </li>
-    </ul>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">input atom</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
 
 
 
@@ -261,7 +291,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="math_coordinate.js.html">math/coordinate.js</a>, <a href="math_coordinate.js.html#line36">line 36</a>
+        <a href="depict_svg.js.html">depict/svg.js</a>, <a href="depict_svg.js.html#line103">line 103</a>
     </li></ul></dd>
     
 
@@ -277,81 +307,39 @@
 
 
 
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
         
-            
-<h4 class="name" id="y"><span class="type-signature"></span>y<span class="type-signature"> :number</span></h4>
-
-
-
-
-<div class="description">
-    Y-value
+<div class="param-desc">
+    - does the input atom should be displayed or not
 </div>
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">number</span>
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
 
 
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="math_coordinate.js.html">math/coordinate.js</a>, <a href="math_coordinate.js.html#line42">line 42</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
+    </dd>
 </dl>
 
-
-
+    
 
 
 
         
-    
-
     
 
     

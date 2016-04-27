@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: io/write_chemdoodlejson.js</title>
+    <title>JSDoc: Source: io/json_parser.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: io/write_chemdoodlejson.js</h1>
+    <h1 class="page-title">Source: io/json_parser.js</h1>
 
     
 
@@ -28,85 +28,40 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
+const ModelAtom = require('../model/atom');
+const ModelBond = require('../model/bond');
+const ModelMolecule = require('../model/molecule');
 
-/** Class for the chemdoodle json writer. */
-class ChemJsonWriter {
+class JSONParser {
+  constructor(json) { this.obj = JSON.parse(json || '{}'); }
+
   /**
-   * constructor - Create a json string from a molecule model
+   * parseAtom - convert atom object to model of Atom
    *
-   * @param  {modelMolecule} mol - Molecule model to convert
+   * @param  {string} obj - atom object as chemdoodle defines it
+   * @return {ModelAtom}
    */
-  constructor(mol) { this.molObj = this.processMolecule(mol); }
-
-  /**
-   * convert ModelAtom to a js object
-   */
-  processAtom(atom) {
-    let a = {};
-    let coord = atom.coord;
-    a.l = atom.symbol;
-    a.x = coord.x;
-    a.y = coord.y;
-    a.c = atom.charge;
-    return a;
+  parseAtom(obj) {
+    const symbol = obj.l ? obj.l : 'C';
+    const x = obj.x ? obj.x : 0;
+    const y = obj.y ? obj.y : 0;
+    return new ModelAtom(symbol, x, y);
   }
 
   /**
-   * convert ModelBond from a molecule to a js object
+   * parseMolecule - convert molecule object to model of molecule
+   *
+   * @param  {object} obj - molecule object as chemdoodle defines it
+   * @return {ModelMolecule}
    */
-  processBond(bond, molecule) {
-    let b = {};
-    let atom1 = bond.source;
-    let atom2 = bond.target;
-    b.b = molecule.indexOfAtom(atom1);
-    b.e = molecule.indexOfAtom(atom2);
-    b.o = bond.order;
-    switch (bond.stereo) {
-      case 10:
-        b.s = 'none';
-        break;
-      case 11:
-        b.s = 'protuding';
-        break;
-      case 12:
-        b.s = 'ambiguous';
-        break;
-      case 13:
-        b.s = 'recessed';
-        break;
-      default:
-        b.s = 'none';
-    }
-    return b;
+  parseMolecule(obj) {
+    const mol = new ModelMolecule();
+    obj.a.forEach(a => mol.addAtom(this.parseAtom(a)));
+    obj.b.forEach(b => mol.addBond(new ModelBond(mol.atoms[b.b], mol.atoms[b.e])));
+    return mol;
   }
-
-  /**
-   * convert ModelMolecule to chemdoodle JSON
-   */
-  processMolecule(molecule) {
-    let obj = {};
-    let mols = [];
-    let mol = {};
-    const atoms = molecule.atoms;
-    const bonds = molecule.bonds;
-    mol.a = atoms.map(this.processAtom);
-    mol.b = [];
-    for (let i = 0; i &lt; bonds.length; i++) {
-      mol.b.push(this.processBond(bonds[i], molecule));
-    }
-
-    mols[0] = mol;
-    obj.m = mols;
-    obj.s = [];
-    return obj;
-  }
-  /**
-   * return the chemdoodle JSON string
-   */
-  toJson() { return JSON.stringify(this.molObj); }
 }
-
-module.exports = ChemJsonWriter;
+module.exports = JSONParser;
 </code></pre>
         </article>
     </section>

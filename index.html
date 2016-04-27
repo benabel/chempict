@@ -19,24 +19,24 @@
         <link rel="stylesheet"
           href="http://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb.css"
           type="text/css">
-        <script type="text/javascript"
-          src="http://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb.js"></script>
-        <script type="text/javascript"
-          src="./js/chempict.min.js"></script>
+        <script src="http://hub.chemdoodle.com/cwc/latest/ChemDoodleWeb.js"></script>
+        <script src="./js/chempict.min.js"></script>
     </head>
 
     <body>
         <nav class="navbar navbar-dark bg-inverse">
-          <div class="container">
-            <div class="nav navbar-nav">
-                <a class="nav-item nav-link active"
-                  href="#">ChemPict <span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link"
-                  href="./jsdoc/index.html">API Doc</a>
-                <a class="nav-item nav-link pull-xs-right"
-                  href="#">Github</a>
+            <div class="container">
+                <div class="nav navbar-nav">
+                    <a class="nav-item nav-link active"
+                      href="#">ChemPict <span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link"
+                      href="./try-me.html">Try me!</a>
+                    <a class="nav-item nav-link"
+                      href="./jsdoc/index.html">API Doc</a>
+                    <a class="nav-item nav-link pull-xs-right"
+                      href="https://github.com/benjaminabel/chempict">Github</a>
+                </div>
             </div>
-          </div>
         </nav>
         <div class="container">
             <div class="jumbotron">
@@ -78,7 +78,7 @@
                 </script>
             </div>
             <div class="col-sm-6">
-                <h3>Depict a smiles as a svg graphic</h3>
+                <h3>Depict a smile string as a svg graphic</h3>
                 <script>
                 var svg = new ChemPict.SvgDepict(mol).toSvg();
                 document.body.onload = function()
@@ -92,6 +92,12 @@
                 </div>
             </div>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+
+          integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+
+          crossorigin="anonymous"></script>
     </body>
 
 </html>

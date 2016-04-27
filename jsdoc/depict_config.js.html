@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: io/write_chemdoodlejson.js</title>
+    <title>JSDoc: Source: depict/config.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: io/write_chemdoodlejson.js</h1>
+    <h1 class="page-title">Source: depict/config.js</h1>
 
     
 
@@ -26,87 +26,57 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>'use strict';
+            <pre class="prettyprint source linenums"><code>/*
+ * Layout should follow ACS setting 1996
+ * see
+ https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Chemistry/Structure_drawing#Suggested_molecule_editor_settings
 
+   The ACS settings are as follows:
 
-/** Class for the chemdoodle json writer. */
-class ChemJsonWriter {
-  /**
-   * constructor - Create a json string from a molecule model
-   *
-   * @param  {modelMolecule} mol - Molecule model to convert
-   */
-  constructor(mol) { this.molObj = this.processMolecule(mol); }
+     Chain angle: 120 degrees
+     Bond spacing: 18% of length
+     Bond length: 0.508 cm (14.4 pt)
+     Bold width: 0.071 cm (2 pt)
+     Line width: 0.021 cm (0.6 pt)
+     Margin width: 0.056 cm (1.6 pt)
+     Hash spacing: 0.088 cm (2.5 pt)
+     Captions: Arial 10 pt
+     Atom labels: Arial 10 pt
+     Bond angles and length: “fixed” is recommended
 
-  /**
-   * convert ModelAtom to a js object
-   */
-  processAtom(atom) {
-    let a = {};
-    let coord = atom.coord;
-    a.l = atom.symbol;
-    a.x = coord.x;
-    a.y = coord.y;
-    a.c = atom.charge;
-    return a;
-  }
+ Also recommended: For minus symbols on atoms, change the font for the minus symbol to “Symbol” for
+ clarity.
+ */
+'use strict';
 
-  /**
-   * convert ModelBond from a molecule to a js object
-   */
-  processBond(bond, molecule) {
-    let b = {};
-    let atom1 = bond.source;
-    let atom2 = bond.target;
-    b.b = molecule.indexOfAtom(atom1);
-    b.e = molecule.indexOfAtom(atom2);
-    b.o = bond.order;
-    switch (bond.stereo) {
-      case 10:
-        b.s = 'none';
-        break;
-      case 11:
-        b.s = 'protuding';
-        break;
-      case 12:
-        b.s = 'ambiguous';
-        break;
-      case 13:
-        b.s = 'recessed';
-        break;
-      default:
-        b.s = 'none';
-    }
-    return b;
-  }
+// Units conversion in svg
+// https://www.w3.org/TR/SVG/coords.html#Units
+const ptToPx = 1.25;
 
-  /**
-   * convert ModelMolecule to chemdoodle JSON
-   */
-  processMolecule(molecule) {
-    let obj = {};
-    let mols = [];
-    let mol = {};
-    const atoms = molecule.atoms;
-    const bonds = molecule.bonds;
-    mol.a = atoms.map(this.processAtom);
-    mol.b = [];
-    for (let i = 0; i &lt; bonds.length; i++) {
-      mol.b.push(this.processBond(bonds[i], molecule));
-    }
+/**
+ * A config object used to store depict configuration
+ * @namespace config
+ * @property {string}  bgColor                - The background color.
+ * @property {number}  fontSize               - Font size used for atoms labels
+ * @property {number}  bondLength             - Bond length in pixels
+ * @property {number}  bondSpacing            - Bond spacing for double bonds in pixels
+ * @property {string}  displayCarbonLabels    - Carbons labels to diplay: all or none or terminal
+ *                                              fallback to terminal
+ *                                              with a fallback to terminal
+ * @property {number}  lineWidth              - Bond line width
+ * @property {number}  marginWidth            - Margin around molecule
+ */
+const config = {
+  bgColor: 'white',
+  fontSize: 10,
+  bondLength: 14.4 * ptToPx,
+  bondSpacing: 0.18 * 14.4 * ptToPx,
+  displayCarbonLabels: 'terminal',  // accepted values are: all, none, terminal
+  lineWidth: 0.6,
+  marginWidth: ptToPx * 1.6
+};
 
-    mols[0] = mol;
-    obj.m = mols;
-    obj.s = [];
-    return obj;
-  }
-  /**
-   * return the chemdoodle JSON string
-   */
-  toJson() { return JSON.stringify(this.molObj); }
-}
-
-module.exports = ChemJsonWriter;
+module.exports = config;
 </code></pre>
         </article>
     </section>
