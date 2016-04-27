@@ -1,6 +1,12 @@
 'use strict';
 
 const assert = require('chai').assert;
+const expect = require('chai').expect;
+
+const ModelAtom = require('../src/model/atom');
+const ModelBond = require('../src/model/bond');
+const ModelMolecule = require('../src/model/molecule');
+
 const testUtils = require('./utils');
 
 describe('Test test/utils module', () => {
@@ -57,21 +63,32 @@ describe('Test test/utils module', () => {
       assert.equal(bond.target.coord.y, 3);
     });
   });
-  describe('Create a molecule from a smile:', () => {
+  describe('Create a molecule from a chemdoodle object:', () => {
     it('should return a molecule with a single atom', () => {
-      const molecule = testUtils.moleculeFromSmiles('C');
-      assert.equal(molecule.countBonds(), 0);
-      assert.equal(molecule.countAtoms(), 1);
-    });
-    it('should return a molecule C-O', () => {
-      const molecule = testUtils.moleculeFromSmiles('CO');
-      assert.equal(molecule.countBonds(), 1);
-      assert.equal(molecule.countAtoms(), 2);
-    });
-    it('should return a molecule propane', () => {
-      const molecule = testUtils.moleculeFromSmiles('CCC');
-      assert.equal(molecule.countBonds(), 2);
-      assert.equal(molecule.countAtoms(), 3);
+      const m = {
+        "a": [{"x": 0.0, "y": 0.0}, {"x": 1.0, "y": 1.0, "l": "O"}],
+        "b": [{"b": 0, "e": 1}]
+      };
+      const mol = testUtils.moleculeFromObject(m);
+      expect(mol).to.be.an.instanceOf(ModelMolecule);
+      // Test atoms
+      assert.isArray(mol.atoms);
+      const a1 = mol.atoms[0];
+      const a2 = mol.atoms[1];
+      expect(a1).to.be.an.instanceOf(ModelAtom);
+      expect(a2).to.be.an.instanceOf(ModelAtom);
+      assert.equal(a1.coord.x, 0);
+      assert.equal(a1.coord.y, 0);
+      assert.equal(a1.symbol, 'C');
+      assert.equal(a2.coord.x, 1);
+      assert.equal(a2.coord.y, 1);
+      assert.equal(a2.symbol, 'O');
+      // Test bond
+      assert.isArray(mol.bonds);
+      const b1 = mol.bonds[0];
+      expect(b1).to.be.an.instanceOf(ModelBond);
+      assert.equal(b1.source, a1);
+      assert.equal(b1.target, a2);
     });
   });
 });

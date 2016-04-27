@@ -21,8 +21,10 @@
     "json-loader": "^0.5.4",
     "mocha": "^2.4.5",
     "npm": "^3.8.2",
+    "sinon": "^1.17.3",
     "webpack": "^1.12.14"
   },
+  "engines" : { "node" : ">=5.0.0" },
   "scripts": {
     "build": "webpack --progress --colors",
     "build:watch": "webpack --progress --colors --watch",

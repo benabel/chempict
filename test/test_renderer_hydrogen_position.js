@@ -2,6 +2,7 @@
 
 const assert = require('chai').assert;
 const expect = require('chai').expect;
+const sinon = require('sinon');
 
 const MathVector2D = require('../src/math/vector2d');
 const ModelAtom = require('../src/model/atom');
@@ -33,6 +34,41 @@ describe('Test renderer/hydrogen_position module:', () => {
       assert.equal(bonds2.length, 1, 'returns array of bonds');
     });
   });
+  describe('Test getHydrogenPosition', () => {
+    it('should use usingDefaultPlacement method for single atom only', () => {
+      const mol = testUtils.moleculeFromSmiles('C');
+      const hPos = new HydrogenPosition(mol.atoms[0]);
+      const spy = sinon.spy(hPos, "usingDefaultPlacement");
+      assert.isFalse(spy.calledOnce);
+      hPos.getHydrogenPosition();
+      assert.isTrue(spy.calledOnce);
+      const mol2 = testUtils.moleculeFromSmiles('CO');
+      const hPos2 = new HydrogenPosition(mol2.atoms[0]);
+      const spy2 = sinon.spy(hPos2, "usingDefaultPlacement");
+      assert.isFalse(spy2.calledOnce);
+      hPos2.getHydrogenPosition();
+      assert.isFalse(spy2.calledOnce);
+    });
+    it('should use usingCardinalDirection method for atom with two neighbors only', () => {
+      const mol = testUtils.moleculeFromSmiles('CCO');
+      const hPos1 = new HydrogenPosition(mol.atoms[0]);
+      const spy1 = sinon.spy(hPos1, "usingCardinalDirection");
+      assert.isFalse(spy1.calledOnce);
+      hPos1.getHydrogenPosition();
+      assert.isFalse(spy1.calledOnce);
+      const hPos2 = new HydrogenPosition(mol.atoms[1]);
+      const spy2 = sinon.spy(hPos2, "usingCardinalDirection");
+      assert.isFalse(spy2.calledOnce);
+      hPos2.getHydrogenPosition();
+      assert.isTrue(spy2.calledOnce);
+      const mol2 = testUtils.moleculeFromSmiles('C(C)(O)(O)');
+      const hPos3 = new HydrogenPosition(mol2.atoms[0]);
+      const spy3 = sinon.spy(hPos3, "usingCardinalDirection");
+      assert.isFalse(spy3.calledOnce);
+      hPos1.getHydrogenPosition();
+      assert.isFalse(spy3.calledOnce);
+    });
+  });
   describe('Test getHydrogenPosition.usingDefaultPlacement for single atom: ', () => {
     it('should return right for CH4', () => {
       const mol = testUtils.moleculeFromSmiles('C');
@@ -61,5 +97,40 @@ describe('Test renderer/hydrogen_position module:', () => {
          assert.equal(hPos4.getHydrogenPosition(), 'Right');
        });
   });
-
+  describe('Test getHydrogenPosition for atom with two neighbor: ', () => {
+    it('should use getHydrogenPosition.usingCardinalDirection method', () => {
+      const m1 = {
+        "a":
+            [{"x": 0.0, "y": 0.0, "l": "F"}, {"x": -1.0, "y": 1.0, l: "S"}, {"x": -1.0, "y": -1.0}],
+        "b": [{"b": 0, "e": 1}, {"b": 0, "e": 2}]
+      };
+      const mol1 = testUtils.moleculeFromObject(m1);
+      const centralAtom = mol1.atoms[0];
+      const firstAtom = mol1.atoms[1];
+      const secondAtom = mol1.atoms[2];
+      assert.equal(centralAtom.symbol, 'F');
+      assert.equal(firstAtom.symbol, 'S');
+      assert.equal(secondAtom.symbol, 'C');
+      const hPos1 = new HydrogenPosition(centralAtom);
+      const spy1 = sinon.spy(hPos1, "usingCardinalDirection");
+      hPos1.getHydrogenPosition();
+      assert.isTrue(spy1.calledOnce);
+      // direction of the two bonds: W
+      assert.equal(hPos1.getHydrogenPosition(), 'Right');
+      // direction of the two bonds: S
+      firstAtom.coord = {x: 1, y: -1};
+      const dirS = new HydrogenPosition(centralAtom).getHydrogenPosition();
+      assert.equal(dirS, 'Above');
+      // direction of the two bonds: N
+      firstAtom.coord = {x: -1, y: 1};
+      secondAtom.coord = {x: 1, y: 1};
+      const dirN = new HydrogenPosition(centralAtom).getHydrogenPosition();
+      assert.equal(dirN, 'Below');
+      // direction of the two bonds: E
+      firstAtom.coord = {x: 1, y: 1};
+      secondAtom.coord = {x: 1, y: -1};
+      const dirE = new HydrogenPosition(centralAtom).getHydrogenPosition();
+      assert.equal(dirE, 'Left');
+    });
+  });
 });

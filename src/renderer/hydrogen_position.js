@@ -44,7 +44,7 @@ class HydrogenPosition {
     if (neighbors.length > 2) {
       return 'Right';  // usingAngularExtent(vectors);
     } else if (neighbors.length > 1) {
-      return 'Right';  // usingCardinalDirection(average(vectors));
+      return this.usingCardinalDirection(this.vectorBonds);
     } else if (neighbors.length === 1) {
       return this.vectorBonds[0].x > 0.1 ? 'Left' : 'Right';
     }
@@ -67,6 +67,48 @@ class HydrogenPosition {
     const PREFIXED_H = ['O', 'S', 'Se', 'Te', 'F', 'Cl', 'Br', 'I'];
     const position = PREFIXED_H.includes(this.atom.symbol) ? 'Left' : 'Right';
     return position;
+  }
+  /**
+   * By snapping to the cardinal direction (compass point) of the provided
+   * vector, return the position opposite the 'snapped' coordinate.
+   *
+   * @param opposite position the hydrogen label opposite to this vector
+   * @return the position
+   */
+
+  /**
+   * usingCardinalDirection - first calculate the average angle of the two bonds
+   *                          and then return the best opposite direction
+   *
+   * @param  {Array.<Vector2d>} vectorBonds - the two vectors of the bonds
+   * @return {string}                       - best position Right, Left, Above or Below
+   */
+  usingCardinalDirection(vectorBonds) {
+    // TODO: Handle case when sum of the vector bonds is 0
+    const averageAngle =
+        Math.atan2(vectorBonds[0].y + vectorBonds[1].y, vectorBonds[0].x + vectorBonds[1].x);
+    const direction = Math.round(averageAngle / (Math.PI / 4));
+
+    switch (direction) {
+      case -4:  // W
+      case -3:  // SW
+        return 'Right';
+      case -2:  // S
+        return 'Above';
+      case -1:  // SE
+      case 0:   // E
+      case 1:   // NE
+        return 'Left';
+      case 2:  // N
+        return 'Below';
+      case 3:  // NW
+      case 4:  // W
+        return 'Right';
+      default:
+        return 'Right';
+    }
+
+    return 'Right';  // never reached
   }
 }
 
@@ -263,37 +305,37 @@ module.exports = HydrogenPosition;
 //         }
 //       }
 //
-//   /**
-//    * By snapping to the cardinal direction (compass point) of the provided
-//    * vector, return the position opposite the 'snapped' coordinate.
-//    *
-//    * @param opposite position the hydrogen label opposite to this vector
-//    * @return the position
-//    */
-//   static HydrogenPosition usingCardinalDirection(final Vector2d opposite) {
-//     final double theta = Math.atan2(opposite.y, opposite.x);
-//     final int direction = (int) Math.round(theta / (Math.PI / 4));
+// /**
+//  * By snapping to the cardinal direction (compass point) of the provided
+//  * vector, return the position opposite the 'snapped' coordinate.
+//  *
+//  * @param opposite position the hydrogen label opposite to this vector
+//  * @return the position
+//  */
+// static HydrogenPosition usingCardinalDirection(final Vector2d opposite) {
+//   final double theta = Math.atan2(opposite.y, opposite.x);
+//   final int direction = (int) Math.round(theta / (Math.PI / 4));
 //
-//     switch (direction) {
-//       case -4:  // W
-//       case -3:  // SW
-//         return Right;
-//       case -2:  // S
-//         return Above;
-//       case -1:  // SE
-//       case 0:   // E
-//       case 1:   // NE
-//         return Left;
-//       case 2:  // N
-//         return Below;
-//       case 3:  // NW
-//       case 4:  // W?
-//         return Right;
-//     }
-//
-//     return Right;  // never reached
+//   switch (direction) {
+//     case -4:  // W
+//     case -3:  // SW
+//       return Right;
+//     case -2:  // S
+//       return Above;
+//     case -1:  // SE
+//     case 0:   // E
+//     case 1:   // NE
+//       return Left;
+//     case 2:  // N
+//       return Below;
+//     case 3:  // NW
+//     case 4:  // W?
+//       return Right;
 //   }
 //
+//   return Right;  // never reached
+// }
+
 //   /**
 //    * Access the default position of the hydrogen label when the atom has no
 //    * bonds.
