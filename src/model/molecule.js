@@ -81,11 +81,11 @@ const ModelMolecule = function(optName) {
 ModelMolecule.prototype.resetRingCenters = function() {
   this.getRings().forEach(function(ring) { ring.resetRingCenter(); });
 };
+
 /**
  * Add a bond to molecule.
  *
- * @param {modelBond}
- *            bond The bond to add.
+ * @param {modelBond} bond - The bond to add.
  */
 
 ModelMolecule.prototype.addBond = function(bond) {
@@ -281,7 +281,7 @@ ModelMolecule.prototype.addAtom = function(atom) {
 /**
  * Get rings found in this molecule
  *
- * @return{Array.<kemia.ring.Ring>}
+ * @return{Array.<ringRing>}
  */
 ModelMolecule.prototype.getRings = function() {
   if (this.mustRecalcSSSR) {
