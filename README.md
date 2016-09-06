@@ -9,7 +9,7 @@ This is a javascript app that can be run in node and in the browser.
 - To install it in node from npm: `npm i chempict`
 - To import it in a webpage add a `<script>` tag your webpage:
 
-    <script src="https://npmcdn.com/chempict"></script>
+    <script src="https://unpkg.com/chempict"></script>
 
 ## Features
 
@@ -49,6 +49,6 @@ The google closure library was used in kemia and some parts of it had been inclu
 
 [Webpack](https://github.com/webpack/webpack) is used to bundle a umd js file for web and node usage.
 
-[npmcdn](https://npmcdn.com/) is used to distribute the library for web usage.
+[unpkg](https://unpkg.com/) is used to distribute the library for web usage.
 
 The chemdoodle writer is inspired by this blog [post](http://zachcp.org/blog/2015/browserchemistry/) written by [zach charlop-powers](http://zachcp.org/index.html)
